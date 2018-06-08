@@ -36,6 +36,12 @@ class ProductCategory
      */
     private $dateOfLastModification;
 
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="category")
+     */
+    private $products;
+
     public function getId()
     {
         return $this->id;
@@ -105,5 +111,25 @@ class ProductCategory
         $this->dateOfLastModification = $dateOfLastModification;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getProducts()
+    {
+        return $this->products;
+    }
+
+    /**
+     * @param mixed $products
+     */
+    public function setProducts($products): void
+    {
+        $this->products = $products;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 
 }

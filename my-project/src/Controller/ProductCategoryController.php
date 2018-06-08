@@ -9,7 +9,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
 /**
  * @Route("/product/category")
  */
@@ -29,6 +28,10 @@ class ProductCategoryController extends Controller
     public function new(Request $request): Response
     {
         $productCategory = new ProductCategory();
+        $date = new \DateTime();
+        $date->format("Y:M:D");
+        $productCategory->setDateOfCreation($date);
+        $productCategory->setDateOfLastModification($date);
         $form = $this->createForm(ProductCategoryType::class, $productCategory);
         $form->handleRequest($request);
 
@@ -36,6 +39,11 @@ class ProductCategoryController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($productCategory);
             $em->flush();
+
+            $this->addFlash(
+                'notice',
+                'Your category was added'
+            );
 
             return $this->redirectToRoute('product_category_index');
         }
@@ -61,9 +69,16 @@ class ProductCategoryController extends Controller
     {
         $form = $this->createForm(ProductCategoryType::class, $productCategory);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
+            $date = new \DateTime();
+            $date->format("Y:M:D");
+            $productCategory->setDateOfLastModification($date);
             $this->getDoctrine()->getManager()->flush();
+
+            $this->addFlash(
+                'notice',
+                'Your category was updated'
+            );
 
             return $this->redirectToRoute('product_category_edit', ['id' => $productCategory->getId()]);
         }
@@ -83,8 +98,19 @@ class ProductCategoryController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->remove($productCategory);
             $em->flush();
+
+            $this->addFlash(
+                'notice',
+                'Your category was deleted'
+            );
+        }
+        else{
+            $this->addFlash(
+                'error',
+                'Operation failed');
         }
 
         return $this->redirectToRoute('product_category_index');
     }
+
 }

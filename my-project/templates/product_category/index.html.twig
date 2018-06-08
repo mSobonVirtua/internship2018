@@ -3,6 +3,13 @@
 {% block title %}ProductCategory index{% endblock %}
 
 {% block body %}
+
+    {% for message in app.flashes('notice') %}
+        <div style="background: greenyellow; ">
+            {{ message }}
+        </div>
+    {% endfor %}
+
     <h1>ProductCategory index</h1>
 
     <table class="table">
