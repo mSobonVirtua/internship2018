@@ -1,6 +1,8 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
 first_app:
   path: /welcome/page-b
   controller: App\Controller\index::data
+
