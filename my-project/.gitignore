@@ -21,3 +21,9 @@ yarn-error.log
 .phpunit
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+
+#.idea dir
+.idea/
+
+#.DS.store
+.DS_Store
