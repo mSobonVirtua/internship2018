@@ -41,11 +41,15 @@ class ProductController extends Controller
                 'notice',
                 'Dodano nowy element'
             );
+
+            return $this->redirectToRoute('product_index');
+        }
+        else if($form->isSubmitted() && !$form->isValid())
+        {
             $this->addFlash(
                 'error',
                 'Blad dodania'
             );
-            return $this->redirectToRoute('product_index');
         }
 
         return $this->render('product/new.html.twig', [
@@ -77,11 +81,15 @@ class ProductController extends Controller
                 'Edytowano element poprawnie'
 
             );
+
+            return $this->redirectToRoute('product_edit', ['id' => $product->getId()]);
+        }
+        else if($form->isSubmitted() && !$form->isValid())
+        {
             $this->addFlash(
                 'error',
-                'Blad edycji'
+                'Blad dodania'
             );
-            return $this->redirectToRoute('product_edit', ['id' => $product->getId()]);
         }
 
         return $this->render('product/edit.html.twig', [
@@ -103,9 +111,12 @@ class ProductController extends Controller
                 'notice',
                 'Usunieto poprawnie!'
             );
+        }
+        else
+        {
             $this->addFlash(
                 'error',
-                'Blad usuniecia'
+                'Blad dodania'
             );
         }
 
