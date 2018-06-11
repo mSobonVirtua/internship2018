@@ -31,6 +31,10 @@
                 <th>ModifiedDate</th>
                 <td>{{ product.modifiedDate ? product.modifiedDate|date('Y-m-d') : '' }}</td>
             </tr>
+            <tr>
+                <th>Category</th>
+                <td><a href="{{ path('product_category_new',{'id':product.id}) }}">product_category.name</a></td>
+            </tr>
         </tbody>
     </table>
 

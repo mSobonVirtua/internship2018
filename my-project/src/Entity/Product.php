@@ -39,7 +39,7 @@ class Product
     /**
     * @ORM\ManyToOne(targetEntity="App\Entity\ProductCategory", inversedBy="products")
      * @ORM\JoinColumn()
-     */
+
     private $category;
 
     public function getId()
@@ -95,21 +95,17 @@ class Product
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getCategory()
+
+    public function getCategory(): ?ProductCategory
     {
         return $this->category;
     }
 
-    /**
-     * @param mixed $category
-     */
-    public function setCategory($category): void
+
+    public function setCategory(?ProductCategory $category): self
     {
         $this->category = $category;
+
+        return $this;
     }
-
-
 }

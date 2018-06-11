@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -36,11 +38,15 @@ class ProductCategory
      */
     private $dateOfLastModification;
 
-
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="category")
      */
     private $products;
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
 
     public function getId()
     {
@@ -112,9 +118,9 @@ class ProductCategory
     }
 
     /**
-     * @return mixed
+     * @return Collection|Product[]
      */
-    public function getProducts()
+    public function getProducts(): Collection
     {
         return $this->products;
     }
@@ -130,6 +136,28 @@ class ProductCategory
     public function __toString()
     {
         return $this->name;
+    }
+    public function addProduct(Product $product): self
+    {
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+            $product->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): self
+    {
+        if ($this->products->contains($product)) {
+            $this->products->removeElement($product);
+            // set the owning side to null (unless already changed)
+            if ($product->getCategory() === $this) {
+                $product->setCategory(null);
+            }
+        }
+
+        return $this;
     }
 
 }
