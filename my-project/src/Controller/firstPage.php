@@ -1,9 +1,11 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: virtua
- * Date: 08.06.2018
- * Time: 11:40
+ * V12A - stworzenie pierwszej strony
+ *
+ * @category   Virtua
+ * @package    Virtua_Module
+ * @copyright  Copyright (c) Virtua
+ * @author     dkruczek
  */
 
 namespace App\Controller;
