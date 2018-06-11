@@ -2,3 +2,8 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 
+app_date:
+  path: /welcome/page-a
+  controller: App\Controller\firstPage::date
+
+
