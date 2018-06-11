@@ -1,5 +1,12 @@
 <?php
-
+/**
+ * V13A - przygotowanie entity product
+ *
+ * @category   Virtua
+ * @package    Virtua_Module
+ * @copyright  Copyright (c) Virtua
+ * @author     dkruczek
+ */
 namespace App\Controller;
 
 use App\Entity\Product;
