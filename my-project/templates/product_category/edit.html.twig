@@ -8,6 +8,13 @@
             {{ message }}
         </div>
     {% endfor %}
+
+    {% for message in app.flashes('error') %}
+        <div style="background: greenyellow; ">
+            {{ message }}
+        </div>
+    {% endfor %}
+
     <h1>Edit ProductCategory</h1>
 
     {{ include('product_category/_form.html.twig', {'button_label': 'Update'}) }}
