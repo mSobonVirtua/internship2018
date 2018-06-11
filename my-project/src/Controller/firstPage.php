@@ -1,12 +1,5 @@
 <?php
-/**
- * V12A - stworzenie pierwszej strony
- *
- * @category   Virtua
- * @package    Virtua_Module
- * @copyright  Copyright (c) Virtua
- * @author     dkruczek
- */
+
 
 namespace App\Controller;
 
