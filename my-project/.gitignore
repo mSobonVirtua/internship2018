@@ -27,3 +27,6 @@ yarn-error.log
 
 #.DS.store
 .DS_Store
+
+#doctrine.yaml
+/config/packages/doctrine.yaml
