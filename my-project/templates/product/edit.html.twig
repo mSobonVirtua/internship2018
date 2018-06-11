@@ -3,6 +3,13 @@
 {% block title %}Edit {{ product.name }} Product{% endblock %}
 
 {% block body %}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
     <h1>Edit Product</h1>
 
     {{ include('product/_form.html.twig', {'button_label': 'Update'}) }}

@@ -3,6 +3,13 @@
 {% block title %}Products List{% endblock %}
 
 {% block body %}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
     <h1>Product index</h1>
 
     <table class="table">

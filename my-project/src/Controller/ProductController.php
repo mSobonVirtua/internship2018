@@ -12,6 +12,7 @@ namespace App\Controller;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
+use function PHPSTORM_META\type;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,8 +44,19 @@ class ProductController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($product);
             $em->flush();
+            $this->addFlash(
+                'notice',
+                'Dodano nowy element'
+            );
 
             return $this->redirectToRoute('product_index');
+        }
+        else if($form->isSubmitted() && !$form->isValid())
+        {
+            $this->addFlash(
+                'error',
+                'Blad dodania'
+            );
         }
 
         return $this->render('product/new.html.twig', [
@@ -71,8 +83,20 @@ class ProductController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+            $this->addFlash(
+                'notice',
+                'Edytowano element poprawnie'
+
+            );
 
             return $this->redirectToRoute('product_edit', ['id' => $product->getId()]);
+        }
+        else if($form->isSubmitted() && !$form->isValid())
+        {
+            $this->addFlash(
+                'error',
+                'Blad dodania'
+            );
         }
 
         return $this->render('product/edit.html.twig', [
@@ -90,6 +114,17 @@ class ProductController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->remove($product);
             $em->flush();
+            $this->addFlash(
+                'notice',
+                'Usunieto poprawnie!'
+            );
+        }
+        else
+        {
+            $this->addFlash(
+                'error',
+                'Blad dodania'
+            );
         }
 
         return $this->redirectToRoute('product_index');
