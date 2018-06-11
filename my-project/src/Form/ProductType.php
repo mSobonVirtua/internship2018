@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Product;
+use App\Entity\ProductCategory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,7 +17,13 @@ class ProductType extends AbstractType
             ->add('info')
             ->add('createdDate')
             ->add('modifiedDate')
-        ;
+            ->add('category',Product::class, array(
+                'class'=>ProductCategory::class,
+                'choice_label'=>function($category)
+                {
+                    return $category->getName();
+                }
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver)
