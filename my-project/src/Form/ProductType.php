@@ -19,13 +19,9 @@ class ProductType extends AbstractType
             ->add('info')
             ->add('createdDate')
             ->add('modifiedDate')
-            ->add('category',EntityType::class, array(
-                'class'=>ProductCategory::class,
-                'choice_label'=>function($category)
-                {
-                    return $category->getName();
-                }
-            ));
+            ->add('category', EntityType::class, [
+                'class' => ProductCategory::class
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

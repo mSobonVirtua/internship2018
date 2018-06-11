@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Product{% endblock %}
+{% block title %}{{ product.name }}{% endblock %}
 
 {% block body %}
     <h1>Product</h1>
@@ -18,6 +18,10 @@
             <tr>
                 <th>Info</th>
                 <td>{{ product.info }}</td>
+            </tr>
+            <tr>
+                <th>Category</th>
+                <td><a href="{{ path('product_category_show', {'id': product.category.id}) }}">{{  product.category.name }}</a></td>
             </tr>
             <tr>
                 <th>CreatedDate</th>
