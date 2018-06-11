@@ -1,9 +1,11 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: virtua
- * Date: 11.06.2018
- * Time: 10:25
+ * VI-31
+ *
+ * @category   Virtua
+ * @package    Virtua_Module
+ * @copyright  Copyright (c) Virtua
+ * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
  */
 
 namespace App\Services;
