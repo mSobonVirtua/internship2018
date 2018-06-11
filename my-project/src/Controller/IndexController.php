@@ -1,5 +1,12 @@
 <?php
-
+/**
+ * VI15B - stworzenie nowej strony
+ *
+ * @category   Virtua
+ * @package    Virtua_Module
+ * @copyright  Copyright (c) Virtua
+ * @author     msobon
+ */
 namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
