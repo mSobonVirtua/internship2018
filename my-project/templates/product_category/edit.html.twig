@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit ProductCategory{% endblock %}
+{% block title %}Edit {{ product_category.name }} Category{% endblock %}
 
 {% block body %}
     {% for message in app.flashes('notice') %}
