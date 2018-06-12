@@ -15,6 +15,7 @@ use App\Repository\ProductCategoryRepository;
 use App\Services\FileUploaderService;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -50,11 +51,19 @@ class ProductCategoryController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+//            try
+//            {
+                /** @var UploadedFile $file */
+                $file = $productCategory->getMainImage();
+                $fileName = $fileUploader->upload($file);
+                $productCategory->setMainImage($fileName);
+//            }
+//            catch(FileException $ex)
+//            {
+//
+//            }
 
-            /** @var UploadedFile $file */
-            $file = $productCategory->getMainImage();
-            $fileName = $fileUploader->upload($file);
-            $productCategory->setMainImage($fileName);
+            
             try
             {
                 $em = $this->getDoctrine()->getManager();

@@ -53,9 +53,9 @@ class ProductCategory
 
     /**
      * @ORM\Column(type="string")
-     * $@Assert\File(
-     *      maxSize = "100",
-     *      mimeType = "image/jpg"
+     * @Assert\File(
+     *      maxSize = "250000",
+     *      mimeTypes = {"image/jpeg", "image/png"}
      * )
      */
     private $mainImage;
