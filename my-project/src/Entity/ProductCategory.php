@@ -61,7 +61,11 @@ class ProductCategory
     private $mainImage;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Image")
+     * @ORM\JoinTable(name="category_images",
+     *                  joinColumns={@ORM\JoinColumn(name="product_category_id", referencedColumnName="id")},
+     *                  inverseJoinColumns={@ORM\JoinColumn(name="image_id", referencedColumnName="id")}
+     *                  )
      */
     private $images;
 

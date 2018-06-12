@@ -38,8 +38,6 @@ class ProductCategoryController extends Controller
      */
     public function new(Request $request, FileUploaderService $fileUploader): Response
     {
-
-
         $productCategory = new ProductCategory();
         $date = new \DateTime();
         $date->format("Y:M:D");
@@ -49,20 +47,12 @@ class ProductCategoryController extends Controller
         $form = $this->createForm(ProductCategoryType::class, $productCategory);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-
-//            try
-//            {
-                /** @var UploadedFile $file */
-                $file = $productCategory->getMainImage();
-                $fileName = $fileUploader->upload($file);
-                $productCategory->setMainImage($fileName);
-//            }
-//            catch(FileException $ex)
-//            {
-//
-//            }
-
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            /** @var UploadedFile $file */
+            $file = $productCategory->getMainImage();
+            $fileName = $fileUploader->upload($file);
+            $productCategory->setMainImage($fileName);
             
             try
             {
@@ -77,6 +67,7 @@ class ProductCategoryController extends Controller
             }
             catch(\Exception $exception)
             {
+                echo $exception;die;
                 $this->_addDatabaseErrorFlash();
             }
 
@@ -100,7 +91,7 @@ class ProductCategoryController extends Controller
     /**
      * @Route("/{id}/edit", name="product_category_edit", methods="GET|POST")
      */
-    public function edit(Request $request, ProductCategory $productCategory): Response
+    public function edit(Request $request, ProductCategory $productCategory, FileUploaderService $fileUploader): Response
     {
         $form = $this->createForm(ProductCategoryType::class, $productCategory);
         $form->handleRequest($request);
@@ -109,6 +100,11 @@ class ProductCategoryController extends Controller
             $date = new \DateTime();
             $date->format("Y:M:D");
             $productCategory->setDateOfLastModification($date);
+
+            /** @var UploadedFile $file */
+            $file = $productCategory->getMainImage();
+            $fileName = $fileUploader->upload($file);
+            $productCategory->setMainImage($fileName);
 
             try
             {
