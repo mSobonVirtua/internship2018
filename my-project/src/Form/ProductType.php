@@ -25,9 +25,7 @@ class ProductType extends AbstractType
                 {
                     return $category->getName();
                 }
-            ))
-            ->add('createdDate')
-            ->add('modifiedDate');
+            ));
 
     }
 
