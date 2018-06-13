@@ -18,7 +18,6 @@ class ProductType extends AbstractType
         $builder
             ->add('name')
             ->add('info')
-
             ->add('category',EntityType::class, array(
                 'class'=>ProductCategory::class,
                 'choice_label'=>function($category)
@@ -26,7 +25,6 @@ class ProductType extends AbstractType
                     return $category->getName();
                 }
             ));
-
     }
 
     public function configureOptions(OptionsResolver $resolver)

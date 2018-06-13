@@ -1,3 +1,8 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit ProductCategory{% endblock %}
+
+{% block body %}
 {#/**#}
 {#* VI-31#}
 {#*#}
@@ -23,7 +28,6 @@
             {{ message }}
         </div>
     {% endfor %}
-
     <h1>Edit ProductCategory</h1>
 
     {{ include('product_category/_form.html.twig', {'button_label': 'Update'}) }}

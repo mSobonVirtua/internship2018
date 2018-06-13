@@ -1,3 +1,8 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}ProductCategory{% endblock %}
+
 {#/**#}
 {#* VI-31#}
 {#*#}
@@ -37,6 +42,9 @@
                 <td>{{ product_category.dateOfLastModification ? product_category.dateOfLastModification|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
+                <th>All products</th>
+                {% for product in product_category.products %}
+                <td><a href="{{ path('product_show',{'id':product.id}) }}">product.name </a></td>
                 <th>Products in this category</th>
                 {% for product in product_category.products %}
                     <td><a href="{{ path( 'product_show' , { 'id': product.id} ) }}"> {{ product.name }}</a></td>

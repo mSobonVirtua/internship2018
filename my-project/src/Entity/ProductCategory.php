@@ -131,7 +131,6 @@ class ProductCategory
     {
         return $this->products;
     }
-
     /**
      * @param mixed $products
      */

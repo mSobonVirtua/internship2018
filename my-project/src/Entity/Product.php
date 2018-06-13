@@ -36,11 +36,6 @@ class Product
      */
     private $modifiedDate;
 
-    /**
-    * @ORM\ManyToOne(targetEntity="App\Entity\ProductCategory", inversedBy="products")
-     * @ORM\JoinColumn()
-     */
-
     private $category;
 
     public function getId()
@@ -96,12 +91,10 @@ class Product
         return $this;
     }
 
-
     public function getCategory(): ?ProductCategory
     {
         return $this->category;
     }
-
 
     public function setCategory(?ProductCategory $category): self
     {

@@ -40,13 +40,14 @@ class ProductCategoryController extends Controller
         $date->format("Y:M:D");
         $productCategory->setDateOfCreation($date);
         $productCategory->setDateOfLastModification($date);
-
         $form = $this->createForm(ProductCategoryType::class, $productCategory);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            try
-            {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($productCategory);
+            $em->flush();
+            try {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($productCategory);
                 $em->flush();
@@ -55,9 +56,7 @@ class ProductCategoryController extends Controller
                     'notice',
                     'Your category was added'
                 );
-            }
-            catch(\Exception $exception)
-            {
+            } catch (\Exception $exception) {
                 $this->_addDatabaseErrorFlash();
             }
 
@@ -86,71 +85,72 @@ class ProductCategoryController extends Controller
         $form = $this->createForm(ProductCategoryType::class, $productCategory);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
 
-            $date = new \DateTime();
-            $date->format("Y:M:D");
-            $productCategory->setDateOfLastModification($date);
+                $date = new \DateTime();
+                $date->format("Y:M:D");
+                $productCategory->setDateOfLastModification($date);
 
-            try
-            {
-                $this->getDoctrine()->getManager()->flush();
+                try {
+                    $this->getDoctrine()->getManager()->flush();
+                } catch (\Exception $exception) {
+                    $this->_addDatabaseErrorFlash();
+                }
+
+                $this->addFlash(
+                    'notice',
+                    'Your category was updated'
+                );
+
+                return $this->redirectToRoute('product_category_edit', ['id' => $productCategory->getId()]);
             }
-            catch(\Exception $exception)
-            {
-               $this->_addDatabaseErrorFlash();
-            }
 
-            $this->addFlash(
-                'notice',
-                'Your category was updated'
-            );
-
-            return $this->redirectToRoute('product_category_edit', ['id' => $productCategory->getId()]);
+            return $this->render('product_category/edit.html.twig', [
+                'product_category' => $productCategory,
+                'form' => $form->createView()
+            ]);
         }
-
-        return $this->render('product_category/edit.html.twig', [
-            'product_category' => $productCategory,
-            'form' => $form->createView(),
-        ]);
     }
 
-    /**
-     * @Route("/{id}", name="product_category_delete", methods="DELETE")
-     */
-    public function delete(Request $request, ProductCategory $productCategory): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$productCategory->getId(), $request->request->get('_token'))) {
-            try
-            {
+        /**
+         * @Route("/{id}", name="product_category_delete", methods="DELETE")
+         */
+        public
+        function delete(Request $request, ProductCategory $productCategory): Response
+        {
+            if ($this->isCsrfTokenValid('delete' . $productCategory->getId(), $request->request->get('_token'))) {
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($productCategory);
                 $em->flush();
+                try {
+                    $em = $this->getDoctrine()->getManager();
+                    $em->remove($productCategory);
+                    $em->flush();
+                    $this->addFlash(
+                        'notice',
+                        'Your category was deleted'
+                    );
+                } catch (\Exception $exception) {
+                    $this->_addDatabaseErrorFlash();
+                }
+            } else {
                 $this->addFlash(
-                    'notice',
-                    'Your category was deleted'
+                    'error',
+                    'Operation failed'
                 );
             }
-            catch(\Exception $exception)
-            {
-                $this->_addDatabaseErrorFlash();
-            }
+
+            return $this->redirectToRoute('product_category_index');
         }
-        else{
+
+        private
+        function _addDatabaseErrorFlash()
+        {
             $this->addFlash(
                 'error',
-                'Operation failed'
+                'Problem with the database, please try later'
             );
         }
-
-        return $this->redirectToRoute('product_category_index');
     }
 
-    private function _addDatabaseErrorFlash()
-    {
-        $this->addFlash(
-            'error',
-            'Problem with the database, please try later'
-        );
-    }
-
-}
