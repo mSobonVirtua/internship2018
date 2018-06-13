@@ -1,8 +1,30 @@
+{#/**#}
+{#* VI-31#}
+{#*#}
+{#* @category   Virtua#}
+{#* @package    Virtua_Module#}
+{#* @copyright  Copyright (c) Virtua#}
+{#* @author     Name <m.sobon@wearevirtua.com>#}
+{#*/#}
+
 {% extends 'base.html.twig' %}
 
-{% block title %}ProductCategory index{% endblock %}
+{% block title %}Categories list{% endblock %}
 
 {% block body %}
+
+    {% for message in app.flashes('notice') %}
+        <div style="background: greenyellow; ">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('error') %}
+        <div style="background: greenyellow; ">
+            {{ message }}
+        </div>
+    {% endfor %}
+
     <h1>ProductCategory index</h1>
 
     <table class="table">

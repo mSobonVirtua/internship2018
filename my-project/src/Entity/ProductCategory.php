@@ -1,5 +1,12 @@
 <?php
-
+/**
+ * VI-31
+ *
+ * @category   Virtua
+ * @package    Virtua_Module
+ * @copyright  Copyright (c) Virtua
+ * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
+ */
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -125,6 +132,18 @@ class ProductCategory
         return $this->products;
     }
 
+    /**
+     * @param mixed $products
+     */
+    public function setProducts($products): void
+    {
+        $this->products = $products;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
     public function addProduct(Product $product): self
     {
         if (!$this->products->contains($product)) {
@@ -147,6 +166,5 @@ class ProductCategory
 
         return $this;
     }
-
 
 }

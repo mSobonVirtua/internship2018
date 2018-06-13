@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Product index{% endblock %}
+{% block title %}Products List{% endblock %}
 
 {% block body %}
     {% for label, messages in app.flashes %}
@@ -20,6 +20,7 @@
                 <th>Info</th>
                 <th>CreatedDate</th>
                 <th>ModifiedDate</th>
+                <th>Category</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -31,6 +32,7 @@
                 <td>{{ product.info }}</td>
                 <td>{{ product.createdDate ? product.createdDate|date('Y-m-d') : '' }}</td>
                 <td>{{ product.modifiedDate ? product.modifiedDate|date('Y-m-d') : '' }}</td>
+                <td><a href="{{ path('product_category_show', {'id': product.category.id}) }}">{{  product.category.name }}</a></td>
                 <td>
                     <a href="{{ path('product_show', {'id': product.id}) }}">show</a>
                     <a href="{{ path('product_edit', {'id': product.id}) }}">edit</a>
