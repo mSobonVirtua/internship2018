@@ -9,13 +9,16 @@
  */
 namespace App\Controller;
 
+use App\Entity\Image;
 use App\Entity\ProductCategory;
+use App\Form\ImageType;
 use App\Form\ProductCategoryType;
 use App\Repository\ProductCategoryRepository;
 use App\Services\FileUploaderService;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -67,7 +70,7 @@ class ProductCategoryController extends Controller
             }
             catch(\Exception $exception)
             {
-                echo $exception;die;
+                //echo $exception;die;
                 $this->_addDatabaseErrorFlash();
             }
 
@@ -94,6 +97,7 @@ class ProductCategoryController extends Controller
     public function edit(Request $request, ProductCategory $productCategory, FileUploaderService $fileUploader): Response
     {
         $form = $this->createForm(ProductCategoryType::class, $productCategory);
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -105,6 +109,7 @@ class ProductCategoryController extends Controller
             $file = $productCategory->getMainImage();
             $fileName = $fileUploader->upload($file);
             $productCategory->setMainImage($fileName);
+
 
             try
             {
@@ -123,9 +128,12 @@ class ProductCategoryController extends Controller
             return $this->redirectToRoute('product_category_edit', ['id' => $productCategory->getId()]);
         }
 
+        $image = new Image();
+        $imageForm = $this->createForm(ImageType::class, $image);
         return $this->render('product_category/edit.html.twig', [
             'product_category' => $productCategory,
             'form' => $form->createView(),
+            'imageForm' => $imageForm->createView()
         ]);
     }
 
@@ -159,6 +167,47 @@ class ProductCategoryController extends Controller
 
         return $this->redirectToRoute('product_category_index');
     }
+
+
+    /**
+     * @Route("/edit/AddImage", name="UploadAndAddImageToCategory", methods="POST")
+     */
+    public function UploadAndAddImageToCategory(Request $request, FileUploaderService $fileUploader)
+    {
+        dump($request);
+        echo $request; die;
+        $image = new Image();
+        $form = $this->createForm(ImageType::class, $image);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            /** @var UploadedFile $file */
+            $file = $image->getPath();
+            $fileName = $fileUploader->upload($file);
+            $image->setPath($fileName);
+
+            try
+            {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($image);
+                $em->flush();
+
+                $this->addFlash(
+                    'notice',
+                    'Your Image was added'
+                );
+            }
+            catch(\Exception $exception)
+            {
+//                echo $exception;die;
+                $this->_addDatabaseErrorFlash();
+            }
+        }
+        return new JsonResponse();
+    }
+
+
 
     private function _addDatabaseErrorFlash()
     {

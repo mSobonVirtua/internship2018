@@ -1,0 +1,37 @@
+{#/**#}
+{#* VI-36#}
+{#*#}
+{#* @category   Virtua#}
+{#* @package    Virtua_Module#}
+{#* @copyright  Copyright (c) Virtua#}
+{#* @author     Name <m.sobon@wearevirtua.com>#}
+{#*/#}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
+
+<a class="btn btn-primary" href="{{ path('product_category_index') }}">back to list</a>
+
+{{ include('product_category/_delete_form.html.twig') }}
+
+{{ form_start(imageForm, { 'attr' : { 'id' : 'AddImageForm' }}) }}
+    {{ form_widget(imageForm) }}
+    <button class="btn btn-success">{{ button_label|default('Add Image to category') }}</button>
+{{ form_end(imageForm) }}
+
+<script>
+    const addImageForm = document.querySelector('#AddImageForm');
+    const imageFormData = new FormData(addImageForm);
+    addImageForm.addEventListener('submit', (e)=>{
+        e.preventDefault();
+        alert(imageFormData);
+        const response = fetch('{{ path('UploadAndAddImageToCategory') }}', {
+            method: 'POST',
+            body: imageFormData
+        });
+        //console.log(response.json());
+    });
+</script>

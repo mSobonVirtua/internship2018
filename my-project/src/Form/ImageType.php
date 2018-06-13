@@ -20,7 +20,10 @@ class ImageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('path', FileType::class)
+            ->setAttribute('id', 'AddImageForm')
+            ->add('path', FileType::class, [
+                'label' => 'Add Image'
+            ])
         ;
     }
 

@@ -204,7 +204,7 @@ class ProductCategory
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection
      */
     public function getImages()
     {
@@ -212,7 +212,7 @@ class ProductCategory
     }
 
     /**
-     * @param mixed $images
+     * @param ArrayCollection $images
      */
     public function setImages($images): void
     {
