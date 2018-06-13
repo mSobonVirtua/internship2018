@@ -36,10 +36,6 @@ class Product
      */
     private $modifiedDate;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProductCategory", inversedBy="products")
-     * @ORM\JoinColumn(nullable=false)
-     */
     private $category;
 
     public function getId()

@@ -1,6 +1,5 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Edit Product{% endblock %}
+{% block title %}Edit {{ product.name }} Product{% endblock %}
 
 {% block body %}
     {% for label, messages in app.flashes %}

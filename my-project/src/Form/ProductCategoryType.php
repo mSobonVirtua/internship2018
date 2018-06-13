@@ -1,5 +1,12 @@
 <?php
-
+/**
+ * VI-31
+ *
+ * @category   Virtua
+ * @package    Virtua_Module
+ * @copyright  Copyright (c) Virtua
+ * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
+ */
 namespace App\Form;
 
 use App\Entity\ProductCategory;
@@ -15,8 +22,7 @@ class ProductCategoryType extends AbstractType
             ->add('name')
             ->add('description')
             ->add('dateOfCreation')
-            ->add('dateOfLastModification')
-        ;
+            ->add('dateOfLastModification');
     }
 
     public function configureOptions(OptionsResolver $resolver)
