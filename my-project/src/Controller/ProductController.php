@@ -17,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * @Route("/product")
@@ -37,6 +38,10 @@ class ProductController extends Controller
     public function new(Request $request): Response
     {
         $product = new Product();
+        $date = new \DateTime();
+        $date->format("Y:M:D");
+        $product->setCreatedDate($date);
+        $product->setModifiedDate($date);
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
@@ -61,7 +66,7 @@ class ProductController extends Controller
 
         return $this->render('product/new.html.twig', [
             'product' => $product,
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ]);
     }
 
@@ -78,6 +83,9 @@ class ProductController extends Controller
      */
     public function edit(Request $request, Product $product): Response
     {
+        $date = new \DateTime();
+        $date->format("Y:M:D");
+        $product->setModifiedDate($date);
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
