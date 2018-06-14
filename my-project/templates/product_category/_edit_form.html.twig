@@ -23,15 +23,15 @@
 {{ form_end(imageForm) }}
 
 <script>
-    const addImageForm = document.querySelector('#AddImageForm');
-    const imageFormData = new FormData(addImageForm);
+    const addImageForm = document.forms.namedItem('image');
     addImageForm.addEventListener('submit', (e)=>{
         e.preventDefault();
-        alert(imageFormData);
-        const response = fetch('{{ path('UploadAndAddImageToCategory') }}', {
+        const dataForm = new FormData(addImageForm);
+        const response = fetch('{{ path('UploadAndAddImageToCategory', {'id': product_category.id}) }}', {
             method: 'POST',
-            body: imageFormData
+            body: dataForm
         });
-        //console.log(response.json());
+        //console.log(new FormData(addImageForm).has('image[path]'));
+        //console.log(addImageForm);
     });
 </script>

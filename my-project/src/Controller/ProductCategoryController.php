@@ -97,7 +97,6 @@ class ProductCategoryController extends Controller
     public function edit(Request $request, ProductCategory $productCategory, FileUploaderService $fileUploader): Response
     {
         $form = $this->createForm(ProductCategoryType::class, $productCategory);
-
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -130,6 +129,8 @@ class ProductCategoryController extends Controller
 
         $image = new Image();
         $imageForm = $this->createForm(ImageType::class, $image);
+
+        dump($imageForm);
         return $this->render('product_category/edit.html.twig', [
             'product_category' => $productCategory,
             'form' => $form->createView(),
@@ -170,23 +171,21 @@ class ProductCategoryController extends Controller
 
 
     /**
-     * @Route("/edit/AddImage", name="UploadAndAddImageToCategory", methods="POST")
+     * @Route("/{id}/edit/AddImage", name="UploadAndAddImageToCategory", methods="POST")
      */
-    public function UploadAndAddImageToCategory(Request $request, FileUploaderService $fileUploader)
+    public function UploadAndAddImageToCategory(Request $request, ProductCategory $productCategory, FileUploaderService $fileUploader)
     {
-        dump($request);
-        echo $request; die;
         $image = new Image();
         $form = $this->createForm(ImageType::class, $image);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid())
+        if ($form->isSubmitted() && $form->get('path')->isValid())
         {
             /** @var UploadedFile $file */
-            $file = $image->getPath();
+            $file = $form->get('path')->getData();
             $fileName = $fileUploader->upload($file);
             $image->setPath($fileName);
-
+            $productCategory->getImages()->add($image);
             try
             {
                 $em = $this->getDoctrine()->getManager();
