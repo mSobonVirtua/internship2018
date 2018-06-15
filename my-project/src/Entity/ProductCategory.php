@@ -12,6 +12,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductCategoryRepository")
@@ -50,9 +51,28 @@ class ProductCategory
      */
     private $products;
 
+    /**
+     * @ORM\Column(type="string")
+     * @Assert\File(
+     *      maxSize = "250000",
+     *      mimeTypes = {"image/jpeg", "image/png"}
+     * )
+     */
+    private $mainImage;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Image")
+     * @ORM\JoinTable(name="category_images",
+     *                  joinColumns={@ORM\JoinColumn(name="product_category_id", referencedColumnName="id")},
+     *                  inverseJoinColumns={@ORM\JoinColumn(name="image_id", referencedColumnName="id")}
+     *                  )
+     */
+    private $images;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->images = new ArrayCollection();
     }
 
     public function getId()
@@ -165,6 +185,38 @@ class ProductCategory
         }
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMainImage()
+    {
+        return $this->mainImage;
+    }
+
+    /**
+     * @param mixed $mainImage
+     */
+    public function setMainImage($mainImage): void
+    {
+        $this->mainImage = $mainImage;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getImages()
+    {
+        return $this->images;
+    }
+
+    /**
+     * @param ArrayCollection $images
+     */
+    public function setImages($images): void
+    {
+        $this->images = $images;
     }
 
 }
