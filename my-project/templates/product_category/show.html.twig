@@ -13,7 +13,11 @@
 
 {% block body %}
     <h1>ProductCategory</h1>
-    <img src="{{ asset('uploads/images/' ~ product_category.mainImage) }}" class="img-thumbnail">
+    {% for image in product_category.images %}
+        <img class="img-thumbnail img-250" src="{{ asset('uploads/images/' ~ image.path) }}">
+    {% endfor %}
+    {#<img src="{{ asset('uploads/images/' ~ product_category.mainImage) }}" class="img-thumbnail">#}
+
     <table class="table">
         <tbody>
             <tr>
@@ -46,8 +50,6 @@
     </table>
 
     <a href="{{ path('product_category_index') }}">back to list</a>
-
     <a href="{{ path('product_category_edit', {'id': product_category.id}) }}">edit</a>
-
     {{ include('product_category/_delete_form.html.twig') }}
 {% endblock %}
