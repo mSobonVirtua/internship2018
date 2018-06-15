@@ -26,9 +26,6 @@
 
     <h1>Edit ProductCategory</h1>
 
-    {{ include('product_category/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('product_category_index') }}">back to list</a>
-
-    {{ include('product_category/_delete_form.html.twig') }}
+    {#{{ include('product_category/_form.html.twig', {'button_label': 'Update'}) }}#}
+    {{ include('product_category/_edit_form.html.twig') }}
 {% endblock %}

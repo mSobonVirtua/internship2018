@@ -31,4 +31,5 @@ yarn-error.log
 #doctrine.yaml
 /config/packages/doctrine.yaml
 
-
+#Ignore jpg, jpeg, png
+/public/uploads/images/
