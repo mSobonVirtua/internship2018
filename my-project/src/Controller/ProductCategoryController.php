@@ -13,6 +13,7 @@ use App\Entity\Image;
 use App\Entity\ProductCategory;
 use App\Form\ImageType;
 use App\Form\ProductCategoryType;
+use App\Repository\ImageRepository;
 use App\Repository\ProductCategoryRepository;
 use App\Services\FileUploaderService;
 use Doctrine\ORM\QueryBuilder;
@@ -200,6 +201,30 @@ class ProductCategoryController extends Controller
                 $this->_addDatabaseErrorFlash();
             }
         }
+        return new JsonResponse();
+    }
+
+    /**
+     * @Route("/{image}/{category}", name="remove_image_from_category", methods="DELETE")
+     */
+    public function removeImageFromCategory(Request $request, Image $image, ProductCategory $category): Response
+    {
+
+            try
+            {
+                $em = $this->getDoctrine()->getManager();
+                $category->getImages()->removeElement($image);
+                $em->flush();
+                $this->addFlash(
+                    'notice',
+                    'Operation complete'
+                );
+            }
+            catch(\Exception $exception)
+            {
+                $this->_addDatabaseErrorFlash();
+            }
+
         return new JsonResponse();
     }
 
