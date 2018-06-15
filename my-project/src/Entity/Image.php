@@ -4,6 +4,9 @@
  *
  * @category   Entity
  * @package    Virtua_ImageEntity
+ * @package    Virtua_AddCategoryImage
+ * @package    Virtua_ProductCategoryEdit
+ * @package    Virtua_ProductCategoryNew
  * @copyright  Copyright (c) Virtua
  * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
  */

@@ -2,7 +2,7 @@
 /**
  * VI-31 ProductCategoryController
  *
- * @category   ProductCategiry
+ * @category   ProductCategory
  * @package    Virtua_ProductCategoryController
  * @copyright  Copyright (c) Virtua
  * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
@@ -129,7 +129,6 @@ class ProductCategoryController extends Controller
         $image = new Image();
         $imageForm = $this->createForm(ImageType::class, $image);
 
-        dump($imageForm);
         return $this->render('product_category/edit.html.twig', [
             'product_category' => $productCategory,
             'form' => $form->createView(),
