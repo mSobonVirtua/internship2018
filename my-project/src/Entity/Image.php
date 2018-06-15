@@ -1,9 +1,9 @@
 <?php
 /**
- * VI-36
+ * VI-36 ImageEntity
  *
- * @category   Virtua
- * @package    Virtua_Module
+ * @category   Entity
+ * @package    Virtua_ImageEntity
  * @copyright  Copyright (c) Virtua
  * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
  */

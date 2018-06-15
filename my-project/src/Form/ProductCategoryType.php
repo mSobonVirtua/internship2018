@@ -1,9 +1,9 @@
 <?php
 /**
- * VI-31 VI-36
+ * VI-31 VI-36 ProductCategoryType
  *
- * @category   Virtua
- * @package    Virtua_Module
+ * @category   FormType
+ * @package    Virtua_ProductCategoryType
  * @copyright  Copyright (c) Virtua
  * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
  */

@@ -30,10 +30,6 @@ class FileUploaderService
      */
     public function upload(UploadedFile $file)
     {
-//        if(!$this->isAllowed($file))
-//        {
-//            throw new FileException("File is too big or have wrong extension.");
-//        }
         $fileName = md5(uniqid()).'.'.$file->guessExtension();
         $file->move($this->getTargetDirectory(), $fileName);
 

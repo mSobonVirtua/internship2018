@@ -1,9 +1,9 @@
 <?php
 /**
- * VI-31
+ * VI-31 ProductCategoryEntity
  *
- * @category   Virtua
- * @package    Virtua_Module
+ * @category   Entity
+ * @package    Virtua_ProductCategoryEntity
  * @copyright  Copyright (c) Virtua
  * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
  */
