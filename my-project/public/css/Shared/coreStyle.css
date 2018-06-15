@@ -1,0 +1,16 @@
+/**
+ * VI-38 CoreStyles
+ *
+ * @category   Styles
+ * @package    Virtua_CoreStyles
+ * @copyright  Copyright (c) Virtua
+ * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
+ */
+
+.img-100{
+    width: 100px;
+}
+
+.img-250{
+    width: 250px;
+}
