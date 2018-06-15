@@ -1,6 +1,6 @@
 <?php
 /**
- * VI-31
+ * VI-31 VI-36
  *
  * @category   Virtua
  * @package    Virtua_Module
@@ -11,6 +11,8 @@ namespace App\Form;
 
 use App\Entity\ProductCategory;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -21,6 +23,10 @@ class ProductCategoryType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
+            ->add('mainImage', FileType::class, [
+                'label' => 'Main Image',
+                'data_class' => null
+            ])
         ;
     }
 

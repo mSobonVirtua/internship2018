@@ -9,14 +9,20 @@
  */
 namespace App\Controller;
 
+use App\Entity\Image;
 use App\Entity\ProductCategory;
+use App\Form\ImageType;
 use App\Form\ProductCategoryType;
 use App\Repository\ProductCategoryRepository;
+use App\Services\FileUploaderService;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 /**
  * @Route("/product/category")
  */
@@ -33,7 +39,7 @@ class ProductCategoryController extends Controller
     /**
      * @Route("/new", name="product_category_new", methods="GET|POST")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, FileUploaderService $fileUploader): Response
     {
         $productCategory = new ProductCategory();
         $date = new \DateTime();
@@ -44,7 +50,13 @@ class ProductCategoryController extends Controller
         $form = $this->createForm(ProductCategoryType::class, $productCategory);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            /** @var UploadedFile $file */
+            $file = $productCategory->getMainImage();
+            $fileName = $fileUploader->upload($file);
+            $productCategory->setMainImage($fileName);
+            
             try
             {
                 $em = $this->getDoctrine()->getManager();
@@ -58,6 +70,7 @@ class ProductCategoryController extends Controller
             }
             catch(\Exception $exception)
             {
+                //echo $exception;die;
                 $this->_addDatabaseErrorFlash();
             }
 
@@ -81,7 +94,7 @@ class ProductCategoryController extends Controller
     /**
      * @Route("/{id}/edit", name="product_category_edit", methods="GET|POST")
      */
-    public function edit(Request $request, ProductCategory $productCategory): Response
+    public function edit(Request $request, ProductCategory $productCategory, FileUploaderService $fileUploader): Response
     {
         $form = $this->createForm(ProductCategoryType::class, $productCategory);
         $form->handleRequest($request);
@@ -90,6 +103,12 @@ class ProductCategoryController extends Controller
             $date = new \DateTime();
             $date->format("Y:M:D");
             $productCategory->setDateOfLastModification($date);
+
+            /** @var UploadedFile $file */
+            $file = $productCategory->getMainImage();
+            $fileName = $fileUploader->upload($file);
+            $productCategory->setMainImage($fileName);
+
 
             try
             {
@@ -108,9 +127,14 @@ class ProductCategoryController extends Controller
             return $this->redirectToRoute('product_category_edit', ['id' => $productCategory->getId()]);
         }
 
+        $image = new Image();
+        $imageForm = $this->createForm(ImageType::class, $image);
+
+        dump($imageForm);
         return $this->render('product_category/edit.html.twig', [
             'product_category' => $productCategory,
             'form' => $form->createView(),
+            'imageForm' => $imageForm->createView()
         ]);
     }
 
@@ -145,12 +169,58 @@ class ProductCategoryController extends Controller
         return $this->redirectToRoute('product_category_index');
     }
 
+
+    /**
+     * @Route("/{id}/edit/AddImage", name="UploadAndAddImageToCategory", methods="POST")
+     */
+    public function UploadAndAddImageToCategory(Request $request, ProductCategory $productCategory, FileUploaderService $fileUploader)
+    {
+        $image = new Image();
+        $form = $this->createForm(ImageType::class, $image);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->get('path')->isValid())
+        {
+            /** @var UploadedFile $file */
+            $file = $form->get('path')->getData();
+            $fileName = $fileUploader->upload($file);
+            $image->setPath($fileName);
+            $productCategory->getImages()->add($image);
+            try
+            {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($image);
+                $em->flush();
+
+                $this->addFlash(
+                    'notice',
+                    'Your Image was added'
+                );
+            }
+            catch(\Exception $exception)
+            {
+//                echo $exception;die;
+                $this->_addDatabaseErrorFlash();
+            }
+        }
+        return new JsonResponse();
+    }
+
+
+
     private function _addDatabaseErrorFlash()
     {
         $this->addFlash(
             'error',
             'Problem with the database, please try later'
         );
+    }
+
+    private function generateUniqueFileName()
+    {
+        // md5() reduces the similarity of the file names generated by
+        // uniqid(), which is based on timestamps
+        return md5(uniqid());
     }
 
 }
