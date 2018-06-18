@@ -46,16 +46,12 @@ class ProductCategoryController extends Controller
             if(!$filesystem->exists($mainImagePath))
             {
                 $imagesGallery = $category->getImages();
-                if(!$imagesGallery)
+                if($imagesGallery[0] != null && $filesystem->exists($imagesFolderPath.$imagesGallery[0]->getPath()))
                 {
-                    $category->setMainImage("categoryPlaceholder.jpg");
+                    $category->setMainImage($imagesGallery[0]->getPath());
                 }else
-                if($filesystem->exists($imagesFolderPath.$imagesGallery[0]->getPath()))
                 {
-                   $category->setMainImage($imagesGallery[0]->getPath());
-                }
-                else{
-                   $category->setMainImage("categoryPlaceholder.jpg");    
+                   $category->setMainImage("categoryPlaceholder.jpg");
                 }
             }
         }
