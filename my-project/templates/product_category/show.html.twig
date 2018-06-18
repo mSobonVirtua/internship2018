@@ -14,9 +14,11 @@
 {% block body %}
     <h1>ProductCategory</h1>
     {% for image in product_category.images %}
-        <img class="img-thumbnail img-250" src="{{ asset('uploads/images/' ~ image.path) }}">
+        <div class="img-container">
+            <div class="img-close-x btn btn-sm btn-danger-opacity" onclick="RemoveImageFromCategory('{{ path('remove_image_from_category', {'image': image.id, 'category': product_category.id}) }}', this.parentElement)">X</div>
+            <img class="img-thumbnail img-250" src="{{ asset('uploads/images/' ~ image.path) }}">
+        </div>
     {% endfor %}
-    {#<img src="{{ asset('uploads/images/' ~ product_category.mainImage) }}" class="img-thumbnail">#}
 
     <table class="table">
         <tbody>
@@ -52,4 +54,11 @@
     <a href="{{ path('product_category_index') }}">back to list</a>
     <a href="{{ path('product_category_edit', {'id': product_category.id}) }}">edit</a>
     {{ include('product_category/_delete_form.html.twig') }}
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset("js/ProductCategoryScripts/Shared.js") }}"></script>
 {% endblock %}
