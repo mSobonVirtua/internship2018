@@ -24,9 +24,7 @@ function RemoveImageFromCategory(path, img)
         })
         .then((response)=>{
             img.remove();
-            response.json().then((responseJson)=>{
-                alert(responseJson.message);
-            });
+            alert(response.message);
         })
         .catch((err)=>{
             err.then((e)=>{
