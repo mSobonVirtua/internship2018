@@ -49,10 +49,12 @@ class ProductCategoryController extends Controller
                 if($imagesGallery[0] != null && $filesystem->exists($imagesFolderPath.$imagesGallery[0]->getPath()))
                 {
                     $category->setMainImage($imagesGallery[0]->getPath());
+
                 }else
                 {
                    $category->setMainImage("categoryPlaceholder.jpg");
                 }
+                $this->getDoctrine()->getManager()->flush();
             }
         }
         return $this->render('product_category/index.html.twig', ['product_categories' => $AllCategories]);
