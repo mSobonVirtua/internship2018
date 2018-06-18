@@ -18,6 +18,7 @@ use App\Repository\ProductCategoryRepository;
 use App\Services\FileUploaderService;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,7 +35,31 @@ class ProductCategoryController extends Controller
      */
     public function index(ProductCategoryRepository $productCategoryRepository): Response
     {
-        return $this->render('product_category/index.html.twig', ['product_categories' => $productCategoryRepository->findAll()]);
+        $AllCategories = $productCategoryRepository->findAll();
+        $filesystem = new Filesystem();
+        $imagesFolderPath = "uploads/images/";
+        /** @var ProductCategory $category */
+        foreach ($AllCategories as $category)
+        {
+            /** @var string $mainImagePath */
+            $mainImagePath = $imagesFolderPath.$category->getMainImage();
+            if(!$filesystem->exists($mainImagePath))
+            {
+                $imagesGallery = $category->getImages();
+                if(!$imagesGallery)
+                {
+                    $category->setMainImage("categoryPlaceholder.jpg");
+                }else
+                if($filesystem->exists($imagesFolderPath.$imagesGallery[0]->getPath()))
+                {
+                   $category->setMainImage($imagesGallery[0]->getPath());
+                }
+                else{
+                   $category->setMainImage("categoryPlaceholder.jpg");    
+                }
+            }
+        }
+        return $this->render('product_category/index.html.twig', ['product_categories' => $AllCategories]);
     }
 
     /**
@@ -96,33 +121,40 @@ class ProductCategoryController extends Controller
      */
     public function edit(Request $request, ProductCategory $productCategory, FileUploaderService $fileUploader): Response
     {
-        $form = $this->createForm(ProductCategoryType::class, $productCategory);
+        $prevMainImage = $productCategory->getMainImage();
+        $form = $this->createForm(ProductCategoryType::class, $productCategory, [
+            'required' => false
+        ]);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
 
             $date = new \DateTime();
             $date->format("Y:M:D");
             $productCategory->setDateOfLastModification($date);
 
-            /** @var UploadedFile $file */
-            $file = $productCategory->getMainImage();
-            $fileName = $fileUploader->upload($file);
-            $productCategory->setMainImage($fileName);
-
+            if($form->get('mainImage')->getData() != null){
+                /** @var UploadedFile $file */
+                $file = $productCategory->getMainImage();
+                $fileName = $fileUploader->upload($file);
+                $productCategory->setMainImage($fileName);
+            }else{
+                /** @var ProductCategory $tmpProdCategory */
+                $productCategory->setMainImage($prevMainImage);
+            }
 
             try
             {
                 $this->getDoctrine()->getManager()->flush();
+                $this->addFlash(
+                    'notice',
+                    'Your category was updated'
+                );
             }
             catch(\Exception $exception)
             {
                $this->_addDatabaseErrorFlash();
             }
-
-            $this->addFlash(
-                'notice',
-                'Your category was updated'
-            );
 
             return $this->redirectToRoute('product_category_edit', ['id' => $productCategory->getId()]);
         }
@@ -218,7 +250,7 @@ class ProductCategoryController extends Controller
             catch(\Exception $exception)
             {
                 return new JsonResponse([
-                    'message' => 'Problem with the database, please try later'
+                    'message' => 'Couldn`t remove image, please try later'
                 ], 500);
             }
 
