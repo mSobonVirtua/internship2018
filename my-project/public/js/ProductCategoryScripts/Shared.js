@@ -10,12 +10,27 @@
 
 function RemoveImageFromCategory(path, img)
 {
-    console.log(path)
+    if(!confirm("Do you really want delete this?")) return;
     const response = fetch(path ,{
         method: "DELETE"
     });
     response
+        .then(response=>{
+            if(!response.ok){
+                return Promise.reject(response.json());
+            }else{
+                return response.json();
+            }
+        })
         .then((response)=>{
             img.remove();
+            response.json().then((responseJson)=>{
+                alert(responseJson.message);
+            });
+        })
+        .catch((err)=>{
+            err.then((e)=>{
+                alert(e.message);
+            });
         });
 }

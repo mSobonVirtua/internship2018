@@ -209,23 +209,23 @@ class ProductCategoryController extends Controller
      */
     public function removeImageFromCategory(Request $request, Image $image, ProductCategory $category): Response
     {
-
             try
             {
+                throw new \Exception();
                 $em = $this->getDoctrine()->getManager();
                 $category->getImages()->removeElement($image);
                 $em->flush();
-                $this->addFlash(
-                    'notice',
-                    'Operation complete'
-                );
             }
             catch(\Exception $exception)
             {
-                $this->_addDatabaseErrorFlash();
+                return new JsonResponse([
+                    'message' => 'Problem with the database, please try later'
+                ], 500);
             }
 
-        return new JsonResponse();
+        return new JsonResponse([
+            'message' => 'Image removed'
+        ], 200);
     }
 
 
