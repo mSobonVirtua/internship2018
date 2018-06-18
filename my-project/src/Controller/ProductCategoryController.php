@@ -211,7 +211,6 @@ class ProductCategoryController extends Controller
     {
             try
             {
-                throw new \Exception();
                 $em = $this->getDoctrine()->getManager();
                 $category->getImages()->removeElement($image);
                 $em->flush();

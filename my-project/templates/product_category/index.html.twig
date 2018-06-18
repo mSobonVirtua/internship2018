@@ -47,9 +47,7 @@
                 <td>{{ product_category.description }}</td>
                 <td>{{ product_category.dateOfCreation ? product_category.dateOfCreation|date('Y-m-d') : '' }}</td>
                 <td>{{ product_category.dateOfLastModification ? product_category.dateOfLastModification|date('Y-m-d') : '' }}</td>
-
                 <td><img src="{{ asset('uploads/images/' ~ product_category.mainImage) }}" class="img-thumbnail img-100"></td>
-
                 <td>
                     <a href="{{ path('product_category_show', {'id': product_category.id}) }}">show</a>
                     <a href="{{ path('product_category_edit', {'id': product_category.id}) }}">edit</a>
