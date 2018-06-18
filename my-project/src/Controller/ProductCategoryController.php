@@ -239,6 +239,7 @@ class ProductCategoryController extends Controller
      */
     public function removeImageFromCategory(Request $request, Image $image, ProductCategory $category): Response
     {
+
             try
             {
                 $em = $this->getDoctrine()->getManager();

@@ -10,6 +10,8 @@
 
 function RemoveImageFromCategory(path, img)
 {
+
+
     if(!confirm("Do you really want delete this?")) return;
     const response = fetch(path ,{
         method: "DELETE"
@@ -24,11 +26,41 @@ function RemoveImageFromCategory(path, img)
         })
         .then((response)=>{
             img.remove();
-            alert(response.message);
+            BootstrapAlertSuccess(response.message);
         })
         .catch((err)=>{
             err.then((e)=>{
-                alert(e.message);
+                BootstrapAlertDanger(e.message);
             });
         });
 }
+
+function BootstrapAlertSuccess(message){
+    const flashMessageContainer = document.querySelector('#flashMessage-container');
+    const flashMessageContent = document.createElement('div');
+    flashMessageContent.innerHTML = `
+        <div class="alert alert-dismissible alert-success fade show">
+            <div>${message}</div>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    `;
+    flashMessageContainer.appendChild(flashMessageContent);
+}
+
+function BootstrapAlertDanger(message){
+    console.log("test")
+    const flashMessageContainer = document.querySelector('#flashMessage-container');
+    const flashMessageContent = document.createElement('div');
+    flashMessageContent.innerHTML = `
+        <div class="alert alert-dismissible alert-danger fade show">
+            <div>${message}</div>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    `;
+    flashMessageContainer.appendChild(flashMessageContent);
+}
+

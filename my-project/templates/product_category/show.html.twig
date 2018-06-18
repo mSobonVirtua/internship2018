@@ -12,6 +12,9 @@
 {% block title %}{{ product_category.name }}{% endblock %}
 
 {% block body %}
+
+    <div id="flashMessage-container"></div>
+
     <h1>ProductCategory</h1>
     {% for image in product_category.images %}
         <div class="img-container">
