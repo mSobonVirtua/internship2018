@@ -10,10 +10,11 @@
  * @param {string} path
  * @returns boolean
  * */
-function onSubmitEditForm(path)
+function onSubmitEditForm()
 {
     const addImageForm = document.forms.namedItem('image');
     const dataForm = new FormData(addImageForm);
+    let path = dataForm.get("_url");
     const response = fetch(`${path}`, {
         method: 'POST',
         body: dataForm
@@ -27,12 +28,12 @@ function onSubmitEditForm(path)
             }
         })
         .then((response)=>{
-            BootstrapAlertSuccess(response.message);
+            BootstrapAlert("success", response.message);
         })
         .catch((err)=>{
             console.log(err)
             err.then((e)=>{
-                BootstrapAlertDanger(e.error);
+                BootstrapAlert("danger", e.message);
             });
         });
     return false;

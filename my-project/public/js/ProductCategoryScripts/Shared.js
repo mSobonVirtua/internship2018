@@ -30,24 +30,25 @@ function RemoveImageFromCategory(path, img)
         })
         .then((response)=>{
             img.remove();
-            BootstrapAlertSuccess(response.message);
+            BootstrapAlert("success", response.message);
         })
         .catch((err)=>{
             err.then((e)=>{
-                BootstrapAlertDanger(e.error);
+                BootstrapAlert("danger", e.error);
             });
         });
 }
 
 /**
+ * @param {string} typeOfMessage
  * @param {string} message
  * @returns void
  * */
-function BootstrapAlertSuccess(message){
+function BootstrapAlert(typeOfMessage, message){
     const flashMessageContainer = document.querySelector('#flashMessage-container');
     const flashMessageContent = document.createElement('div');
     flashMessageContent.innerHTML = `
-        <div class="alert alert-dismissible alert-success fade show">
+        <div class="alert alert-dismissible alert-${typeOfMessage} fade show">
             <div>${message}</div>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -56,23 +57,3 @@ function BootstrapAlertSuccess(message){
     `;
     flashMessageContainer.appendChild(flashMessageContent);
 }
-
-/**
- * @param {string} message
- * @returns void
- * */
-function BootstrapAlertDanger(message){
-    console.log("test")
-    const flashMessageContainer = document.querySelector('#flashMessage-container');
-    const flashMessageContent = document.createElement('div');
-    flashMessageContent.innerHTML = `
-        <div class="alert alert-dismissible alert-danger fade show">
-            <div>${message}</div>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    `;
-    flashMessageContainer.appendChild(flashMessageContent);
-}
-
