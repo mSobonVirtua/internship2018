@@ -35,6 +35,10 @@
                 <th>Category</th>
                 <td><a href="{{ path('product_category_new',{'id':product.id}) }}">product_category.name</a></td>
             </tr>
+            <tr>
+                <th>Actions</th>
+                <td><a class="btn btn-success" href="{{ path('WishListNew', {'productId': product.id}) }}">Add to WishList</a></td>
+            </tr>
         </tbody>
     </table>
 
