@@ -11,7 +11,6 @@
 function RemoveImageFromCategory(path, img)
 {
 
-
     if(!confirm("Do you really want delete this?")) return;
     const response = fetch(path ,{
         method: "DELETE"
@@ -30,7 +29,7 @@ function RemoveImageFromCategory(path, img)
         })
         .catch((err)=>{
             err.then((e)=>{
-                BootstrapAlertDanger(e.message);
+                BootstrapAlertDanger(e.error);
             });
         });
 }

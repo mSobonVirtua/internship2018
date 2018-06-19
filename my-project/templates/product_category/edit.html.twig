@@ -12,6 +12,9 @@
 {% block title %}Edit {{ product_category.name }} Category{% endblock %}
 
 {% block body %}
+
+    <div id="flashMessage-container"></div>
+
     {% for message in app.flashes('notice') %}
         <div class="alert alert-success alert-dismissible fade show">
             {{ message }}

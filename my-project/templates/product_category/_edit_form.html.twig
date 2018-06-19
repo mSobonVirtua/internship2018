@@ -19,19 +19,16 @@
 
 {{ include('product_category/_delete_form.html.twig') }}
 
-{{ form_start(imageForm, { 'attr' : { 'id' : 'AddImageForm' }}) }}
+{%  set route =  path('UploadAndAddImageToCategory', {'id': product_category.id}) %}
+{% set quote = "\"" %}
+{{ form_start(imageForm, { 'attr' : { 'onsubmit' : 'return onSubmitEditForm('~quote~route~quote~')' }}) }}
     {{ form_widget(imageForm) }}
     <button class="btn btn-success">{{ button_label|default('Add Image to category') }}</button>
 {{ form_end(imageForm) }}
 
-<script>
-    const addImageForm = document.forms.namedItem('image');
-    addImageForm.addEventListener('submit', (e)=>{
-        e.preventDefault();
-        const dataForm = new FormData(addImageForm);
-        const response = fetch('{{ path('UploadAndAddImageToCategory', {'id': product_category.id}) }}', {
-            method: 'POST',
-            body: dataForm
-        });
-    });
-</script>
+
+
+{% block javascripts %}
+    <script src="{{ asset("js/ProductCategoryScripts/Shared.js") }}"></script>
+    <script src="{{ asset("js/ProductCategoryScripts/editForm.js") }}"></script>
+{% endblock %}
