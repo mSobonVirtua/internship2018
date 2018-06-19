@@ -1,4 +1,15 @@
-
+/**
+ * VI-54 EditForm
+ *
+ * @category   Forms
+ * @package    Virtua_ProductCategoryScripts
+ * @copyright  Copyright (c) Virtua
+ * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
+ */
+/**
+ * @param {string} path
+ * @returns boolean
+ * */
 function onSubmitEditForm(path)
 {
     const addImageForm = document.forms.namedItem('image');

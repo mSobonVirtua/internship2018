@@ -8,6 +8,11 @@
  */
 
 
+/**
+ * @param {string} path
+ * @param {Element} img
+ * @returns void
+ * */
 function RemoveImageFromCategory(path, img)
 {
 
@@ -34,6 +39,10 @@ function RemoveImageFromCategory(path, img)
         });
 }
 
+/**
+ * @param {string} message
+ * @returns void
+ * */
 function BootstrapAlertSuccess(message){
     const flashMessageContainer = document.querySelector('#flashMessage-container');
     const flashMessageContent = document.createElement('div');
@@ -48,6 +57,10 @@ function BootstrapAlertSuccess(message){
     flashMessageContainer.appendChild(flashMessageContent);
 }
 
+/**
+ * @param {string} message
+ * @returns void
+ * */
 function BootstrapAlertDanger(message){
     console.log("test")
     const flashMessageContainer = document.querySelector('#flashMessage-container');
