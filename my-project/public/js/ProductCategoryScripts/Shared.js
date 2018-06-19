@@ -30,21 +30,21 @@ function RemoveImageFromCategory(path, img)
         })
         .then((response)=>{
             img.remove();
-            BootstrapAlert("success", response.message);
+            BootstrapAlert(response.message, "success");
         })
         .catch((err)=>{
             err.then((e)=>{
-                BootstrapAlert("danger", e.error);
+                BootstrapAlert(e.error, "danger");
             });
         });
 }
 
 /**
- * @param {string} typeOfMessage
  * @param {string} message
+ * @param {string} typeOfMessage
  * @returns void
  * */
-function BootstrapAlert(typeOfMessage, message){
+function BootstrapAlert(message, typeOfMessage = 'warning'){
     const flashMessageContainer = document.querySelector('#flashMessage-container');
     const flashMessageContent = document.createElement('div');
     flashMessageContent.innerHTML = `

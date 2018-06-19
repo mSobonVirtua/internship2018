@@ -28,12 +28,12 @@ function onSubmitEditForm()
             }
         })
         .then((response)=>{
-            BootstrapAlert("success", response.message);
+            BootstrapAlert(response.message, "success");
         })
         .catch((err)=>{
             console.log(err)
             err.then((e)=>{
-                BootstrapAlert("danger", e.message);
+                BootstrapAlert(e.message, "danger");
             });
         });
     return false;
