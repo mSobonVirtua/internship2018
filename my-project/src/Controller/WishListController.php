@@ -1,5 +1,12 @@
 <?php
-
+/**
+ * VI-40 WishListController
+ *
+ * @category   WishList
+ * @package    Virtua_WishList
+ * @copyright  Copyright (c) Virtua
+ * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
+ */
 namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;

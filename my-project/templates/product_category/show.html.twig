@@ -51,6 +51,7 @@
                     <td>
                         <a href="{{ path( 'product_show' , { 'id': product.id} ) }}"> {{ product.name }}</a>
                         <a class="btn btn-success" href="{{ path('WishListNew', {'productId': product.id}) }}">Add to WishList</a>
+                        <a class="btn btn-success" href="{{ path('WishListNew', {'productId': product.id}) }}">Add to WishList</a>
                     </td>
                 {% endfor %}
             </tr>
