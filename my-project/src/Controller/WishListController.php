@@ -9,6 +9,7 @@
  */
 namespace App\Controller;
 
+use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,10 +23,24 @@ class WishListController extends Controller
     /**
      * @Route("/wish/list", name="wish_list")
      */
-    public function index()
+    public function index(SessionInterface $session, ProductRepository $productRepository)
     {
+        if(!$session->isStarted()) $session->start();
+        if(!$session->has("wishList"))
+        {
+            $session->set("wishList", []);
+        }
+        /*** @var array $wishList */
+        $wishList = $session->get('wishList');
+        $productsFromWishList = [];
+        foreach($wishList as $wish)
+        {
+            $product = $productRepository->find($wish);
+            array_push($productsFromWishList , $product);
+        }
+
         return $this->render('wish_list/index.html.twig', [
-            'controller_name' => 'WishListController',
+            'wish_list' => $productsFromWishList
         ]);
     }
 
@@ -47,4 +62,5 @@ class WishListController extends Controller
         $session->set("wishList", $wishList);
         return new RedirectResponse($request->headers->get('referer'));
     }
+
 }

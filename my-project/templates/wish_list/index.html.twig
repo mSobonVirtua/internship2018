@@ -9,9 +9,29 @@
 
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
+{% block title %}Your wishes{% endblock %}
 
 {% block body %}
+    {% if wish_list is empty %}
+        <div class="alert alert-primary">Your wish list is empty, go to <a href="{{ path('product_category_index') }}">main category page</a> if you want add something</div>
+    {% endif %}
 
-    <a id="a" href="{{ path('WishListNew', {'productId': '5'}) }}">test</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Image</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for wish in wish_list %}
+                    <tr>
+                        <td><a href="{{ path('product_show', { 'id': wish.id}) }}">{{ wish.name }}</a></td>
+                        {#<td><img src="{{ asset('uploads/images'~TODO: ADD PATH WHEN IT BE AVAILABLE) }}"></td>#}
+                        <td><img class="img-100" src="{{ asset('uploads/images/categoryPlaceholder.jpg') }}"></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
 {% endblock %}
