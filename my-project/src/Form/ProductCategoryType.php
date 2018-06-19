@@ -25,7 +25,7 @@ class ProductCategoryType extends AbstractType
             ->add('description')
             ->add('mainImage', FileType::class, [
                 'label' => 'Main Image',
-                'data_class' => null
+                'data_class' => null,
             ])
         ;
     }
