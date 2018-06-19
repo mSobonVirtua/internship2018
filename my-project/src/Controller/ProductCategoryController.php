@@ -220,18 +220,18 @@ class ProductCategoryController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($image);
                 $em->flush();
-
-                $this->addFlash(
-                    'notice',
-                    'Your Image was added'
-                );
             }
             catch(\Exception $exception)
             {
-                $this->_addDatabaseErrorFlash();
+                return new JsonResponse([
+                    'error' => 'Couldn`t add image, please try later'
+                ], 500);
             }
         }
-        return new JsonResponse();
+
+        return new JsonResponse([
+            'message' => 'Image uploaded'
+        ], 200);
     }
 
     /**
@@ -239,6 +239,7 @@ class ProductCategoryController extends Controller
      */
     public function removeImageFromCategory(Request $request, Image $image, ProductCategory $category): Response
     {
+
             try
             {
                 $em = $this->getDoctrine()->getManager();
@@ -248,7 +249,7 @@ class ProductCategoryController extends Controller
             catch(\Exception $exception)
             {
                 return new JsonResponse([
-                    'message' => 'Couldn`t remove image, please try later'
+                    'error' => 'Couldn`t remove image, please try later'
                 ], 500);
             }
 

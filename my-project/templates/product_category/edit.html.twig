@@ -12,15 +12,24 @@
 {% block title %}Edit {{ product_category.name }} Category{% endblock %}
 
 {% block body %}
+
+    <div id="flashMessage-container"></div>
+
     {% for message in app.flashes('notice') %}
-        <div style="background: greenyellow; ">
+        <div class="alert alert-success alert-dismissible fade show">
             {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
         </div>
     {% endfor %}
 
     {% for message in app.flashes('error') %}
-        <div style="background: greenyellow; ">
+        <div class="alert alert-success alert-danger fade show">
             {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
         </div>
     {% endfor %}
 

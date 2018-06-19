@@ -8,8 +8,14 @@
  */
 
 
+/**
+ * @param {string} path
+ * @param {Element} img
+ * @returns void
+ * */
 function RemoveImageFromCategory(path, img)
 {
+
     if(!confirm("Do you really want delete this?")) return;
     const response = fetch(path ,{
         method: "DELETE"
@@ -24,11 +30,30 @@ function RemoveImageFromCategory(path, img)
         })
         .then((response)=>{
             img.remove();
-            alert(response.message);
+            BootstrapAlert(response.message, "success");
         })
         .catch((err)=>{
             err.then((e)=>{
-                alert(e.message);
+                BootstrapAlert(e.error, "danger");
             });
         });
+}
+
+/**
+ * @param {string} message
+ * @param {string} typeOfMessage
+ * @returns void
+ * */
+function BootstrapAlert(message, typeOfMessage = 'warning'){
+    const flashMessageContainer = document.querySelector('#flashMessage-container');
+    const flashMessageContent = document.createElement('div');
+    flashMessageContent.innerHTML = `
+        <div class="alert alert-dismissible alert-${typeOfMessage} fade show">
+            <div>${message}</div>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    `;
+    flashMessageContainer.appendChild(flashMessageContent);
 }
