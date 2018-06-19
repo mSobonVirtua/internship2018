@@ -13,23 +13,7 @@
 
 {% block body %}
 
-    {% for message in app.flashes('notice') %}
-        <div class="alert alert-success alert-dismissible fade show">
-            {{ message }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        </div>
-    {% endfor %}
-
-    {% for message in app.flashes('error') %}
-        <div class="alert alert-danger alert-dismissible fade show">
-            {{ message }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        </div>
-    {% endfor %}
+    {{ include("Shared/dismissibleFlashMessages.html.twig") }}
 
     <h1>ProductCategory index</h1>
 
