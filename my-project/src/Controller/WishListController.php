@@ -25,11 +25,7 @@ class WishListController extends Controller
      */
     public function index(SessionInterface $session, ProductRepository $productRepository)
     {
-        if(!$session->isStarted()) $session->start();
-        if(!$session->has("wishList"))
-        {
-            $session->set("wishList", []);
-        }
+        $this->_checkIfWishListIsInSession($session);
         /*** @var array $wishList */
         $wishList = $session->get('wishList');
         $productsFromWishList = [];
@@ -49,12 +45,7 @@ class WishListController extends Controller
      */
     public function addToWishList(Request $request, SessionInterface $session)
     {
-        if(!$session->isStarted()) $session->start();
-        if(!$session->has("wishList"))
-        {
-            $session->set("wishList", []);
-        }
-
+        $this->_checkIfWishListIsInSession($session);
         /*** @var array $wishList */
         $wishList = $session->get("wishList");
         $productId = $request->get("productId");
@@ -63,4 +54,22 @@ class WishListController extends Controller
         return new RedirectResponse($request->headers->get('referer'));
     }
 
+    /**
+     * @Route("/delete", name="WishListDeleteAll", methods="GET|POST")
+     */
+    public function removeAllWishes(Request $request, SessionInterface $session)
+    {
+        $this->_checkIfWishListIsInSession($session);
+        $session->set("wishList", []);
+        return new RedirectResponse($request->headers->get('referer'));
+    }
+
+    private function _checkIfWishListIsInSession($session)
+    {
+        if(!$session->isStarted()) $session->start();
+        if(!$session->has("wishList"))
+        {
+            $session->set("wishList", []);
+        }
+    }
 }

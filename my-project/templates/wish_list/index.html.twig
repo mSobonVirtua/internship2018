@@ -14,8 +14,8 @@
 {% block body %}
     {% if wish_list is empty %}
         <div class="alert alert-primary">Your wish list is empty, go to <a href="{{ path('product_category_index') }}">main category page</a> if you want add something</div>
-    {% endif %}
-
+    {% elseif wish_list is not empty%}
+        <a class="btn btn-danger" href="{{ path('WishListDeleteAll') }}">Delete Them All!</a>
         <table class="table">
             <thead>
                 <tr>
@@ -33,5 +33,5 @@
                 {% endfor %}
             </tbody>
         </table>
-
+    {% endif %}
 {% endblock %}
