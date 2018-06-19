@@ -49,8 +49,20 @@ class WishListController extends Controller
         /*** @var array $wishList */
         $wishList = $session->get("wishList");
         $productId = $request->get("productId");
+        if(count($wishList) == 5)
+        {
+            $this->addFlash(
+                'error',
+                'You cannot have more than 5 wishes.'
+            );
+            return new RedirectResponse($request->headers->get('referer'));
+        }
         array_push($wishList, $productId);
         $session->set("wishList", $wishList);
+        $this->addFlash(
+            'notice',
+            'Your wish is added to list'
+        );
         return new RedirectResponse($request->headers->get('referer'));
     }
 
