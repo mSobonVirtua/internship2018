@@ -64,6 +64,27 @@ class WishListController extends Controller
         return new RedirectResponse($request->headers->get('referer'));
     }
 
+    /**
+     * @Route("/delete/{id}", name="WishListDelete", methods="GET|POST")
+     */
+    public function removeWish(Request $request, SessionInterface $session)
+    {
+        $this->_checkIfWishListIsInSession($session);
+        /*** @var array $wishList */
+        $wishList = $session->get("wishList");
+        $id = $request->get("id");
+        for($i = 0; count($wishList); $i++)
+        {
+            if($wishList[$i] == $id)
+            {
+                array_splice($wishList, $i, 1);
+                break;
+            }
+        }
+        $session->set("wishList", $wishList);
+        return new RedirectResponse($request->headers->get('referer'));
+    }
+
     private function _checkIfWishListIsInSession($session)
     {
         if(!$session->isStarted()) $session->start();
