@@ -1,6 +1,6 @@
 <?php
 /**
- * VI-55 Registration
+ * VI-55 UserType
  *
  * @category   Registration
  * @package    Virtua_Registration

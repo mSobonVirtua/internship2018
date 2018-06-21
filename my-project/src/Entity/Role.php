@@ -1,9 +1,9 @@
 <?php
 /**
- * VI-55 Roles
+ * VI-55 RoleEntity
  *
  * @category   Entity
- * @package    Virtua_Roles
+ * @package    Virtua_Registration
  * @copyright  Copyright (c) Virtua
  * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
  */

@@ -1,9 +1,9 @@
 <?php
 /**
- * VI-55 Users
+ * VI-55 UserEntity
  *
  * @category   Entity
- * @package    Virtua_Users
+ * @package    Virtua_Registration
  * @copyright  Copyright (c) Virtua
  * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
  */
