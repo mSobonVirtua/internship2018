@@ -1,5 +1,12 @@
 <?php
-
+/**
+ * VI-56 Login
+ *
+ * @category   SecurityController
+ * @package    Virtua_Login
+ * @copyright  Copyright (c) Virtua
+ * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
+ */
 namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
