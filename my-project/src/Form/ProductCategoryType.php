@@ -20,12 +20,14 @@ class ProductCategoryType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $entity = $options['data'];
         $builder
             ->add('name')
             ->add('description')
             ->add('mainImage', FileType::class, [
                 'label' => 'Main Image',
                 'data_class' => null,
+                'required' => $entity->getId() ? false : true,
             ])
         ;
     }
