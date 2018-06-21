@@ -107,7 +107,12 @@ class User implements UserInterface, \Serializable
      */
     public function getRoles()
     {
-        return $this->roles;
+        $roles = [];
+        for($i = 0; $i< count($this->roles); $i++)
+        {
+            $roles[] = $this->roles[$i]->getName();
+        }
+        return $roles;
     }
 
     /**
