@@ -120,9 +120,7 @@ class ProductCategoryController extends Controller
     public function edit(Request $request, ProductCategory $productCategory, FileUploaderService $fileUploader): Response
     {
         $prevMainImage = $productCategory->getMainImage();
-        $form = $this->createForm(ProductCategoryType::class, $productCategory, [
-            'required' => false
-        ]);
+        $form = $this->createForm(ProductCategoryType::class, $productCategory);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
