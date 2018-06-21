@@ -1,14 +1,17 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: virtua
- * Date: 20.06.2018
- * Time: 11:38
+ * VI-55 Registration
+ *
+ * @category   Registration
+ * @package    Virtua_Registration
+ * @copyright  Copyright (c) Virtua
+ * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
  */
 
 namespace App\Form;
 
 
+use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
