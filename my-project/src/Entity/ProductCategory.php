@@ -13,6 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductCategoryRepository")
@@ -75,6 +76,9 @@ class ProductCategory
         $this->images = new ArrayCollection();
     }
 
+    /**
+     * @Groups({"ProductCategoryShowAPI", "ProductCategoryIndexAPI"})
+    */
     public function getId()
     {
         return $this->id;
@@ -82,6 +86,7 @@ class ProductCategory
 
     /**
      * @return mixed
+     * @Groups({"ProductCategoryShowAPI", "ProductCategoryIndexAPI"})
      */
     public function getName()
     {
@@ -98,6 +103,7 @@ class ProductCategory
 
     /**
      * @return mixed
+     * @Groups({"ProductCategoryShowAPI"})
      */
     public function getDescription()
     {
@@ -114,6 +120,7 @@ class ProductCategory
 
     /**
      * @return mixed
+     * @Groups({"ProductCategoryShowAPI"})
      */
     public function getDateOfCreation()
     {
@@ -130,6 +137,7 @@ class ProductCategory
 
     /**
      * @return mixed
+     * @Groups({"ProductCategoryShowAPI"})
      */
     public function getDateOfLastModification()
     {
@@ -146,6 +154,7 @@ class ProductCategory
 
     /**
      * @return Collection|Product[]
+     * @Groups({"ProductCategoryShowAPI"})
      */
     public function getProducts(): Collection
     {
@@ -189,6 +198,7 @@ class ProductCategory
 
     /**
      * @return mixed
+     * @Groups({"ProductCategoryShowAPI"})
      */
     public function getMainImage()
     {
@@ -205,6 +215,7 @@ class ProductCategory
 
     /**
      * @return ArrayCollection
+     * @Groups({"ProductCategoryShowAPI"})
      */
     public function getImages()
     {

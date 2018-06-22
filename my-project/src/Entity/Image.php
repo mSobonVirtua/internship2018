@@ -11,6 +11,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
@@ -35,6 +36,9 @@ class Image
      */
     private $path;
 
+    /**
+     * @Groups({"ProductCategoryShowAPI"})
+     */
     public function getId()
     {
         return $this->id;
@@ -42,6 +46,7 @@ class Image
 
     /**
      * @return mixed
+     * @Groups({"ProductCategoryShowAPI"})
      */
     public function getPath()
     {
@@ -55,7 +60,5 @@ class Image
     {
         $this->path = $path;
     }
-
-
 
 }
