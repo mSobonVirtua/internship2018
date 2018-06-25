@@ -1,9 +1,11 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: virtua
- * Date: 22.06.2018
- * Time: 15:32
+ * VI-61 ProductCategoryService
+ *
+ * @category   ProductCategoryApi
+ * @package    Virtua_ProductCategoryApi
+ * @copyright  Copyright (c) Virtua
+ * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
  */
 
 namespace App\Services;

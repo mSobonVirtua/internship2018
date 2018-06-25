@@ -1,5 +1,12 @@
 <?php
-
+/**
+ * VI-61 ProductCategoryControllerApi
+ *
+ * @category   ProductCategoryApi
+ * @package    Virtua_ProductCategoryApi
+ * @copyright  Copyright (c) Virtua
+ * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
+ */
 namespace App\Controller;
 
 use App\Entity\ProductCategory;
