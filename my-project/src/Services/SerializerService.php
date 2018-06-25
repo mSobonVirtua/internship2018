@@ -1,9 +1,11 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: virtua
- * Date: 22.06.2018
- * Time: 14:47
+ * VI-61 SerializerService
+ *
+ * @category   Serializer
+ * @package    Virtua_SerializerService
+ * @copyright  Copyright (c) Virtua
+ * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
  */
 
 namespace App\Services;
