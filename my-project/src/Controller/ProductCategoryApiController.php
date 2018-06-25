@@ -6,7 +6,10 @@ use App\Entity\ProductCategory;
 use App\Form\ProductCategoryType;
 use App\Repository\ProductCategoryRepository;
 use App\Services\FileUploaderService;
+use App\Services\ProductCategoryService;
 use App\Services\SerializerService;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,9 +31,9 @@ class ProductCategoryApiController extends Controller
         $data = $serializer->normalize($allCategories, 'json', [
             'groups' => ['ProductCategoryIndexAPI']
         ]);
-        return new JsonResponse([
+        return new JsonResponse(
             $data
-        ], 200);
+        , 200);
     }
 
     /**
@@ -56,35 +59,21 @@ class ProductCategoryApiController extends Controller
     /**
      * @Route("/api/product/category/", name="product_category_new_api", methods="POST")
      */
-    public function new(Request $request, FileUploaderService $fileUploader, ValidatorInterface $validator)
+    public function new(Request $request, FileUploaderService $fileUploader,
+                        ValidatorInterface $validator,
+                        ProductCategoryService $productCategoryService)
     {
-        $productCategoryParameters = [];
-        if($categoryJson = $request->getContent())
-        {
-            $productCategoryParameters = json_decode($categoryJson, true);
-        }
-
-        $productCategory = new ProductCategory();
-        $productCategory->setName($productCategoryParameters['name']);
-        $productCategory->setDescription($productCategoryParameters['description']);
-        $productCategory->setMainImage($productCategoryParameters['mainImage']);
+        $productCategory = $productCategoryService->convertJsonToProductCategory($request->getContent());
         $date = new \DateTime();
         $date->format("Y:M:D");
         $productCategory->setDateOfCreation($date);
         $productCategory->setDateOfLastModification($date);
 
-        return new JsonResponse([
-            'error' => (string)$validator->validate($productCategory)
-        ], 200);
-
-        $form = $this->createForm(ProductCategoryType::class, $productCategory);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid())
+        if (count($validator->validate($productCategory)) == 0)
         {
             /** @var UploadedFile $file */
             $file = $productCategory->getMainImage();
-            $fileName = $fileUploader->upload($file);
+            $fileName = $fileUploader->uploadFile($file);
             $productCategory->setMainImage($fileName);
 
             try
@@ -131,23 +120,17 @@ class ProductCategoryApiController extends Controller
     /**
      * @Route("/api/product/category/{id}/edit", name="product_category_edit_api", methods="PUT")
      */
-    public function edit(Request $request, ProductCategory $productCategory, FileUploaderService $fileUploader, ValidatorInterface $validator)
+    public function edit(Request $request, ProductCategory $productCategory,
+                         FileUploaderService $fileUploader, ValidatorInterface $validator,
+                         ProductCategoryService $productCategoryService)
     {
-        $productCategoryParameters = [];
-        if($categoryJson = $request->getContent())
-        {
-            $productCategoryParameters = json_decode($categoryJson, true);
-        }
-
-        $productCategory->setName($productCategoryParameters['name']);
-        $productCategory->setDescription($productCategoryParameters['description']);
-        $productCategory->setMainImage($productCategoryParameters['mainImage']);
-        $date = new \DateTime();
-        $date->format("Y:M:D");
-        $productCategory->setDateOfCreation($date);
-        $productCategory->setDateOfLastModification($date);
-
         $prevMainImage = $productCategory->getMainImage();
+        $productCategory = $productCategoryService->convertJsonToProductCategory($request->getContent());
+        //        $date = new \DateTime();
+//        $date->format("Y:M:D");
+//        $productCategory->setDateOfCreation($date);
+//        $productCategory->setDateOfLastModification($date);
+
 
         return new JsonResponse([
             'error' => (string)$validator->validate($productCategory)
@@ -155,7 +138,7 @@ class ProductCategoryApiController extends Controller
 
         if (count($validator->validate($productCategory)) == 0)
         {
-
+            var_dump('lol');die;
             $date = new \DateTime();
             $date->format("Y:M:D");
             $productCategory->setDateOfLastModification($date);
