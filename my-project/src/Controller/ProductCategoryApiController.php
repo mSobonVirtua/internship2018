@@ -183,26 +183,4 @@ class ProductCategoryApiController extends Controller
             'error' => 'Data are not valid'
         ], 500);
     }
-
-    /**
-     * @Route("/api/product/category/csv/{id}", name="product_category_export_csv_api", methods="GET")
-     */
-    public function exportCSV(ProductCategory $productCategory, SerializerService $serializer)
-    {
-        $data = $serializer->normalize($productCategory, 'csv', [
-            'groups' => ['ProductCategoryShowAPI']
-        ]);
-        $stringCsv = $serializer->serialize($data, 'csv');
-        file_put_contents(
-            'uploads/csv/productCategory'.$productCategory->getId().'.csv',
-            $stringCsv
-        );
-        $dataJson = json_encode([
-            'link' => 'uploads/csv/productCategory'.$productCategory->getId().'.csv'
-        ]);
-        $dataJson = str_replace('\/', '/', $dataJson);
-        return new Response(
-            $dataJson
-        ,200);
-    }
 }
