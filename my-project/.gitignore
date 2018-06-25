@@ -33,3 +33,6 @@ yarn-error.log
 
 #Ignore jpg, jpeg, png
 /public/uploads/images/
+
+#Exported csv
+/public/uploads/csv/
