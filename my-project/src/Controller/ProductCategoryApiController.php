@@ -125,31 +125,22 @@ class ProductCategoryApiController extends Controller
                          ProductCategoryService $productCategoryService)
     {
         $prevMainImage = $productCategory->getMainImage();
-        $productCategory = $productCategoryService->convertJsonToProductCategory($request->getContent());
-        //        $date = new \DateTime();
-//        $date->format("Y:M:D");
-//        $productCategory->setDateOfCreation($date);
-//        $productCategory->setDateOfLastModification($date);
+        $newProductCategory = $productCategoryService->convertJsonToProductCategory($request->getContent());
 
-
-        return new JsonResponse([
-            'error' => (string)$validator->validate($productCategory)
-        ], 500);
-
-        if (count($validator->validate($productCategory)) == 0)
+        if (count($validator->validate($newProductCategory)) == 0)
         {
-            var_dump('lol');die;
+            $productCategory->setName($newProductCategory->getName());
+            $productCategory->setDescription($newProductCategory->getDescription());
             $date = new \DateTime();
             $date->format("Y:M:D");
             $productCategory->setDateOfLastModification($date);
 
-            if($productCategoryParameters['mainImage'] != null){
-                /** @var UploadedFile $file */
-                $file = $productCategory->getMainImage();
-                $fileName = $fileUploader->upload($file);
+            if($newProductCategory->getMainImage() != null){
+                /** @var File $file */
+                $file = $newProductCategory->getMainImage();
+                $fileName = $fileUploader->uploadFile($file);
                 $productCategory->setMainImage($fileName);
             }else{
-                /** @var ProductCategory $tmpProdCategory */
                 $productCategory->setMainImage($prevMainImage);
             }
 

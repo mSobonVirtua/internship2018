@@ -33,11 +33,14 @@ class ProductCategoryService
         $productCategory->setName($productCategoryParameters['name']);
         $productCategory->setDescription($productCategoryParameters['description']);
         $mainImageUrl = $productCategoryParameters['mainImage'];
-
-        $fileName = "uploads/images/".basename($mainImageUrl);
-        file_put_contents($fileName, file_get_contents($mainImageUrl));
-
-        $file = new File($fileName);
+        $fileName = "";
+        $file = null;
+        if($mainImageUrl != null)
+        {
+            $fileName = "uploads/images/".basename($mainImageUrl);
+            file_put_contents($fileName, file_get_contents($mainImageUrl));
+            $file = new File($fileName);
+        }
         $productCategory->setMainImage($file);
         return $productCategory;
     }
