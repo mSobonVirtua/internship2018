@@ -13,9 +13,14 @@ use App\Entity\ProductCategory;
 use App\Repository\ProductCategoryRepository;
 use App\Services\ProductCategoryService;
 use App\Services\SerializerService;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @Route("/api/csv/product/category", name="product_category_export_all_csv_api", methods="GET")
@@ -31,10 +36,6 @@ class ProductCategoryCSVController extends Controller
         $data = $serializer->normalize($productCategories->findAll(), 'csv', [
             'groups' => ['ProductCategoryShowAPI']
         ]);
-        for($i = 0; $i < count($data); $i++)
-        {
-            $data[$i]['mainImage'] = "upload/images/".$data[$i]['mainImage'];
-        }
         $stringCsv = $serializer->serialize($data, 'csv');
         file_put_contents(
             'uploads/csv/productCategoryAll.csv',
@@ -57,7 +58,6 @@ class ProductCategoryCSVController extends Controller
         $data = $serializer->normalize($productCategory, 'csv', [
             'groups' => ['ProductCategoryShowAPI']
         ]);
-        $data['mainImage'] = "uploads/images/".$data['mainImage'];
         $stringCsv = $serializer->serialize($data, 'csv');
         file_put_contents(
             'uploads/csv/productCategory'.$productCategory->getId().'.csv',
@@ -71,4 +71,47 @@ class ProductCategoryCSVController extends Controller
             $dataJson
             ,200);
     }
+
+    /**
+     * @Route("/", name="product_category_import_csv_api", methods="POST")
+     */
+    public function importFromCSV(SerializerInterface $serializer, ValidatorInterface $validator)
+    {
+        $productCategoriesArray = $serializer->decode(file_get_contents('uploads/csv/productCategoryAll.csv'), 'csv');
+        $em = $this->getDoctrine()->getManager();
+        foreach ($productCategoriesArray as $productCategory)
+        {
+            $tmpProductCategory = new ProductCategory();
+            $tmpProductCategory->setName($productCategory['name']);
+            $tmpProductCategory->setDescription($productCategory['description']);
+            $tmpProductCategory->setMainImage($productCategory['mainImage']);
+            $tmpProductCategory->setDateOfCreation(new \DateTime($productCategory['dateOfCreation']));
+            $tmpProductCategory->setDateOfLastModification(new \DateTime($productCategory['dateOfLastModification']));
+
+            $imgPath = $tmpProductCategory->getMainImage();
+            $tmpProductCategory->setMainImage("uploads/images/".$imgPath);
+            if(count($validator->validate($tmpProductCategory)) != 0)
+            {
+                continue;
+            }
+            $tmpProductCategory->setMainImage($imgPath);
+
+            try
+            {
+                $em->persist($tmpProductCategory);
+                $em->flush();
+            }catch(\Exception $exception)
+            {
+                return new JsonResponse([
+                    'error' => 'Cannot save it in database, please try later'
+                ], 500);
+            }
+
+        }
+        return new JsonResponse([
+            'message' => 'Successfully imported from csv'
+        ], 200);
+    }
+
+
 }
