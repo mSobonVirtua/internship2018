@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
@@ -43,11 +44,17 @@ class Product
 
     private $category;
 
+    /**
+     * @Groups({"ProductCategoryShowAPI"})
+     */
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * @Groups({"ProductCategoryShowAPI"})
+     */
     public function getName(): ?string
     {
         return $this->name;

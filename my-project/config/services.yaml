@@ -30,3 +30,11 @@ services:
     App\Services\FileUploaderService:
       arguments:
         $targetDirectory: '%images_directory%'
+
+    App\Services\ProductCategoryService:
+      arguments:
+        $targetDirectory: '%images_directory%'
+
+    App\Controller\ProductCategoryApiController:
+          arguments:
+            $targetDirectory: '%images_directory%'
