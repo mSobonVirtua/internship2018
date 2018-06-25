@@ -20,8 +20,13 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Serializer\Encoder\CsvEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductCategoryApiController extends Controller
@@ -182,5 +187,27 @@ class ProductCategoryApiController extends Controller
         return new JsonResponse([
             'error' => 'Data are not valid'
         ], 500);
+    }
+
+    /**
+     * @Route("/api/product/category/csv/{id}", name="product_category_export_csv_api", methods="GET")
+     */
+    public function exportCSV(ProductCategory $productCategory, SerializerService $serializer)
+    {
+        $data = $serializer->normalize($productCategory, 'csv', [
+            'groups' => ['ProductCategoryShowAPI']
+        ]);
+        $stringCsv = $serializer->serialize($data, 'csv');
+        file_put_contents(
+            'uploads/csv/productCategory'.$productCategory->getId().'.csv',
+            $stringCsv
+        );
+        $dataJson = json_encode([
+            'link' => 'uploads/csv/productCategory'.$productCategory->getId().'.csv'
+        ]);
+        $dataJson = str_replace('\/', '/', $dataJson);
+        return new Response(
+            $dataJson
+        ,200);
     }
 }

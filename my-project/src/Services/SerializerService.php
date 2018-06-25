@@ -12,6 +12,7 @@ namespace App\Services;
 
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
 use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
@@ -32,11 +33,15 @@ class SerializerService
          $normalizer->setCircularReferenceHandler(function($product){
              return $product->getName();
          });
-         $this->_serializer = new Serializer([$normalizer, new DateTimeNormalizer()], [new JsonEncoder()]);
+         $this->_serializer = new Serializer([$normalizer, new DateTimeNormalizer()], [new JsonEncoder(), new CsvEncoder()]);
      }
 
      public function normalize($object, $format, $options)
      {
         return $this->_serializer->normalize($object, $format, $options);
+     }
+
+     public function serialize($data, $format){
+         return $this->_serializer->serialize($data, $format);
      }
 }
