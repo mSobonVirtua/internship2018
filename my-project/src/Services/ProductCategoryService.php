@@ -17,10 +17,12 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ProductCategoryService
 {
-    public function __construct()
+    private $_targetDirectory;
+    public function __construct($targetDirectory)
     {
-        //TODO Pozamieniać upload files w tu i w conrtollerze na zmienną
+        $this->_targetDirectory = $targetDirectory;
     }
+
     /**
      * @param string $json
      * @return ProductCategory
@@ -39,7 +41,7 @@ class ProductCategoryService
         $file = null;
         if($mainImageUrl != null)
         {
-            $fileName = "uploads/images/".basename($mainImageUrl);
+            $fileName = $this->_targetDirectory.basename($mainImageUrl);
             file_put_contents($fileName, file_get_contents($mainImageUrl));
             $file = new File($fileName);
         }

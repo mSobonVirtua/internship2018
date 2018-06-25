@@ -26,6 +26,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductCategoryApiController extends Controller
 {
+    private $_targetDir;
+
+    public function __construct($targetDirectory)
+    {
+        $this->_targetDir = $targetDirectory;
+    }
+
     /**
      * @Route("/api/product/category/", name="product_category_api", methods="GET")
      */
@@ -51,10 +58,10 @@ class ProductCategoryApiController extends Controller
         $data = $serializer->normalize($productCategory, 'json', [
             'groups' => ['ProductCategoryShowAPI']
         ]);
-        $data['mainImage'] = '/uploads/images'.$data['mainImage'];
+        $data['mainImage'] = '/uploads/images'."/".$data['mainImage'];
         for($i = 0; $i < count($data['images']); $i++)
         {
-            $data['images'][$i]['path'] = "/uploads/images/".$data['images'][$i]['path'];
+            $data['images'][$i]['path'] = $this->_targetDir."/".$data['images'][$i]['path'];
         }
         $dataJson = json_encode($data);
         $dataJson = str_replace('\/', '/', $dataJson);
@@ -78,7 +85,7 @@ class ProductCategoryApiController extends Controller
 
         if (count($validator->validate($productCategory)) == 0)
         {
-            /** @var UploadedFile $file */
+            /** @var File $file */
             $file = $productCategory->getMainImage();
             $fileName = $fileUploader->uploadFile($file);
             $productCategory->setMainImage($fileName);
@@ -90,7 +97,7 @@ class ProductCategoryApiController extends Controller
                 $em->flush();
                 return new JsonResponse([
                     'message' => 'Your category was added'
-                ], 201);
+                ], 200);
             }
             catch(\Exception $exception)
             {
@@ -161,7 +168,7 @@ class ProductCategoryApiController extends Controller
             catch(\Exception $exception)
             {
                 return new JsonResponse([
-                    'error' => 'Form is not valid'
+                    'error' => 'Cannot edit category, please try later'
                 ], 500);
             }
         }
