@@ -86,6 +86,12 @@ class ProductCategoryApiController extends Controller
         if (count($validator->validate($productCategory)) == 0)
         {
             /** @var File $file */
+            if($productCategory->getMainImage() == null)
+            {
+                return new JsonResponse([
+                    'error' => 'Image not found'
+                ], 404);
+            }
             $file = $productCategory->getMainImage();
             $fileName = $fileUploader->uploadFile($file);
             $productCategory->setMainImage($fileName);
