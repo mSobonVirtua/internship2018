@@ -78,9 +78,13 @@ class ProductCategoryCSVController extends Controller
      */
     public function importFromCSV(Request $request, SerializerInterface $serializer, ValidatorInterface $validator)
     {
+        /*** @var ProductCategory[] $productCategoriesArray */
         $productCategoriesArray = $serializer->decode(file_get_contents($request->get('csvFile')), 'csv');
         $em = $this->getDoctrine()->getManager();
+
+        /*** @var ProductCategory[] $tmpProductsCategories */
         $tmpProductsCategories = [];
+        $numberOfImportedCategories = 0;
         foreach ($productCategoriesArray as $productCategory) {
             $tmpProductCategory = new ProductCategory();
             $tmpProductCategory->setName($productCategory['name']);
@@ -93,7 +97,8 @@ class ProductCategoryCSVController extends Controller
             $tmpProductCategory->setMainImage(new File("uploads/images/" . $imgPath));
             if (count($validator->validate($tmpProductCategory)) != 0) {
                 return new JsonResponse([
-                    'error' => 'Cannot import data from csv. Data not valid.'
+                    'error' => 'Cannot import data from csv. Category '.$productCategory->getName().' not valid.',
+                    'numberOfImportedCategories' => $numberOfImportedCategories
                 ], 500);
             }
             $tmpProductCategory->setMainImage($imgPath);
@@ -105,17 +110,20 @@ class ProductCategoryCSVController extends Controller
             {
                 $em->persist($productCategory);
                 $em->flush();
+                $numberOfImportedCategories++;
             }catch(\Exception $exception)
             {
                 return new JsonResponse([
-                    'error' => 'Cannot save it in database, please try later'
+                    'error' => 'Cannot save '.$productCategory->getName().' in database, please try later',
+                    'numberOfImportedCategories' => $numberOfImportedCategories
                 ], 500);
             }
 
         }
 
         return new JsonResponse([
-            'message' => 'Successfully imported from csv'
+            'message' => 'Successfully imported from csv',
+            'numberOfImportedCategories' => $numberOfImportedCategories
         ], 200);
     }
 }
