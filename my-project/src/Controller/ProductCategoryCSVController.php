@@ -82,6 +82,8 @@ class ProductCategoryCSVController extends Controller
         /*** @var ProductCategory[] $productCategoriesArray */
         $productCategoriesArray = $serializer->decode(file_get_contents($request->get('csvFile')), 'csv');
         $numberOfImportedCategories = 0;
+        $numberOfErrors = 0;
+        $productCategoryNotImportedLog = [];
         if(count($productCategoriesArray) == 0)
         {
             return new JsonResponse([
@@ -102,12 +104,24 @@ class ProductCategoryCSVController extends Controller
             $tmpProductCategory = $productCategoryService->createProductCategoryFromArray($productCategory);
 
             $imgPath = $tmpProductCategory->getMainImage();
-            $tmpProductCategory->setMainImage(new File("uploads/images/" . $imgPath));
+            try{
+                $tmpProductCategory->setMainImage(new File("uploads/images/" . $imgPath));
+            }catch(\Exception $exception){
+                $productCategoryNotImportedLog[] = [
+                    'name' => $tmpProductCategory->getName(),
+                    'reason' => 'File not exist'
+                ];
+                $numberOfErrors++;
+                continue;
+            }
+
             if (count($validator->validate($tmpProductCategory)) != 0) {
-                return new JsonResponse([
-                    'error' => 'Cannot import data from csv. Category '.$productCategory->getName().' not valid.',
-                    'numberOfImportedCategories' => $numberOfImportedCategories
-                ], 500);
+                $productCategoryNotImportedLog[] = [
+                    'name' => $tmpProductCategory->getName(),
+                    'reason' => 'Data not valid'
+                ];
+                $numberOfErrors++;
+                continue;
             }
             $tmpProductCategory->setMainImage($imgPath);
             $tmpProductsCategories[] = $tmpProductCategory;
@@ -121,22 +135,41 @@ class ProductCategoryCSVController extends Controller
                 $numberOfImportedCategories++;
             }catch(\Exception $exception)
             {
-                return new JsonResponse([
-                    'error' => 'Cannot save '.$productCategory->getName().' in database, please try later',
-                    'numberOfImportedCategories' => $numberOfImportedCategories
-                ], 500);
+                $numberOfErrors++;
+                $productCategoryNotImportedLog[] = [
+                    'name' => $productCategory->getName(),
+                    'reason' => 'Data not valid'
+                ];
+                continue;
             }
 
         }
 
-        return new JsonResponse([
-            'message' => 'Successfully imported from csv',
-            'numberOfImportedCategories' => $numberOfImportedCategories
-        ], 200);
+        if($numberOfErrors == 0)
+        {
+            return new JsonResponse([
+                'message' => 'Successfully imported from csv',
+                'numberOfImportedCategories' => $numberOfImportedCategories
+            ], 200);
+        }else
+        {
+            return new JsonResponse([
+                'message' => 'Successfully imported only '.$numberOfImportedCategories.' from '.count($productCategoriesArray),
+                'notImported' => $productCategoryNotImportedLog,
+                'numberOfImportedCategories' => $numberOfImportedCategories,
+            ], 201);
+        }
     }
 
     private function _isOnlyOneRowOfData(array $productCategoriesArray) : bool
     {
-        return $productCategoriesArray['name'] != null;
+        try
+        {
+            return $productCategoriesArray['name'] != null;
+        }
+        catch (\Exception $exception)
+        {
+            return false;
+        }
     }
 }
