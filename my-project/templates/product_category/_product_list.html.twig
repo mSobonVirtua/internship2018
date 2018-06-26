@@ -1,23 +1,22 @@
-<table class="table table-hover table-striped">
-    <thead class="thead-dark">
-        <tr class="text-center">
-            <th>Image</th>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
+<div class="products_list">
+    <div class="row list-header text-center">
+        <div class="col-3">Image</div>
+        <div class="col-3">Name</div>
+        <div class="col-3">Price</div>
+        <div class="col-3">Actions</div>
+    </div>
     {% for product in product_category.products %}
-        <tr class="text-center">
-            <td>TODO ADD PRODUCT IMG</td>
-            <td>{{ product.name }}</td>
-            <td>TODO ADD PRODUCT PRICE</td>
-            <td>
+        <div class="row list-item text-center">
+            <div class="col-3">TODO ADD PRODUCT IMG</div>
+            <div class="col-3">{{ product.name }}</div>
+            <div class="col-3">TODO ADD PRODUCT PRICE</div>
+            <div class="col-3">
                 <a class="btn btn-primary" href="{{ path( 'product_show' , { 'id': product.id} ) }}">Show</a>
                 <a class="btn btn-success" href="{{ path('WishListNew', {'productId': product.id}) }}">Add to WishList</a>
-            </td>
-        </tr>
+            </div>
+        </div>
     {% endfor %}
-    </tbody>
-</table>
+</div>
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/productCategory/product_category_list.css') }}">
+{% endblock %}
