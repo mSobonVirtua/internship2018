@@ -16,6 +16,7 @@ use App\Services\SerializerService;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -75,12 +76,12 @@ class ProductCategoryCSVController extends Controller
     /**
      * @Route("/", name="product_category_import_csv_api", methods="POST")
      */
-    public function importFromCSV(SerializerInterface $serializer, ValidatorInterface $validator)
+    public function importFromCSV(Request $request, SerializerInterface $serializer, ValidatorInterface $validator)
     {
-        $productCategoriesArray = $serializer->decode(file_get_contents('uploads/csv/productCategoryAll.csv'), 'csv');
+        $productCategoriesArray = $serializer->decode(file_get_contents($request->get('csvFile')), 'csv');
         $em = $this->getDoctrine()->getManager();
-        foreach ($productCategoriesArray as $productCategory)
-        {
+        $tmpProductsCategories = [];
+        foreach ($productCategoriesArray as $productCategory) {
             $tmpProductCategory = new ProductCategory();
             $tmpProductCategory->setName($productCategory['name']);
             $tmpProductCategory->setDescription($productCategory['description']);
@@ -89,16 +90,20 @@ class ProductCategoryCSVController extends Controller
             $tmpProductCategory->setDateOfLastModification(new \DateTime($productCategory['dateOfLastModification']));
 
             $imgPath = $tmpProductCategory->getMainImage();
-            $tmpProductCategory->setMainImage("uploads/images/".$imgPath);
-            if(count($validator->validate($tmpProductCategory)) != 0)
-            {
-                continue;
+            $tmpProductCategory->setMainImage(new File("uploads/images/" . $imgPath));
+            if (count($validator->validate($tmpProductCategory)) != 0) {
+                return new JsonResponse([
+                    'error' => 'Cannot import data from csv. Data not valid.'
+                ], 500);
             }
             $tmpProductCategory->setMainImage($imgPath);
-
+            $tmpProductsCategories[] = $tmpProductCategory;
+        }
+        foreach ($tmpProductsCategories as $productCategory)
+        {
             try
             {
-                $em->persist($tmpProductCategory);
+                $em->persist($productCategory);
                 $em->flush();
             }catch(\Exception $exception)
             {
@@ -108,10 +113,9 @@ class ProductCategoryCSVController extends Controller
             }
 
         }
+
         return new JsonResponse([
             'message' => 'Successfully imported from csv'
         ], 200);
     }
-
-
 }
