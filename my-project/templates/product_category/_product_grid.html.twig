@@ -10,9 +10,6 @@
         </a>
     {% endfor %}
 </div>
-<style>
-    .product-template{
-        border: 1px solid black;
-        padding: 10px;
-    }
-</style>
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/productCategory/product_category_grid.css') }}">
+{% endblock %}
