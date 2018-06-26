@@ -1,0 +1,18 @@
+<div class="row">
+    {% for product in product_category.products %}
+        <a href="{{ path( 'product_show' , { 'id': product.id} ) }}">
+            <div class="col-4 text-center product-template">
+                <div>TODO ADD PRODUCT IMG</div>
+                <div>{{ product.name }}</div>
+                <div>TODO ADD PRODUCT PRICE</div>
+                <a class="btn btn-success" href="{{ path('WishListNew', {'productId': product.id}) }}">Add to WishList</a>
+            </div>
+        </a>
+    {% endfor %}
+</div>
+<style>
+    .product-template{
+        border: 1px solid black;
+        padding: 10px;
+    }
+</style>

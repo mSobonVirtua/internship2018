@@ -45,17 +45,25 @@
                 <th>DateOfLastModification</th>
                 <td>{{ product_category.dateOfLastModification ? product_category.dateOfLastModification|date('Y-m-d') : '' }}</td>
             </tr>
-            <tr>
-                <th>Products in this category</th>
-                {% for product in product_category.products %}
-                    <td>
-                        <a href="{{ path( 'product_show' , { 'id': product.id} ) }}"> {{ product.name }}</a>
-                        <a class="btn btn-success" href="{{ path('WishListNew', {'productId': product.id}) }}">Add to WishList</a>
-                    </td>
-                {% endfor %}
-            </tr>
         </tbody>
     </table>
+    <h3 class="text-center">Products in this category
+        <span>
+            {% if viewType == "list" %}
+                <a class="btn btn-primary" href="{{ path("product_category_show", { 'id': product_category.id }) }}?viewType=grid">Show grid</a>
+            {% endif %}
+            {% if viewType == "grid" %}
+                <a class="btn btn-primary" href="{{ path("product_category_show", { 'id': product_category.id }) }}"> Show list</a>
+            {% endif %}
+        </span>
+    </h3>
+    {% if viewType == "list" %}
+        {{ include("product_category/_product_list.html.twig") }}
+    {% endif %}
+    {% if viewType == "grid" %}
+        {{ include("product_category/_product_grid.html.twig") }}
+    {% endif %}
+
 
     <a href="{{ path('product_category_index') }}">back to list</a>
     <a href="{{ path('product_category_edit', {'id': product_category.id}) }}">edit</a>
