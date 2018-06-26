@@ -13,6 +13,7 @@ use App\Entity\ProductCategory;
 use App\Repository\ProductCategoryRepository;
 use App\Services\ProductCategoryService;
 use App\Services\SerializerService;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -144,7 +145,6 @@ class ProductCategoryCSVController extends Controller
             }
 
         }
-
         if($numberOfErrors == 0)
         {
             return new JsonResponse([
@@ -153,6 +153,7 @@ class ProductCategoryCSVController extends Controller
             ], 200);
         }else
         {
+            if(count($productCategoryNotImportedLog) != 0) $this->_logIntoFile($productCategoryNotImportedLog);
             return new JsonResponse([
                 'message' => 'Successfully imported only '.$numberOfImportedCategories.' from '.count($productCategoriesArray),
                 'notImported' => $productCategoryNotImportedLog,
@@ -171,5 +172,22 @@ class ProductCategoryCSVController extends Controller
         {
             return false;
         }
+    }
+
+    private function  _logIntoFile(array $logs) : void
+    {
+        $fileSystem = new Filesystem();
+        if(!$fileSystem->exists('logs/productCategoryImportFromCSVLogs.txt'))
+        {
+            $fileSystem->dumpFile('logs/productCategoryImportFromCSVLogs.txt', '');
+        }
+        foreach ($logs as $log)
+        {
+            $fileSystem->appendToFile('logs/productCategoryImportFromCSVLogs.txt',
+                "[LOG] \xA date=".date("Y-m-d H:i:s")." \xA nameNotImportedCategory=". $log['name'] . " \xA reason=". $log['reason'] . "\xA"
+            );
+        }
+
+
     }
 }
