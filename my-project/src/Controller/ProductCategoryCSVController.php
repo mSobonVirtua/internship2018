@@ -76,7 +76,8 @@ class ProductCategoryCSVController extends Controller
     /**
      * @Route("/", name="product_category_import_csv_api", methods="POST")
      */
-    public function importFromCSV(Request $request, SerializerInterface $serializer, ValidatorInterface $validator)
+    public function importFromCSV(Request $request, SerializerInterface $serializer, ValidatorInterface $validator,
+                                  ProductCategoryService $productCategoryService)
     {
         /*** @var ProductCategory[] $productCategoriesArray */
         $productCategoriesArray = $serializer->decode(file_get_contents($request->get('csvFile')), 'csv');
@@ -86,12 +87,7 @@ class ProductCategoryCSVController extends Controller
         $tmpProductsCategories = [];
         $numberOfImportedCategories = 0;
         foreach ($productCategoriesArray as $productCategory) {
-            $tmpProductCategory = new ProductCategory();
-            $tmpProductCategory->setName($productCategory['name']);
-            $tmpProductCategory->setDescription($productCategory['description']);
-            $tmpProductCategory->setMainImage($productCategory['mainImage']);
-            $tmpProductCategory->setDateOfCreation(new \DateTime($productCategory['dateOfCreation']));
-            $tmpProductCategory->setDateOfLastModification(new \DateTime($productCategory['dateOfLastModification']));
+            $tmpProductCategory = $productCategoryService->createProductCategoryFromArray($productCategory);
 
             $imgPath = $tmpProductCategory->getMainImage();
             $tmpProductCategory->setMainImage(new File("uploads/images/" . $imgPath));
