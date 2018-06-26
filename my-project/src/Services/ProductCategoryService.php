@@ -48,4 +48,16 @@ class ProductCategoryService
         $productCategory->setMainImage($file);
         return $productCategory;
     }
+
+    public function createProductCategoryFromArray(array $productCategory) : ProductCategory
+    {
+        $tmpProductCategory = new ProductCategory();
+        $tmpProductCategory->setName($productCategory['name']);
+        $tmpProductCategory->setDescription($productCategory['description']);
+        $tmpProductCategory->setMainImage($productCategory['mainImage']);
+        $tmpProductCategory->setDateOfCreation(new \DateTime($productCategory['dateOfCreation']));
+        $tmpProductCategory->setDateOfLastModification(new \DateTime($productCategory['dateOfLastModification']));
+
+        return $tmpProductCategory;
+    }
 }

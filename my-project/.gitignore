@@ -36,3 +36,6 @@ yarn-error.log
 
 #Exported csv
 /public/uploads/csv/
+
+#Logs
+/public/uploads/logs/
