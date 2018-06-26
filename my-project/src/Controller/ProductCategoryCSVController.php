@@ -81,11 +81,23 @@ class ProductCategoryCSVController extends Controller
     {
         /*** @var ProductCategory[] $productCategoriesArray */
         $productCategoriesArray = $serializer->decode(file_get_contents($request->get('csvFile')), 'csv');
+        $numberOfImportedCategories = 0;
+        if(count($productCategoriesArray) == 0)
+        {
+            return new JsonResponse([
+                'error' => 'CSV file is empty',
+                'numberOfImportedCategories' => $numberOfImportedCategories
+            ], 500);
+        }
+
+        if($this->_isOnlyOneRowOfData($productCategoriesArray))
+        {
+            $productCategoriesArray = [$productCategoriesArray];
+        }
         $em = $this->getDoctrine()->getManager();
 
         /*** @var ProductCategory[] $tmpProductsCategories */
         $tmpProductsCategories = [];
-        $numberOfImportedCategories = 0;
         foreach ($productCategoriesArray as $productCategory) {
             $tmpProductCategory = $productCategoryService->createProductCategoryFromArray($productCategory);
 
@@ -121,5 +133,10 @@ class ProductCategoryCSVController extends Controller
             'message' => 'Successfully imported from csv',
             'numberOfImportedCategories' => $numberOfImportedCategories
         ], 200);
+    }
+
+    private function _isOnlyOneRowOfData(array $productCategoriesArray) : bool
+    {
+        return $productCategoriesArray['name'] != null;
     }
 }
