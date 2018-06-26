@@ -109,9 +109,14 @@ class ProductCategoryController extends Controller
     /**
      * @Route("/{id}", name="product_category_show", methods="GET")
      */
-    public function show(ProductCategory $productCategory): Response
+    public function show(Request $request, ProductCategory $productCategory): Response
     {
-        return $this->render('product_category/show.html.twig', ['product_category' => $productCategory]);
+        $viewType = $request->query->get("viewType");
+        if(!$viewType) $viewType = "list";
+        return $this->render('product_category/show.html.twig', [
+            'product_category' => $productCategory,
+            'viewType' => $viewType
+        ]);
     }
 
     /**
