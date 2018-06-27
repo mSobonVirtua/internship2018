@@ -17,6 +17,23 @@
         </div>
     {% endfor %}
 </div>
+
+
+
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="#"><-</a></li>
+        {% for i in 0..number_of_pages-1 %}
+            <li class="page-item"><a class="page-link" href="{{ path('product_category_show', { 'id': product_category.id })~'?currentPage='~i }}">{{ i+1 }}</a></li>
+        {% endfor %}
+        <li class="page-item"><a class="page-link" href="#">-></a></li>
+    </ul>
+</nav>
+
+
+
+
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/productCategory/product_category_list.css') }}">
 {% endblock %}

@@ -16,7 +16,12 @@ use App\Form\ProductCategoryType;
 use App\Repository\ImageRepository;
 use App\Repository\ProductCategoryRepository;
 use App\Services\FileUploaderService;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -109,11 +114,32 @@ class ProductCategoryController extends Controller
     /**
      * @Route("/{id}", name="product_category_show", methods="GET")
      */
-    public function show(Request $request, ProductCategory $productCategory): Response
+    public function show(Request $request, ProductCategory $productCategory, EntityManagerInterface $em): Response
     {
         $viewType = $request->query->get("viewType");
         if(!$viewType) $viewType = "list";
+
+        $limitProductsOnOnePage = $request->query->get('limit');
+        if(!$limitProductsOnOnePage) $limitProductsOnOnePage = 6;
+
+        $currentPage = $request->query->get('currentPage');
+        if(!$currentPage) $currentPage = 0;
+
+        $query = $em->createQueryBuilder();
+        $query
+            ->select('u')
+            ->from('App\Entity\Product', 'u')
+            ->where('u.category = :id')
+            ->setParameter('id', $productCategory->getId())
+            ->setFirstResult($currentPage * $limitProductsOnOnePage)
+            ->setMaxResults($limitProductsOnOnePage);
+        $paginator = new Paginator($query);
+        $products = $paginator->getQuery()->getResult();
+        $productCategory->setProducts(new ArrayCollection($products));
+        $numberOfPages = ceil(($paginator->count() / $limitProductsOnOnePage));
+
         return $this->render('product_category/show.html.twig', [
+            'number_of_pages' => $numberOfPages,
             'product_category' => $productCategory,
             'viewType' => $viewType
         ]);
