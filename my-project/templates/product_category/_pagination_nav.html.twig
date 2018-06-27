@@ -15,14 +15,16 @@
             </li>
         {% endif %}
 
-        {% for i in 0..number_of_pages-1 %}
-            <li class="page-item">
-                <a class="page-link"
-                   href="{{ path('product_category_show', { 'id': product_category.id })~'?currentPage='~i }}">
-                    {{ i+1 }}
-                </a>
-            </li>
-        {% endfor %}
+        {% if number_of_pages-1 > 0 %}
+            {% for i in 0..number_of_pages-1 %}
+                <li class="page-item">
+                    <a class="page-link"
+                       href="{{ path('product_category_show', { 'id': product_category.id })~'?currentPage='~i }}">
+                        {{ i+1 }}
+                    </a>
+                </li>
+            {% endfor %}
+        {% endif %}
 
         {% if current_page < number_of_pages-1 %}
             <li class="page-item">

@@ -120,7 +120,7 @@ class ProductCategoryController extends Controller
     {
         $viewType = $this->getValue('viewType', 'list', $request, $session);
         $limitProductsOnOnePage = $this->getValue('limit', 6, $request, $session);
-        $currentPage = $this->getValue('currentPage', 0, $request, $session);
+        $currentPage = $this->getValue('currentPage', 0, $request, $session)
 
         $query = $em->createQueryBuilder();
         $query
