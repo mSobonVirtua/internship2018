@@ -52,15 +52,27 @@
             {% if viewType == "list" %}
                 <a class="btn btn-primary" href="{{ path("product_category_show", { 'id': product_category.id }) }}?viewType=grid">Show grid</a>
             {% else %}
-                <a class="btn btn-primary" href="{{ path("product_category_show", { 'id': product_category.id }) }}"> Show list</a>
-                <div class="dropdown">
-                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownNumberOfColumns" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Number of columns
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownNumberOfColumns">
-                    <a class="dropdown-item" onclick="return changeNumberOfColumns(2)">2</a>
-                    <a class="dropdown-item" onclick="return changeNumberOfColumns(3)">3</a>
-                  </div>
+                <a class="btn btn-primary" href="{{ path("product_category_show", { 'id': product_category.id }) }}?viewType=list"> Show list</a>
+                <div class="row options-buttons">
+                    <div class="dropdown col">
+                      <button class="btn btn-secondary btn-block dropdown-toggle" type="button" id="dropdownNumberOfColumns" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Number of columns
+                      </button>
+                      <div class="dropdown-menu btn-block" aria-labelledby="dropdownNumberOfColumns">
+                        <a class="dropdown-item" onclick="return changeNumberOfColumns(2)">2</a>
+                        <a class="dropdown-item" onclick="return changeNumberOfColumns(3)">3</a>
+                      </div>
+                    </div>
+                    <div class="dropdown col">
+                      <button class="btn btn-info btn-block dropdown-toggle" type="button" id="dropdownNumberOfProducts" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Number of products on page
+                      </button>
+                      <div class="dropdown-menu btn-block" aria-labelledby="dropdownNumberOfProducts">
+                        <a class="dropdown-item" href="{{ path('product_category_show', { 'id': product_category.id }) }}?limit=6">6</a>
+                        <a class="dropdown-item" href="{{ path('product_category_show', { 'id': product_category.id }) }}?limit=9">9</a>
+                        <a class="dropdown-item" href="{{ path('product_category_show', { 'id': product_category.id }) }}?limit=12">12</a>
+                      </div>
+                    </div>
                 </div>
             {% endif %}
         </span>
@@ -70,6 +82,9 @@
     {% else %}
         {{ include("product_category/_product_grid.html.twig") }}
     {% endif %}
+    <div class="row">
+        {{ include('product_category/_pagination_nav.html.twig') }}
+    </div>
 
 
     <a href="{{ path('product_category_index') }}">back to list</a>
@@ -77,6 +92,10 @@
     {{ include('product_category/_delete_form.html.twig') }}
 
 
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/productCategory/product_category.css') }}">
 {% endblock %}
 
 {% block javascripts %}

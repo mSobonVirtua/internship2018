@@ -28,6 +28,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 /**
@@ -114,16 +115,12 @@ class ProductCategoryController extends Controller
     /**
      * @Route("/{id}", name="product_category_show", methods="GET")
      */
-    public function show(Request $request, ProductCategory $productCategory, EntityManagerInterface $em): Response
+    public function show(Request $request, ProductCategory $productCategory,
+                         EntityManagerInterface $em, SessionInterface $session): Response
     {
-        $viewType = $request->query->get("viewType");
-        if(!$viewType) $viewType = "list";
-
-        $limitProductsOnOnePage = $request->query->get('limit');
-        if(!$limitProductsOnOnePage) $limitProductsOnOnePage = 6;
-
-        $currentPage = $request->query->get('currentPage');
-        if(!$currentPage) $currentPage = 0;
+        $viewType = $this->getValue('viewType', 'list', $request, $session);
+        $limitProductsOnOnePage = $this->getValue('limit', 6, $request, $session);
+        $currentPage = $this->getValue('currentPage', 0, $request, $session);
 
         $query = $em->createQueryBuilder();
         $query
@@ -139,6 +136,8 @@ class ProductCategoryController extends Controller
         $numberOfPages = ceil(($paginator->count() / $limitProductsOnOnePage));
 
         return $this->render('product_category/show.html.twig', [
+            'current_page' => $currentPage,
+            'limit' => $limitProductsOnOnePage,
             'number_of_pages' => $numberOfPages,
             'product_category' => $productCategory,
             'viewType' => $viewType
@@ -300,6 +299,25 @@ class ProductCategoryController extends Controller
     private function generateUniqueFileName()
     {
         return md5(uniqid());
+    }
+
+    private function getValue(string $varName, $defaultValue, Request $request, SessionInterface $session)
+    {
+        $value = $request->query->get($varName);
+        if(is_null($value))
+        {
+            $value = $session->get($varName);
+            if(is_null($value))
+            {
+                $value = $defaultValue;
+                $session->set($varName, $value);
+            }
+        }
+        else
+        {
+            $session->set($varName, $value);
+        }
+        return $value;
     }
 
 }
