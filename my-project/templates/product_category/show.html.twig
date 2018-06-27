@@ -53,6 +53,15 @@
                 <a class="btn btn-primary" href="{{ path("product_category_show", { 'id': product_category.id }) }}?viewType=grid">Show grid</a>
             {% else %}
                 <a class="btn btn-primary" href="{{ path("product_category_show", { 'id': product_category.id }) }}"> Show list</a>
+                <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownNumberOfColumns" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Number of columns
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownNumberOfColumns">
+                    <a class="dropdown-item" onclick="return changeNumberOfColumns(2)">2</a>
+                    <a class="dropdown-item" onclick="return changeNumberOfColumns(3)">3</a>
+                  </div>
+                </div>
             {% endif %}
         </span>
     </h3>
