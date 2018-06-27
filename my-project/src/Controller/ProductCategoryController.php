@@ -16,13 +16,19 @@ use App\Form\ProductCategoryType;
 use App\Repository\ImageRepository;
 use App\Repository\ProductCategoryRepository;
 use App\Services\FileUploaderService;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 /**
@@ -109,11 +115,30 @@ class ProductCategoryController extends Controller
     /**
      * @Route("/{id}", name="product_category_show", methods="GET")
      */
-    public function show(Request $request, ProductCategory $productCategory): Response
+    public function show(Request $request, ProductCategory $productCategory,
+                         EntityManagerInterface $em, SessionInterface $session): Response
     {
-        $viewType = $request->query->get("viewType");
-        if(!$viewType) $viewType = "list";
+        $viewType = $this->getValue('viewType', 'list', $request, $session);
+        $limitProductsOnOnePage = $this->getValue('limit', 6, $request, $session);
+        $currentPage = $this->getValue('currentPage', 0, $request, $session);
+
+        $query = $em->createQueryBuilder();
+        $query
+            ->select('u')
+            ->from('App\Entity\Product', 'u')
+            ->where('u.category = :id')
+            ->setParameter('id', $productCategory->getId())
+            ->setFirstResult($currentPage * $limitProductsOnOnePage)
+            ->setMaxResults($limitProductsOnOnePage);
+        $paginator = new Paginator($query);
+        $products = $paginator->getQuery()->getResult();
+        $productCategory->setProducts(new ArrayCollection($products));
+        $numberOfPages = ceil(($paginator->count() / $limitProductsOnOnePage));
+
         return $this->render('product_category/show.html.twig', [
+            'current_page' => $currentPage,
+            'limit' => $limitProductsOnOnePage,
+            'number_of_pages' => $numberOfPages,
             'product_category' => $productCategory,
             'viewType' => $viewType
         ]);
@@ -274,6 +299,25 @@ class ProductCategoryController extends Controller
     private function generateUniqueFileName()
     {
         return md5(uniqid());
+    }
+
+    private function getValue(string $varName, $defaultValue, Request $request, SessionInterface $session)
+    {
+        $value = $request->query->get($varName);
+        if(is_null($value))
+        {
+            $value = $session->get($varName);
+            if(is_null($value))
+            {
+                $value = $defaultValue;
+                $session->set($varName, $value);
+            }
+        }
+        else
+        {
+            $session->set($varName, $value);
+        }
+        return $value;
     }
 
 }
