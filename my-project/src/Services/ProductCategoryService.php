@@ -11,6 +11,7 @@
 namespace App\Services;
 
 
+use App\Entity\Product;
 use App\Entity\ProductCategory;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -59,5 +60,18 @@ class ProductCategoryService
         $tmpProductCategory->setDateOfLastModification(new \DateTime($productCategory['dateOfLastModification']));
 
         return $tmpProductCategory;
+    }
+
+    public function createProductCategoryFromArrayByKeyValue(array $productCategory)
+    {
+        $newProductCategory = new ProductCategory();
+        foreach($productCategory as $key => $value) {
+            if(strpos($key, "date") !== false)
+            {
+                $value = new \DateTime($value);
+            }
+            $newProductCategory->setData($key, $value);
+        }
+        return $newProductCategory;
     }
 }

@@ -230,4 +230,8 @@ class ProductCategory
         $this->images = $images;
     }
 
+    public function setData($key, $value)
+    {
+        $this->{$key} = $value;
+    }
 }
