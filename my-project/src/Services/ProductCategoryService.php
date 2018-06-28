@@ -60,4 +60,17 @@ class ProductCategoryService
 
         return $tmpProductCategory;
     }
+
+    public function createProductCategoryFromArrayByKeyValue(array $productCategory)
+    {
+        $newProductCategory = new ProductCategory();
+        foreach($productCategory as $key => $value) {
+            if(strpos($key, "date") !== false)
+            {
+                $value = new \DateTime($value);
+            }
+            $newProductCategory->setData($key, $value);
+        }
+        return $newProductCategory;
+    }
 }
