@@ -1,5 +1,12 @@
 <?php
-
+/**
+ * VI-73 ProductCategoryExportCommand
+ *
+ * @category   Command
+ * @package    Virtua_ProductCategoryExport
+ * @copyright  Copyright (c) Virtua
+ * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
+ */
 namespace App\Command;
 
 use App\Repository\ProductCategoryRepository;
