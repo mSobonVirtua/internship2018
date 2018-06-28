@@ -1,4 +1,12 @@
 <?
+/**
+ * VI-73 ProductCategoryImportCommand
+ *
+ * @category   Command
+ * @package    Virtua_ProductCategoryImport
+ * @copyright  Copyright (c) Virtua
+ * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
+ */
 namespace App\Command;
 
 use App\Entity\ProductCategory;
