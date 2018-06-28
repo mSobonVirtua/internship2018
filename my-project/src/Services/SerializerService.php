@@ -44,4 +44,12 @@ class SerializerService
      public function serialize($data, $format){
          return $this->_serializer->serialize($data, $format);
      }
+
+     public function encode($data, $format){
+         return $this->_serializer->encode($data, $format);
+     }
+
+     public function decode($data, $format){
+         return $this->_serializer->decode($data, $format);
+     }
 }

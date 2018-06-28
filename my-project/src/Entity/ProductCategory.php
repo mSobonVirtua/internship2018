@@ -77,7 +77,7 @@ class ProductCategory
     }
 
     /**
-     * @Groups({"ProductCategoryShowAPI", "ProductCategoryIndexAPI"})
+     * @Groups({"ProductCategoryShowAPI", "ProductCategoryIndexAPI", "ProductCategoryExport"})
     */
     public function getId()
     {
@@ -86,7 +86,7 @@ class ProductCategory
 
     /**
      * @return mixed
-     * @Groups({"ProductCategoryShowAPI", "ProductCategoryIndexAPI"})
+     * @Groups({"ProductCategoryShowAPI", "ProductCategoryIndexAPI", "ProductCategoryExport"})
      */
     public function getName()
     {
@@ -103,7 +103,7 @@ class ProductCategory
 
     /**
      * @return mixed
-     * @Groups({"ProductCategoryShowAPI"})
+     * @Groups({"ProductCategoryShowAPI", "ProductCategoryExport"})
      */
     public function getDescription()
     {
@@ -120,7 +120,7 @@ class ProductCategory
 
     /**
      * @return mixed
-     * @Groups({"ProductCategoryShowAPI"})
+     * @Groups({"ProductCategoryShowAPI", "ProductCategoryExport"})
      */
     public function getDateOfCreation()
     {
@@ -137,7 +137,7 @@ class ProductCategory
 
     /**
      * @return mixed
-     * @Groups({"ProductCategoryShowAPI"})
+     * @Groups({"ProductCategoryShowAPI", "ProductCategoryExport"})
      */
     public function getDateOfLastModification()
     {
@@ -154,7 +154,7 @@ class ProductCategory
 
     /**
      * @return Collection|Product[]
-     * @Groups({"ProductCategoryShowAPI"})
+     * @Groups({"ProductCategoryShowAPI", "ProductCategoryExport"})
      */
     public function getProducts(): Collection
     {
@@ -198,7 +198,7 @@ class ProductCategory
 
     /**
      * @return mixed
-     * @Groups({"ProductCategoryShowAPI"})
+     * @Groups({"ProductCategoryShowAPI", "ProductCategoryExport"})
      */
     public function getMainImage()
     {
