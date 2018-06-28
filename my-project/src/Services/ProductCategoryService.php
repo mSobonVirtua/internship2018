@@ -11,6 +11,7 @@
 namespace App\Services;
 
 
+use App\Entity\Product;
 use App\Entity\ProductCategory;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;

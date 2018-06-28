@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\ProductCategory;
+use App\Services\FileLoggerService;
 use App\Services\ProductCategoryService;
 use App\Services\SerializerService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,6 +13,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -22,16 +24,19 @@ class ProductCategoryImportCommand extends Command
     private $validator;
     private $productCategoryService;
     private $em;
+    private $fileLogger;
 
     public function __construct($name = null, SerializerService $serializer,
                                 ValidatorInterface $validator,
                                 ProductCategoryService $productCategoryService,
-                                EntityManagerInterface $entityManager)
+                                EntityManagerInterface $entityManager,
+                                FileLoggerService $fileLogger)
     {
         $this->serializer = $serializer;
         $this->validator = $validator;
         $this->productCategoryService = $productCategoryService;
         $this->em = $entityManager;
+        $this->fileLogger = $fileLogger;
         parent::__construct($name);
     }
 
@@ -113,6 +118,7 @@ class ProductCategoryImportCommand extends Command
         }
         else
         {
+            $this->fileLogger->logIntoFile('logs/commandImportErrors.txt', $productCategoryNotImportedLog, "NotImportedCategory");
             $io->error(json_encode($productCategoryNotImportedLog));
         }
 
@@ -127,21 +133,6 @@ class ProductCategoryImportCommand extends Command
         catch (\Exception $exception)
         {
             return false;
-        }
-    }
-
-    private function  _logIntoFile(array $logs) : void
-    {
-        $fileSystem = new Filesystem();
-        if(!$fileSystem->exists('logs/productCategoryImportFromCSVLogs.txt'))
-        {
-            $fileSystem->dumpFile('logs/productCategoryImportFromCSVLogs.txt', '');
-        }
-        foreach ($logs as $log)
-        {
-            $fileSystem->appendToFile('logs/productCategoryImportFromCSVLogs.txt',
-                "[LOG] \xA date=".date("Y-m-d H:i:s")." \xA nameNotImportedCategory=". $log['name'] . " \xA reason=". $log['reason'] . "\xA"
-            );
         }
     }
 }

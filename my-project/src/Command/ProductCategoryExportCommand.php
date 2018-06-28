@@ -70,7 +70,7 @@ class ProductCategoryExportCommand extends Command
                 die;
             }
             $data = $this->serializer->normalize($productCategory, 'csv', [
-                'groups' => ['ProductCategoryShowAPI']
+                'groups' => ['ProductCategoryExport']
             ]);
             $stringCsv = $this->serializer->encode($data, 'csv');
             file_put_contents('exportedData/'.$path, $stringCsv);
