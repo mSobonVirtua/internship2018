@@ -1,9 +1,11 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: virtua
- * Date: 28.06.2018
- * Time: 13:40
+ * VI-74 FileLoggerService
+ *
+ * @category   Service
+ * @package    Virtua_LoggingService
+ * @copyright  Copyright (c) Virtua
+ * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
  */
 
 namespace App\Services;
