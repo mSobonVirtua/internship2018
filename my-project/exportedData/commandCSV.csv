@@ -1,0 +1,2 @@
+id,name,description,dateOfCreation,dateOfLastModification,products.0.id,products.0.name,products.1.id,products.1.name,products.2.id,products.2.name,products.3.id,products.3.name,products.4.id,products.4.name,products.5.id,products.5.name,products.6.id,products.6.name,mainImage
+1,Test1,Test11,2018-06-26T00:00:00+00:00,2018-06-26T00:00:00+00:00,9,r,10,w,11,e,12,fdsf,13,fdsf,14,Exa2,15,dsada,fadecbf551b773f2f6d3477ee335a64a.jpeg
