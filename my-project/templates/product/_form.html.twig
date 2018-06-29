@@ -1,16 +1,10 @@
-{% import _self as formMacros %}
-{%  macro d(form) %}
-    <input type="file" class="form-control" name="photo__name__" required>
-{% endmacro %}
-
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 {{ form_start(form) }}
     {{ form_widget(form) }}
-   {# <div id="images" data-prototype="{{ formMacros.d(form.images.vars.prototype)|e }}">
-        {% for image in form.images %}
-            {{ formMacros.d(form) }}
-        {%  endfor %}
-    <button class="add-another-collection-widget">Dodaj nowe obrazki</button>
-    </div> #}
-    <button type="submit"  class="btn btn-primary">Zapisz</button>
+<div id="imagesProto" data-prototype="{{ form_widget(form.images.vars.prototype)|e }}"></div>
+<button class="add-another-collection-widget">Dodaj nowe obrazki</button>
+<div class="row">
+    <div class="col col-xs-12" id="imagesBox"></div>
+</div>
+<button type="submit"  class="btn btn-primary">Zapisz</button>
 {{ form_end(form) }}

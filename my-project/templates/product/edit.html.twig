@@ -14,21 +14,17 @@
                 {{ message }}
             </div>
         {% endfor %}
-
-
     {% endfor %}
-
 
     <h1>Edytuj produkt</h1>
 
     <div class="col-md-4 col-md-4_custom">
-        <img src="{{ asset('uploads/brochures/' ~ product.picture) }}"/>
+        <img class="MainImage" src="{{ asset('uploads/brochures/' ~ product.picture) }}"/>
     </div>
 
     <div class="col-md-8 col-md-8_custom">
         {{ include('product/_form.html.twig', {'button_label': 'Update'}) }}
     </div>
-
 
     <a href="{{ path('product_index') }}"><button type="submit" class="btn btn-info buttontable buttontable_edit">Wroc do listy produktow</button></a>
 

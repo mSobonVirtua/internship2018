@@ -123,7 +123,6 @@ class ProductController extends Controller
                 'Blad dodania'
             );
         }
-
         return $this->render('product/edit.html.twig', [
             'product' => $product,
             'form' => $form->createView(),
