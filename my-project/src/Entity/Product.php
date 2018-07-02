@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * VI-31 ProductCategoryEntity
  *
@@ -16,7 +17,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
-
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
@@ -59,7 +59,6 @@ class Product
     private $category;
 
     /**
-
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\File(
@@ -80,11 +79,12 @@ class Product
     {
         $this->images = new ArrayCollection();
     }
-
     /**
      * @Groups({"ProductCategoryShowAPI"})
      */
-
+    /**
+     * @Groups({"ProductCategoryShowAPI"})
+     */
     public function getId()
     {
         return $this->id;

@@ -1,5 +1,11 @@
+{#/**#}
+{#*#}
+{#* @category   ProductCategory#}
+{#* @package    Virtua_DeleteProductCategory#}
+{#* @copyright  Copyright (c) Virtua#}
+{#* @author     Dawid Kruczek#}
+{#*/#}
 {% extends 'base.html.twig' %}
-
 {% block title %}{{ product.name }}{% endblock %}
 {% block stylesheets %}
     {{ parent() }}
@@ -16,7 +22,7 @@
     <h1>{{ product.name }}</h1>
     <div class="col-md-12 col-md-12_custom">
     <div class="col-md-4 col-md-4_custom">
-        <img class="MainImage" src="{{ asset('uploads/brochures/' ~ product.picture) }}"/>
+        <img class="main_image" src="{{ asset('uploads/product_images/' ~ product.picture) }}"/>
     </div>
      <div class="col-md-8 col-md-8_custom">
        <table class="table">
@@ -87,9 +93,7 @@
             </tr>
         </tbody>
     </table>
-
-    <a href="{{ path('product_index') }}"><button type="submit" class="btn btn-info buttontable">Wroc do listy produktow</button></a>
-
+    <a href="{{ path('product_index') }}"><button type="submit" class="btn btn-info buttontable">Back to list</button></a>
     <a href="{{ path('product_edit', {'id': product.id}) }}"><button type="submit" class="btn btn-warning buttontable">Edit</button></a>
 
     {{ include('product/_delete_form.html.twig') }}

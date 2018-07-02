@@ -3,8 +3,7 @@
 parameters:
     locale: 'en'
     product_images: '%kernel.project_dir%/public/uploads/product_images'
-    images_directory: '%kernel.project_dir%/public/uploads/category_images'
-
+    images_directory: '%kernel.project_dir%/public/uploads/images'
 
 
 services:
@@ -27,7 +26,6 @@ services:
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
-
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
     App\Services\FileUploaderService:

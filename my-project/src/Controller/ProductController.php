@@ -5,7 +5,7 @@
  * @category   Virtua
  * @package    Virtua_Module
  * @copyright  Copyright (c) Virtua
- * @author     dkruczek
+ * @author     Dawid Kruczek
  */
 namespace App\Controller;
 
