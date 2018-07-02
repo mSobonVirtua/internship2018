@@ -21,7 +21,7 @@ class ImageType extends AbstractType
     {
         $builder
             ->add('path', FileType::class, [
-                'label' => 'Add Image',
+                'label'     => 'Add Image',
             ])
         ;
     }
@@ -29,7 +29,7 @@ class ImageType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Image::class,
+            'data_class'    => Image::class,
         ]);
     }
 }

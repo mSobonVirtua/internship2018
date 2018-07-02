@@ -1,9 +1,9 @@
 <?php
 /**
- * VI-31 ProductCategoryEntity
+ * VI-44 - Add and Edit gallery
  *
- * @category   Entity
- * @package    Virtua_ProductCategoryEntity
+ * @category   Form
+ * @package    Gallery
  * @copyright  Copyright (c) Virtua
  * @author     Dawid Kruczek
  */
@@ -23,9 +23,9 @@ class ImageTypeProduct extends AbstractType
     {
         $builder
             ->add('image',FileType::class,array(
-                'label' 	=> 'Add Image',
-                'required' 	=> true,
-                'constraints' => array(
+                'label' 	    => 'Add Image',
+                'required' 	    => true,
+                'constraints'   => array(
                     new File()
                 ),
             ));
@@ -34,7 +34,7 @@ class ImageTypeProduct extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => ImageProduct::class,
+            'data_class'        => ImageProduct::class,
         ));
     }
 }

@@ -1,9 +1,9 @@
 <?php
 /**
- * VI-31 ProductCategoryEntity
+ * VI-44 - Add and Edit gallery
  *
  * @category   Entity
- * @package    Virtua_ProductCategoryEntity
+ * @package    Gallery
  * @copyright  Copyright (c) Virtua
  * @author     Dawid Kruczek
  */

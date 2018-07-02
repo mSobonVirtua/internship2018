@@ -1,8 +1,9 @@
 <?php
 /**
+ * VI-44 - Add and Edit gallery
  *
- * @category   Virtua
- * @package    Virtua_Module
+ * @category   Repository
+ * @package    Gallery
  * @copyright  Copyright (c) Virtua
  * @author     Dawid Kruczek
  */

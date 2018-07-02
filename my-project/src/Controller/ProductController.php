@@ -1,9 +1,9 @@
 <?php
 /**
- * V13A - przygotowanie entity product
+ * VI-44 - Add and Edit gallery
  *
- * @category   Virtua
- * @package    Virtua_Module
+ * @category   Controller
+ * @package    Gallery
  * @copyright  Copyright (c) Virtua
  * @author     Dawid Kruczek
  */

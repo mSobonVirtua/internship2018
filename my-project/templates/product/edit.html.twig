@@ -1,7 +1,7 @@
 {#/**#}
-{#*#}
-{#* @category   ProductCategory#}
-{#* @package    Virtua_DeleteProductCategory#}
+{#* VI-44 - Add and Edit gallery#}
+{#* @category   Template#}
+{#* @package    Gallery#}
 {#* @copyright  Copyright (c) Virtua#}
 {#* @author     Dawid Kruczek#}
 {#*/#}
@@ -30,6 +30,6 @@
     <div class="col-md-8 col-md-8_custom">
         {{ include('product/_form.html.twig', {'button_label': 'Update'}) }}
     </div>
-    <a href="{{ path('product_index') }}"><button type="submit" class="btn btn-info buttontable buttontable_edit">Wroc do listy produktow</button></a>
+    <a href="{{ path('product_index') }}"><button type="submit" class="btn btn-info buttontable buttontable_edit">Back to list</button></a>
     {{ include('product/_delete_form.html.twig') }}
 {% endblock %}
