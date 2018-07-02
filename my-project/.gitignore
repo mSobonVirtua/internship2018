@@ -31,4 +31,12 @@ yarn-error.log
 #doctrine.yaml
 /config/packages/doctrine.yaml
 
+#Ignore jpg, jpeg, png
+/public/uploads/images/
 
+#Exported csv
+/public/uploads/csv/
+/exportedData/
+
+#Logs
+/public/uploads/logs/

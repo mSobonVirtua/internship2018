@@ -1,7 +1,13 @@
 <?php
-
+/**
+ * VI-31 ProductCategoryEntity
+ *
+ * @category   Entity
+ * @package    Virtua_ProductCategoryEntity
+ * @copyright  Copyright (c) Virtua
+ * @author     Dawid Kruczek
+ */
 namespace App\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -73,7 +79,6 @@ class ImageProduct
     {
                 $imagepath=$this->generateUniqueFileName().'.'.$image->guessExtension();
                 $this->setName($imagepath);
-                dump($this->name);
     }
 
     private function generateUniqueFileName()

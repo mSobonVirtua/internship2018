@@ -1,6 +1,6 @@
 var counter=0;
 jQuery(document).ready(function () {
-    jQuery('.add-another-collection-widget').click(function (e) {
+    jQuery('.add_new_image').click(function (e) {
         e.preventDefault();
         var $holder=$('#product_images');
         var prototype=$holder.data('prototype');

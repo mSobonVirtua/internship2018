@@ -1,5 +1,12 @@
 <?php
-
+/**
+ * VI-31 ProductCategoryEntity
+ *
+ * @category   Entity
+ * @package    Virtua_ProductCategoryEntity
+ * @copyright  Copyright (c) Virtua
+ * @author     Dawid Kruczek
+ */
 namespace App\Form;
 
 use App\Entity\ImageProduct;
@@ -16,7 +23,7 @@ class ImageTypeProduct extends AbstractType
     {
         $builder
             ->add('image',FileType::class,array(
-                'label' 	=> 'Dodaj obrazek',
+                'label' 	=> 'Add Image',
                 'required' 	=> true,
                 'constraints' => array(
                     new File()
