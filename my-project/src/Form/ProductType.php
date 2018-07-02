@@ -24,7 +24,7 @@ class ProductType extends AbstractType
                 {
                     return $category->getName();
                 }))
-            ->add('picture',FileType::class, array('label'=>'Dodaj obrazek glowny','data_class'=>null))
+            ->add('picture',FileType::class, array('label'=>'Add Main Image','data_class'=>null))
             ->add('images',CollectionType::class, array(
                 'entry_type'        =>ImageProductType::class,
                 'prototype'			=> true,

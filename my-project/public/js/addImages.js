@@ -1,3 +1,10 @@
+/**
+ *
+ * @category   Virtua
+ * @package    Virtua_Module
+ * @copyright  Copyright (c) Virtua
+ * @author     Dawid Kruczek
+ */
 var counter=0;
 jQuery(document).ready(function () {
     jQuery('.add-another-collection-widget').click(function (e) {

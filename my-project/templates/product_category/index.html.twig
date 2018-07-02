@@ -1,8 +1,8 @@
 {#/**#}
-{#* VI-31#}
+{#* VI-31 ProductCategoryShowList#}
 {#*#}
-{#* @category   Virtua#}
-{#* @package    Virtua_Module#}
+{#* @category   ProductCategory#}
+{#* @package    Virtua_ProductCategiryShowList#}
 {#* @copyright  Copyright (c) Virtua#}
 {#* @author     Name <m.sobon@wearevirtua.com>#}
 {#*/#}
@@ -13,17 +13,7 @@
 
 {% block body %}
 
-    {% for message in app.flashes('notice') %}
-        <div style="background: greenyellow; ">
-            {{ message }}
-        </div>
-    {% endfor %}
-
-    {% for message in app.flashes('error') %}
-        <div style="background: greenyellow; ">
-            {{ message }}
-        </div>
-    {% endfor %}
+    {{ include("Shared/dismissibleFlashMessages.html.twig") }}
 
     <h1>ProductCategory index</h1>
 
@@ -35,6 +25,7 @@
                 <th>Description</th>
                 <th>DateOfCreation</th>
                 <th>DateOfLastModification</th>
+                <th>Image</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -46,6 +37,7 @@
                 <td>{{ product_category.description }}</td>
                 <td>{{ product_category.dateOfCreation ? product_category.dateOfCreation|date('Y-m-d') : '' }}</td>
                 <td>{{ product_category.dateOfLastModification ? product_category.dateOfLastModification|date('Y-m-d') : '' }}</td>
+                <td><img src="{{ asset('uploads/images/' ~ product_category.mainImage) }}" class="img-thumbnail img-100"></td>
                 <td>
                     <a href="{{ path('product_category_show', {'id': product_category.id}) }}">show</a>
                     <a href="{{ path('product_category_edit', {'id': product_category.id}) }}">edit</a>

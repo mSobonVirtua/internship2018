@@ -1,3 +1,10 @@
+{#/**#}
+{#*#}
+{#* @category   ProductCategory#}
+{#* @package    Virtua_DeleteProductCategory#}
+{#* @copyright  Copyright (c) Virtua#}
+{#* @author     Dawid Kruczek#}
+{#*/#}
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
@@ -16,17 +23,13 @@
         {% endfor %}
     {% endfor %}
 
-    <h1>Edytuj produkt</h1>
-
+    <h1>Edit</h1>
     <div class="col-md-4 col-md-4_custom">
-        <img class="MainImage" src="{{ asset('uploads/brochures/' ~ product.picture) }}"/>
+        <img class="main_image" src="{{ asset('uploads/product_images/' ~ product.picture) }}"/>
     </div>
-
     <div class="col-md-8 col-md-8_custom">
         {{ include('product/_form.html.twig', {'button_label': 'Update'}) }}
     </div>
-
     <a href="{{ path('product_index') }}"><button type="submit" class="btn btn-info buttontable buttontable_edit">Wroc do listy produktow</button></a>
-
     {{ include('product/_delete_form.html.twig') }}
 {% endblock %}

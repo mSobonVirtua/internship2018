@@ -1,0 +1,22 @@
+<div class="products_list">
+    <div class="row list-header text-center">
+        <div class="col-3">Image</div>
+        <div class="col-3">Name</div>
+        <div class="col-3">Price</div>
+        <div class="col-3">Actions</div>
+    </div>
+    {% for product in product_category.products %}
+        <div class="row list-item text-center">
+            <div class="col-3">TODO ADD PRODUCT IMG</div>
+            <div class="col-3">{{ product.name }}</div>
+            <div class="col-3">TODO ADD PRODUCT PRICE</div>
+            <div class="col-3">
+                <a class="btn btn-primary" href="{{ path( 'product_show' , { 'id': product.id} ) }}">Show</a>
+                <a class="btn btn-success" href="{{ path('WishListNew', {'productId': product.id}) }}">Add to WishList</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/productCategory/product_category_list.css') }}">
+{% endblock %}

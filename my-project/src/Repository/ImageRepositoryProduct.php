@@ -1,5 +1,11 @@
 <?php
-
+/**
+ *
+ * @category   Virtua
+ * @package    Virtua_Module
+ * @copyright  Copyright (c) Virtua
+ * @author     Dawid Kruczek
+ */
 namespace App\Repository;
 
 use App\Entity\ImageProduct;

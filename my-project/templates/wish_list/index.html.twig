@@ -1,0 +1,47 @@
+{#/**#}
+{#* VI-40 WishListController#}
+{#*#}
+{#* @category   WishList#}
+{#* @package    Virtua_WishList#}
+{#* @copyright  Copyright (c) Virtua#}
+{#* @author     Mateusz Soboń <m.sobon@wearevirtua.com>#}
+{#*/#}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Your wishes{% endblock %}
+
+{% block body %}
+    {{ include("Shared/dismissibleFlashMessages.html.twig") }}
+    {% if wish_list is empty %}
+        <div class="alert alert-primary">Your wish list is empty, go to <a href="{{ path('product_category_index') }}">main category page</a> if you want add something</div>
+    {% elseif wish_list is not empty%}
+        <a onclick="return deleteConfirm()" class="btn btn-danger" href="{{ path('WishListDeleteAll') }}">Delete Them All!</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Image</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for wish in wish_list %}
+                    <tr>
+                        <td><a href="{{ path('product_show', { 'id': wish.id}) }}">{{ wish.name }}</a></td>
+                        {#<td><img src="{{ asset('uploads/images'~TODO: ADD PATH WHEN IT BE AVAILABLE) }}"></td>#}
+                        <td><img class="img-100" src="{{ asset('uploads/images/categoryPlaceholder.jpg') }}"></td>
+                        <td>
+                            <a onclick="return deleteConfirm()" class="btn btn-danger" href="{{ path('WishListDelete', { 'id': wish.id }) }}">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset("js/Shared/coreScripts.js") }}"></script>
+{% endblock %}

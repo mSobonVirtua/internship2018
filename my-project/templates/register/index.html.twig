@@ -1,0 +1,17 @@
+{#/**#}
+{#* VI-55 UserTemplate#}
+{#*#}
+{#* @category   Template#}
+{#* @package    Virtua_Registration#}
+{#* @copyright  Copyright (c) Virtua#}
+{#* @author     Mateusz Soboń <m.sobon@wearevirtua.com>#}
+{#*/#}
+{% extends 'base.html.twig' %}
+
+{% block title %}Registration{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+{% endblock %}
