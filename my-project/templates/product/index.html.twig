@@ -1,7 +1,16 @@
+{#/**#}
+{#* VI-44 - Add and Edit gallery#}
+{#* @category   Template#}
+{#* @package    Gallery#}
+{#* @copyright  Copyright (c) Virtua#}
+{#* @author     Dawid Kruczek#}
+{#*/#}
 {% extends 'base.html.twig' %}
-
 {% block title %}Products List{% endblock %}
-
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/base.css') }}" rel="stylesheet" />
+{% endblock %}
 {% block body %}
     {% for label, messages in app.flashes %}
         {% for message in messages %}
@@ -34,8 +43,8 @@
                 <td>{{ product.modifiedDate ? product.modifiedDate|date('Y-m-d') : '' }}</td>
                 <td><a href="{{ path('product_category_show', {'id': product.category.id}) }}">{{  product.category.name }}</a></td>
                 <td>
-                    <a href="{{ path('product_show', {'id': product.id}) }}">show</a>
-                    <a href="{{ path('product_edit', {'id': product.id}) }}">edit</a>
+                    <a href="{{ path('product_show', {'id': product.id}) }}"><button type="submit" class="btn btn-success buttontable">Show</button></a>
+                    <a href="{{ path('product_edit', {'id': product.id}) }}"><button type="submit" class="btn btn-warning buttontable">Edit</button></a>
                 </td>
             </tr>
         {% else %}
@@ -46,5 +55,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('product_new') }}">Create new</a>
+    <a href="{{ path('product_new') }}"><button type="submit" class="btn btn-dark">Create new product</button></a>
 {% endblock %}

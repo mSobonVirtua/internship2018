@@ -1,0 +1,48 @@
+a
+ {
+     color: white;
+     text-decoration: none;
+ }
+
+a:link:active, a:visited:active, a:hover
+{
+    text-decoration: none;
+    color: gray;
+}
+
+table a
+{
+    color: red;
+}
+
+.buttontable
+{
+    margin-top: 0px;
+}
+a .buttontable
+{
+    color: white;
+    text-decoration: none;
+    float: left;
+    margin-right: 10px;
+}
+
+.flash-notice
+ {
+     background-color: green;
+     margin: 5px;
+     color: white;
+     padding: 5px;
+     border: solid 1px;
+     border-radius: 5px;
+ }
+
+.flash-error
+{
+    background-color: red;
+    margin: 5px;
+    color: white;
+    padding: 5px;
+    border: solid 1px;
+    border-radius: 5px;
+}

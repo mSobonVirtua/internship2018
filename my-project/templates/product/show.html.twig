@@ -1,8 +1,60 @@
+{#/**#}
+{#* VI-44 - Add and Edit gallery#}
+{#* @category   Template#}
+{#* @package    Gallery#}
+{#* @copyright  Copyright (c) Virtua#}
+{#* @author     Dawid Kruczek#}
+{#*/#}
 {% extends 'base.html.twig' %}
-
 {% block title %}{{ product.name }}{% endblock %}
-
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/show.css') }}" rel="stylesheet" />
+{% endblock %}
 {% block body %}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+    <h1>{{ product.name }}</h1>
+    <div class="col-md-12 col-md-12_custom">
+    <div class="col-md-4 col-md-4_custom">
+        <img class="main_image" src="{{ asset('uploads/product_images/' ~ product.picture) }}"/>
+    </div>
+     <div class="col-md-8 col-md-8_custom">
+       <table class="table">
+           <tbody>
+           <tr>
+               <th>Id</th>
+               <td>{{ product.id }}</td>
+           </tr>
+           <tr>
+               <th>Name</th>
+               <td>{{ product.name }}</td>
+           </tr>
+           <tr>
+               <th>Info</th>
+               <td>{{ product.info }}</td>
+           </tr>
+           <tr>
+               <th>Category</th>
+               <td><a href="{{ path('product_category_show', {'id': product.category.id}) }}">{{  product.category.name }}</a></td>
+           </tr>
+           <tr>
+               <th>CreatedDate</th>
+               <td>{{ product.createdDate ? product.createdDate|date('Y-m-d') : '' }}</td>
+           </tr>
+           <tr>
+               <th>ModifiedDate</th>
+               <td>{{ product.modifiedDate ? product.modifiedDate|date('Y-m-d') : '' }}</td>
+           </tr>
+           </tbody>
+       </table>
+     </div>
+    </div>
     {{ include("Shared/dismissibleFlashMessages.html.twig") }}
     <h1>Product</h1>
     <table class="table">
@@ -41,10 +93,7 @@
             </tr>
         </tbody>
     </table>
-
-    <a href="{{ path('product_index') }}">back to list</a>
-
-    <a href="{{ path('product_edit', {'id': product.id}) }}">edit</a>
-
+    <a href="{{ path('product_index') }}"><button type="submit" class="btn btn-info buttontable">Back to list</button></a>
+    <a href="{{ path('product_edit', {'id': product.id}) }}"><button type="submit" class="btn btn-warning buttontable">Edit</button></a>
     {{ include('product/_delete_form.html.twig') }}
 {% endblock %}
