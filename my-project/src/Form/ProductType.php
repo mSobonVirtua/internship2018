@@ -4,12 +4,12 @@ namespace App\Form;
 
 use App\Entity\Product;
 use App\Entity\ProductCategory;
-use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class ProductType extends AbstractType
 {
@@ -18,15 +18,21 @@ class ProductType extends AbstractType
         $builder
             ->add('name')
             ->add('info')
-
             ->add('category',EntityType::class, array(
                 'class'=>ProductCategory::class,
                 'choice_label'=>function($category)
                 {
                     return $category->getName();
-                }
+                }))
+            ->add('picture',FileType::class, array('label'=>'Add Main Image','data_class'=>null))
+            ->add('images',CollectionType::class, array(
+                'entry_type'        =>ImageTypeProduct::class,
+                'prototype'			=> true,
+                'allow_add'			=> true,
+                'allow_delete'		=> true,
+                'by_reference' 		=> false,
+                'required'			=> false,
             ));
-
     }
 
     public function configureOptions(OptionsResolver $resolver)

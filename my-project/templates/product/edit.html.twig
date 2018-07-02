@@ -1,5 +1,17 @@
+{#/**#}
+{#* VI-44 - Add and Edit gallery#}
+{#* @category   Template#}
+{#* @package    Gallery#}
+{#* @copyright  Copyright (c) Virtua#}
+{#* @author     Dawid Kruczek#}
+{#*/#}
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/edit.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/show.css') }}" rel="stylesheet" />
+{% endblock %}
 {% block title %}Edit {{ product.name }} Product{% endblock %}
 
 {% block body %}
@@ -10,11 +22,14 @@
             </div>
         {% endfor %}
     {% endfor %}
-    <h1>Edit Product</h1>
 
-    {{ include('product/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('product_index') }}">back to list</a>
-
+    <h1>Edit</h1>
+    <div class="col-md-4 col-md-4_custom">
+        <img class="main_image" src="{{ asset('uploads/product_images/' ~ product.picture) }}"/>
+    </div>
+    <div class="col-md-8 col-md-8_custom">
+        {{ include('product/_form.html.twig', {'button_label': 'Update'}) }}
+    </div>
+    <a href="{{ path('product_index') }}"><button type="submit" class="btn btn-info buttontable buttontable_edit">Back to list</button></a>
     {{ include('product/_delete_form.html.twig') }}
 {% endblock %}

@@ -1,0 +1,27 @@
+a
+{
+    color: white;
+    text-decoration: none;
+}
+
+a:link:active, a:visited:active, a:hover
+{
+    text-decoration: none;
+    color: white;
+}
+
+button
+{
+    margin-top: 10px;
+}
+
+.flash-error
+{
+    background-color: red;
+    margin: 5px;
+    color: white;
+    padding: 5px;
+    border: solid 1px;
+    border-radius: 5px;
+
+}
