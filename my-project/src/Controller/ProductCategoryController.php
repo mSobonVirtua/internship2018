@@ -15,6 +15,7 @@ use App\Form\ImageType;
 use App\Form\ProductCategoryType;
 use App\Repository\ImageRepository;
 use App\Repository\ProductCategoryRepository;
+use App\Security\Voter\ProductCategoryVoter;
 use App\Services\FileUploaderService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -72,6 +73,7 @@ class ProductCategoryController extends Controller
     public function new(Request $request, FileUploaderService $fileUploader): Response
     {
         $productCategory = new ProductCategory();
+        $this->denyAccessUnlessGranted(ProductCategoryVoter::ADD, $productCategory);
         $date = new \DateTime();
         $date->format("Y:M:D");
         $productCategory->setDateOfCreation($date);
@@ -149,6 +151,7 @@ class ProductCategoryController extends Controller
      */
     public function edit(Request $request, ProductCategory $productCategory, FileUploaderService $fileUploader): Response
     {
+        $this->denyAccessUnlessGranted(ProductCategoryVoter::EDIT, $productCategory);
         $prevMainImage = $productCategory->getMainImage();
         $form = $this->createForm(ProductCategoryType::class, $productCategory);
         $form->handleRequest($request);
@@ -200,6 +203,7 @@ class ProductCategoryController extends Controller
      */
     public function delete(Request $request, ProductCategory $productCategory): Response
     {
+        $this->denyAccessUnlessGranted(ProductCategoryVoter::DELETE, $productCategory);
         if ($this->isCsrfTokenValid('delete'.$productCategory->getId(), $request->request->get('_token'))) {
             try
             {
@@ -232,6 +236,7 @@ class ProductCategoryController extends Controller
      */
     public function UploadAndAddImageToCategory(Request $request, ProductCategory $productCategory, FileUploaderService $fileUploader)
     {
+        $this->denyAccessUnlessGranted(ProductCategoryVoter::EDIT, $productCategory);
         $image = new Image();
         $form = $this->createForm(ImageType::class, $image);
         $form->handleRequest($request);
@@ -267,7 +272,7 @@ class ProductCategoryController extends Controller
      */
     public function removeImageFromCategory(Request $request, Image $image, ProductCategory $category): Response
     {
-
+            $this->denyAccessUnlessGranted(ProductCategoryVoter::EDIT, $productCategory);
             try
             {
                 $em = $this->getDoctrine()->getManager();
