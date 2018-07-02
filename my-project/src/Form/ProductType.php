@@ -26,7 +26,7 @@ class ProductType extends AbstractType
                 }))
             ->add('picture',FileType::class, array('label'=>'Dodaj obrazek glowny','data_class'=>null))
             ->add('images',CollectionType::class, array(
-                'entry_type'        =>ImageType::class,
+                'entry_type'        =>ImageProductType::class,
                 'prototype'			=> true,
                 'allow_add'			=> true,
                 'allow_delete'		=> true,

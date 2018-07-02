@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ImagesRepository")
  */
-class Image
+class ImageProduct
 {
     /**
      * @ORM\Id()
@@ -73,7 +73,6 @@ class Image
     {
                 $imagepath=$this->generateUniqueFileName().'.'.$image->guessExtension();
                 $this->setName($imagepath);
-                dump($this->name);
     }
 
     private function generateUniqueFileName()

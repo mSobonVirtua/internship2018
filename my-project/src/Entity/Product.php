@@ -59,7 +59,7 @@ class Product
     private $picture;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="product", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\ImageProduct", mappedBy="product", cascade={"persist"}, orphanRemoval=true)
      */
     private $images;
 
@@ -148,17 +148,15 @@ class Product
     }
 
     /**
-     * @return Collection|Image[]
+     * @return Collection|ImageProduct[]
      */
     public function getImages(): Collection
     {
         return $this->images;
     }
 
-    public function addImage(Image $image): self
+    public function addImage(ImageProduct $image): self
     {
-
-            dump($this->name);
 
         if (!$this->images->contains($image)) {
             $this->images[] = $image;
@@ -168,7 +166,7 @@ class Product
         return $this;
     }
 
-    public function removeImage(Image $image): self
+    public function removeImage(ImageProduct $image): self
     {
         if ($this->images->contains($image)) {
             $this->images->removeElement($image);
