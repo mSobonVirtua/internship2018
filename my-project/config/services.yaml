@@ -3,7 +3,7 @@
 parameters:
     locale: 'en'
     product_images: '%kernel.project_dir%/public/uploads/product_images'
-    category_images: '%kernel.project_dir%/public/uploads/category_images'
+    images_directory: '%kernel.project_dir%/public/uploads/category_images'
 
 
 
