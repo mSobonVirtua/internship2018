@@ -9,7 +9,7 @@
  */
 namespace App\Controller;
 
-use App\Entity\Image;
+use App\Entity\ImageProduct;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
