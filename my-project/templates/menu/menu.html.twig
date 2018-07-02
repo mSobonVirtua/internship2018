@@ -1,3 +1,11 @@
+{#/**#}
+{#* Module AppNav#}
+{#*#}
+{#* @category   Menu#}
+{#* @package    Virtua_AppNav#}
+{#* @copyright  Copyright (c) Virtua#}
+{#* @author     Dawid Kruczek#}
+{#*/#}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="{{ path('product_category_index') }}">MainPage</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,6 +19,11 @@
                 </li>
             {% endfor %}
         </ul>
+        {% if is_granted('ROLE_USER') %}
+            <a href="{{ logout_path() }}" class="mr-sm-2 btn btn-dark">Logout</a>
+        {% else %}
+            <a href="{{ path('login') }}" class="mr-sm-2 btn btn-info">Login</a>
+        {% endif %}
     </div>
 </nav>
 

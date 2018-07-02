@@ -1,8 +1,8 @@
 {#/**#}
-{#* VI-31#}
+{#* VI-31 ProductCategoryNew#}
 {#*#}
-{#* @category   Virtua#}
-{#* @package    Virtua_Module#}
+{#* @category   ProductCategory#}
+{#* @package    Virtua_ProductCategoryNew#}
 {#* @copyright  Copyright (c) Virtua#}
 {#* @author     Name <m.sobon@wearevirtua.com>#}
 {#*/#}
@@ -13,8 +13,7 @@
 
 {% block body %}
     <h1>Create new ProductCategory</h1>
-
-    {{ include('product_category/_form.html.twig') }}
+        {{ include('product_category/_form.html.twig') }}
 
     <a href="{{ path('product_category_index') }}">back to list</a>
 {% endblock %}

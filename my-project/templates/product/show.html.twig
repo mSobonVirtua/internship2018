@@ -49,6 +49,44 @@
        </table>
      </div>
     </div>
+    {{ include("Shared/dismissibleFlashMessages.html.twig") }}
+    <h1>Product</h1>
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ product.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ product.name }}</td>
+            </tr>
+            <tr>
+                <th>Info</th>
+                <td>{{ product.info }}</td>
+            </tr>
+            <tr>
+                <th>Category</th>
+                <td><a href="{{ path('product_category_show', {'id': product.category.id}) }}">{{  product.category.name }}</a></td>
+            </tr>
+            <tr>
+                <th>CreatedDate</th>
+                <td>{{ product.createdDate ? product.createdDate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>ModifiedDate</th>
+                <td>{{ product.modifiedDate ? product.modifiedDate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Category</th>
+                <td><a href="{{ path('product_category_new',{'id':product.id}) }}">product_category.name</a></td>
+            </tr>
+            <tr>
+                <th>Actions</th>
+                <td><a class="btn btn-success" href="{{ path('WishListNew', {'productId': product.id}) }}">Add to WishList</a></td>
+            </tr>
+        </tbody>
+    </table>
 
     <a href="{{ path('product_index') }}"><button type="submit" class="btn btn-info buttontable">Wroc do listy produktow</button></a>
 

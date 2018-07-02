@@ -1,9 +1,9 @@
 <?php
 /**
- * VI-31
+ * VI-31 ProductCategoryEntity
  *
- * @category   Virtua
- * @package    Virtua_Module
+ * @category   Entity
+ * @package    Virtua_ProductCategoryEntity
  * @copyright  Copyright (c) Virtua
  * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
  */
@@ -12,6 +12,8 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductCategoryRepository")
@@ -50,11 +52,33 @@ class ProductCategory
      */
     private $products;
 
+    /**
+     * @ORM\Column(type="string")
+     * @Assert\File(
+     *      maxSize = "250000",
+     *      mimeTypes = {"image/jpeg", "image/png"}
+     * )
+     */
+    private $mainImage;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Image")
+     * @ORM\JoinTable(name="category_images",
+     *                  joinColumns={@ORM\JoinColumn(name="product_category_id", referencedColumnName="id")},
+     *                  inverseJoinColumns={@ORM\JoinColumn(name="image_id", referencedColumnName="id")}
+     *                  )
+     */
+    private $images;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->images = new ArrayCollection();
     }
 
+    /**
+     * @Groups({"ProductCategoryShowAPI", "ProductCategoryIndexAPI", "ProductCategoryExport"})
+    */
     public function getId()
     {
         return $this->id;
@@ -62,6 +86,7 @@ class ProductCategory
 
     /**
      * @return mixed
+     * @Groups({"ProductCategoryShowAPI", "ProductCategoryIndexAPI", "ProductCategoryExport"})
      */
     public function getName()
     {
@@ -78,6 +103,7 @@ class ProductCategory
 
     /**
      * @return mixed
+     * @Groups({"ProductCategoryShowAPI", "ProductCategoryExport"})
      */
     public function getDescription()
     {
@@ -94,6 +120,7 @@ class ProductCategory
 
     /**
      * @return mixed
+     * @Groups({"ProductCategoryShowAPI", "ProductCategoryExport"})
      */
     public function getDateOfCreation()
     {
@@ -110,6 +137,7 @@ class ProductCategory
 
     /**
      * @return mixed
+     * @Groups({"ProductCategoryShowAPI", "ProductCategoryExport"})
      */
     public function getDateOfLastModification()
     {
@@ -126,6 +154,7 @@ class ProductCategory
 
     /**
      * @return Collection|Product[]
+     * @Groups({"ProductCategoryShowAPI", "ProductCategoryExport"})
      */
     public function getProducts(): Collection
     {
@@ -167,4 +196,42 @@ class ProductCategory
         return $this;
     }
 
+    /**
+     * @return mixed
+     * @Groups({"ProductCategoryShowAPI", "ProductCategoryExport"})
+     */
+    public function getMainImage()
+    {
+        return $this->mainImage;
+    }
+
+    /**
+     * @param mixed $mainImage
+     */
+    public function setMainImage($mainImage): void
+    {
+        $this->mainImage = $mainImage;
+    }
+
+    /**
+     * @return ArrayCollection
+     * @Groups({"ProductCategoryShowAPI"})
+     */
+    public function getImages()
+    {
+        return $this->images;
+    }
+
+    /**
+     * @param ArrayCollection $images
+     */
+    public function setImages($images): void
+    {
+        $this->images = $images;
+    }
+
+    public function setData($key, $value)
+    {
+        $this->{$key} = $value;
+    }
 }

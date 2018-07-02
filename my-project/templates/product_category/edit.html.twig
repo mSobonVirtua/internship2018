@@ -1,8 +1,8 @@
 {#/**#}
-{#* VI-31#}
+{#* VI-31 ProdcutCategoryEdit#}
 {#*#}
-{#* @category   Virtua#}
-{#* @package    Virtua_Module#}
+{#* @category   ProductCategory#}
+{#* @package    Virtua_ProductCategoryEdit#}
 {#* @copyright  Copyright (c) Virtua#}
 {#* @author     Name <m.sobon@wearevirtua.com>#}
 {#*/#}
@@ -12,23 +12,29 @@
 {% block title %}Edit {{ product_category.name }} Category{% endblock %}
 
 {% block body %}
+
+    <div id="flashMessage-container"></div>
+
     {% for message in app.flashes('notice') %}
-        <div style="background: greenyellow; ">
+        <div class="alert alert-success alert-dismissible fade show">
             {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
         </div>
     {% endfor %}
 
     {% for message in app.flashes('error') %}
-        <div style="background: greenyellow; ">
+        <div class="alert alert-success alert-danger fade show">
             {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
         </div>
     {% endfor %}
 
     <h1>Edit ProductCategory</h1>
 
-    {{ include('product_category/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('product_category_index') }}">back to list</a>
-
-    {{ include('product_category/_delete_form.html.twig') }}
+    {#{{ include('product_category/_form.html.twig', {'button_label': 'Update'}) }}#}
+    {{ include('product_category/_edit_form.html.twig') }}
 {% endblock %}

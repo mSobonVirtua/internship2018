@@ -3,6 +3,7 @@
 parameters:
     locale: 'en'
     picture_directory: '%kernel.project_dir%/public/uploads/brochures'
+    images_directory: '%kernel.project_dir%/public/uploads/images'
 
 services:
     # default configuration for services in *this* file
@@ -27,3 +28,14 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Services\FileUploaderService:
+      arguments:
+        $targetDirectory: '%images_directory%'
+
+    App\Services\ProductCategoryService:
+      arguments:
+        $targetDirectory: '%images_directory%'
+
+    App\Controller\ProductCategoryApiController:
+          arguments:
+            $targetDirectory: '%images_directory%'

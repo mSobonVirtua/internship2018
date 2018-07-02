@@ -1,0 +1,34 @@
+{#/**#}
+{#* VI-36 ProductCategoryEditForm#}
+{#*#}
+{#* @category   ProductCategory#}
+{#* @package    Virtua_EditProductCategory#}
+{#* @copyright  Copyright (c) Virtua#}
+{#* @author     Name <m.sobon@wearevirtua.com>#}
+{#*/#}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.description) }}
+    {{ form_row(form.mainImage) }}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
+
+<a class="btn btn-primary" href="{{ path('product_category_index') }}">back to list</a>
+
+{{ include('product_category/_delete_form.html.twig') }}
+
+{%  set route =  path('UploadAndAddImageToCategory', {'id': product_category.id}) %}
+{{ form_start(imageForm, { 'attr' : { 'onsubmit' : 'return onSubmitEditForm()' }}) }}
+    {{ form_widget(imageForm) }}
+    <input type="hidden" name="_url" id="_url" value="{{ route }}">
+    <button class="btn btn-success">{{ button_label|default('Add Image to category') }}</button>
+{{ form_end(imageForm) }}
+
+
+
+{% block javascripts %}
+    <script src="{{ asset("js/ProductCategoryScripts/Shared.js") }}"></script>
+    <script src="{{ asset("js/ProductCategoryScripts/editForm.js") }}"></script>
+{% endblock %}

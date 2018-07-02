@@ -1,4 +1,12 @@
 <!DOCTYPE html>
+{#/**#}
+{#* VI-31 BaseTemplate#}
+{#*#}
+{#* @category   Templates#}
+{#* @package    Virtua_BaseTemplate#}
+{#* @copyright  Copyright (c) Virtua#}
+{#* @author     Name <m.sobon@wearevirtua.com>#}
+{#*/#}
 <html>
     <head>
         <meta charset="UTF-8">
@@ -11,6 +19,7 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
         {% block stylesheets %}
             <link href="{{ asset('css/base.css') }}" rel="stylesheet" />
+            <link rel="stylesheet" href="{{ asset('css/Shared/coreStyle.css') }}">
         {% endblock %}
     </head>
     <body id="base" class="container-fluid">
