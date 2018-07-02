@@ -51,7 +51,7 @@ class ProductController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $file=$form->get('picture')->getData();
             $imagepath=$this->generateUniqueFileName().'.'.$file->guessExtension();
-            $file->move($this->getParameter('picture_directory'), $imagepath);
+            $file->move($this->getParameter('product_images'), $imagepath);
             $product->setPicture($imagepath);
             $em = $this->getDoctrine()->getManager();
             $em->persist($product);

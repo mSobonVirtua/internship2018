@@ -1,13 +1,23 @@
 <?php
 
+/**
+ * VI-31 ProductCategoryEntity
+ *
+ * @category   Entity
+ * @package    Virtua_ProductCategoryEntity
+ * @copyright  Copyright (c) Virtua
+ * @author     Dawid Kruczek
+ */
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
+
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
  */
@@ -167,8 +177,6 @@ class Product
 
     public function addImage(ImageProduct $image): self
     {
-
-            dump($this->name);
 
         if (!$this->images->contains($image)) {
             $this->images[] = $image;

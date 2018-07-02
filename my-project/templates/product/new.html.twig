@@ -1,22 +1,18 @@
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
     {{ parent() }}
-
     <link href="{{ asset('/css/new.css') }}" rel="stylesheet">
 {% endblock %}
 {% block title %}Dodaj nowy produkt{% endblock %}
-
 {% block body %}
-
     {% for msg in app.session.flashBag.get('error') %}
         <div class="flash-error">
             {{ msg }}
         </div>
     {% endfor %}
-    <h1>Stworz nowy produkt</h1>
+         <h1>Stworz nowy produkt</h1>
          {{ include('product/_form.html.twig') }}
-    <a href="{{ path('product_index') }}"><button type="submit" class="btn btn-info">Wroc do listy produktow</button></a>
-
+         <a href="{{ path('product_index') }}"><button type="submit" class="btn btn-info">Wroc do listy produktow</button></a>
     {% block javascripts %}
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="/js/addImages.js"></script>
