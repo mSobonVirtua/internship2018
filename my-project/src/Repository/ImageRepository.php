@@ -1,13 +1,9 @@
 <?php
-
 namespace App\Repository;
-
-
 use App\Entity\ImageProduct;
 use App\Entity\Image;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-
 /**
  * @method ImageProduct|null find($id, $lockMode = null, $lockVersion = null)
  * @method ImageProduct|null findOneBy(array $criteria, array $orderBy = null)
@@ -24,7 +20,6 @@ class ImageRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, ImageProduct::class);
     }
-
 //    /**
 //     * @return ImageProduct[] Returns an array of ImageProduct objects
 //     */
@@ -41,7 +36,6 @@ class ImageRepository extends ServiceEntityRepository
         ;
     }
     */
-
     /*
     public function findOneBySomeField($value): ?ImageProduct
     {
@@ -53,7 +47,6 @@ class ImageRepository extends ServiceEntityRepository
         ;
     }
     */
-
-       // parent::__construct($registry, Image::class);
+    // parent::__construct($registry, Image::class);
     //}
 }
