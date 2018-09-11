@@ -12,6 +12,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -20,8 +21,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class Product
 {
-
     /**
+     * @var int $id
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -29,33 +30,38 @@ class Product
     private $id;
 
     /**
+     * @var string $name
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
+     * $var string $info
      * @ORM\Column(type="string", length=255)
      */
     private $info;
 
     /**
+     * @var /DateTime $createdDate
      * @ORM\Column(type="date")
      */
     private $createdDate;
 
     /**
+     * @var /DateTime $createdDate
      * @ORM\Column(type="date")
      */
     private $modifiedDate;
 
     /**
+     * @var ProductCategory $category
      * @ORM\ManyToOne(targetEntity="App\Entity\ProductCategory", inversedBy="products")
      * @ORM\JoinColumn()
      */
-
     private $category;
 
     /**
+     * @var File $picture
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\File(
@@ -68,6 +74,7 @@ class Product
     private $picture;
 
     /**
+     * @var ArrayCollection $images
      * @ORM\OneToMany(
      *     targetEntity="App\Entity\ImageProduct",
      *     mappedBy="product",
@@ -77,15 +84,17 @@ class Product
      */
     private $images;
 
+    /**
+     * Product constructor.
+     */
     public function __construct()
     {
         $this->images = new ArrayCollection();
     }
+
     /**
      * @Groups({"ProductCategoryShowAPI"})
-     */
-    /**
-     * @Groups({"ProductCategoryShowAPI"})
+     * @return int
      */
     public function getId()
     {
@@ -94,12 +103,17 @@ class Product
 
     /**
      * @Groups({"ProductCategoryShowAPI"})
+     * @return string
      */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return Product
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -107,11 +121,18 @@ class Product
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getInfo(): ?string
     {
         return $this->info;
     }
 
+    /**
+     * @param string $info
+     * @return Product
+     */
     public function setInfo(string $info): self
     {
         $this->info = $info;
@@ -119,11 +140,18 @@ class Product
         return $this;
     }
 
+    /**
+     * @return \DateTime
+     */
     public function getCreatedDate(): ?\DateTimeInterface
     {
         return $this->createdDate;
     }
 
+    /**
+     * @param \DateTimeInterface $createdDate
+     * @return Product
+     */
     public function setCreatedDate(\DateTimeInterface $createdDate): self
     {
         $this->createdDate = $createdDate;
@@ -131,11 +159,18 @@ class Product
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface
+     */
     public function getModifiedDate(): ?\DateTimeInterface
     {
         return $this->modifiedDate;
     }
 
+    /**
+     * @param \DateTimeInterface $modifiedDate
+     * @return Product
+     */
     public function setModifiedDate(\DateTimeInterface $modifiedDate): self
     {
         $this->modifiedDate = $modifiedDate;
@@ -143,13 +178,19 @@ class Product
         return $this;
     }
 
-
+    /**
+     * @return ProductCategory
+     */
     public function getCategory(): ?ProductCategory
     {
         return $this->category;
     }
 
 
+    /**
+     * @param ProductCategory $category
+     * @return Product
+     */
     public function setCategory(?ProductCategory $category): self
     {
         $this->category = $category;
@@ -157,11 +198,18 @@ class Product
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getPicture(): ?string
     {
         return $this->picture;
     }
 
+    /**
+     * @param string $picture
+     * @return Product
+     */
     public function setPicture(string $picture): self
     {
         $this->picture = $picture;
@@ -177,6 +225,10 @@ class Product
         return $this->images;
     }
 
+    /**
+     * @param ImageProduct $image
+     * @return Product
+     */
     public function addImage(ImageProduct $image): self
     {
 
@@ -188,6 +240,10 @@ class Product
         return $this;
     }
 
+    /**
+     * @param ImageProduct $image
+     * @return Product
+     */
     public function removeImage(ImageProduct $image): self
     {
         if ($this->images->contains($image)) {
@@ -202,6 +258,9 @@ class Product
     }
 
 
+    /**
+     * @return string
+     */
     private function generateUniqueFileName()
     {
         // md5() reduces the similarity of the file names generated by

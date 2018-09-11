@@ -18,12 +18,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="app_users")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @UniqueEntity(fields="email",                                message="This e-mail is already used")
- * @UniqueEntity(fields="username",                             message="This username is already used")
+ * @UniqueEntity(fields="email", message="This e-mail is already used")
+ * @UniqueEntity(fields="username", message="This username is already used")
  */
 class User implements UserInterface, \Serializable
 {
     /**
+     * @var integer $id
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -31,6 +32,7 @@ class User implements UserInterface, \Serializable
     private $id;
 
     /**
+     * @var string $username
      * @ORM\Column(type="string", length=50, unique=true)
      * @Assert\NotBlank()
      * @Assert\Length(min=3,      max=50)
@@ -38,17 +40,20 @@ class User implements UserInterface, \Serializable
     private $username;
 
     /**
+     * @var string $password
      * @ORM\Column(type="string")
      */
     private $password;
 
     /**
+     * @var string $plainPassword
      * @Assert\NotBlank()
      * @Assert\Length(min=8, max=4096)
      */
     private $plainPassword;
 
     /**
+     * @var string $email
      * @ORM\Column(type="string", length=254, unique=true)
      * @Assert\NotBlank()
      * @Assert\Email()
@@ -56,6 +61,7 @@ class User implements UserInterface, \Serializable
     private $email;
 
     /**
+     * @var string $name
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
      * @Assert\Length(min=2)
@@ -63,6 +69,7 @@ class User implements UserInterface, \Serializable
     private $name;
 
     /**
+     * @var string $lastName
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
      * @Assert\Length(min=2)
@@ -70,6 +77,7 @@ class User implements UserInterface, \Serializable
     private $lastName;
 
     /**
+     * @var ArrayCollection $roles
      * @ORM\ManyToMany(targetEntity="App\Entity\Role")
      * @ORM\JoinTable(name="user_roles",
      *     joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
@@ -84,6 +92,9 @@ class User implements UserInterface, \Serializable
     }
 
 
+    /**
+     * @return int
+     */
     public function getId()
     {
         return $this->id;
@@ -103,7 +114,7 @@ class User implements UserInterface, \Serializable
      * and populated in any number of different ways when the user object
      * is created.
      *
-     * @return array The user roles
+     * @return array|ArrayCollection The user roles
      */
     public function getRoles()
     {
@@ -186,7 +197,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getEmail()
     {
@@ -194,7 +205,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param mixed $email
+     * @param string $email
      */
     public function setEmail($email): void
     {
@@ -202,7 +213,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getName()
     {
@@ -210,7 +221,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
     public function setName($name): void
     {
@@ -218,7 +229,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getLastName()
     {
@@ -226,7 +237,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param mixed $lastName
+     * @param string $lastName
      */
     public function setLastName($lastName): void
     {
@@ -234,7 +245,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param mixed $username
+     * @param string $username
      */
     public function setUsername($username): void
     {
@@ -242,7 +253,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param mixed $password
+     * @param string $password
      */
     public function setPassword($password): void
     {
@@ -250,7 +261,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getPlainPassword()
     {
@@ -258,7 +269,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param mixed $plainPassword
+     * @param string $plainPassword
      */
     public function setPlainPassword($plainPassword): void
     {

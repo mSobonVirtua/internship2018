@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ImageProduct
 {
     /**
+     * @var integer $id
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -28,26 +29,38 @@ class ImageProduct
     private $id;
 
     /**
+     * @var string $name
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
+     * @var Product $product
      * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="images", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $product;
 
+    /**
+     * @return int
+     */
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * @return string
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return ImageProduct
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -55,11 +68,18 @@ class ImageProduct
         return $this;
     }
 
+    /**
+     * @return Product
+     */
     public function getProduct(): ?Product
     {
         return $this->product;
     }
 
+    /**
+     * @param Product $product
+     * @return ImageProduct
+     */
     public function setProduct(?Product $product): self
     {
         $this->product = $product;
@@ -67,20 +87,32 @@ class ImageProduct
         return $this;
     }
 
+    /**
+     * @var
+     */
     private $image;
 
+    /**
+     * @return mixed
+     */
     public function getImage()
     {
 
         return $this->image;
     }
 
+    /**
+     * @param UploadedFile $image
+     */
     public function setImage(UploadedFile $image = null)
     {
         $imagepath=$this->generateUniqueFileName().'.'.$image->guessExtension();
         $this->setName($imagepath);
     }
 
+    /**
+     * @return string
+     */
     private function generateUniqueFileName()
     {
         return md5(uniqid());

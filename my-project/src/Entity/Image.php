@@ -10,6 +10,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -19,6 +20,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Image
 {
     /**
+     * @var integer $id
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -26,6 +28,7 @@ class Image
     private $id;
 
     /**
+     * @var string|File
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
      * @Assert\File(
@@ -38,6 +41,7 @@ class Image
 
     /**
      * @Groups({"ProductCategoryShowAPI"})
+     * @return integer
      */
     public function getId()
     {
@@ -45,7 +49,7 @@ class Image
     }
 
     /**
-     * @return                             mixed
+     * @return string|File
      * @Groups({"ProductCategoryShowAPI"})
      */
     public function getPath()
@@ -54,7 +58,7 @@ class Image
     }
 
     /**
-     * @param mixed $path
+     * @param string|File $path
      */
     public function setPath($path): void
     {

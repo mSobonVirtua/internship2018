@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductCategoryRepository")
@@ -21,6 +22,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class ProductCategory
 {
     /**
+     * @var integer $id
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -28,31 +30,37 @@ class ProductCategory
     private $id;
 
     /**
+     * @var string $name
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
+     * @var  string $description
      * @ORM\Column(type="string", length=255)
      */
     private $description;
 
     /**
+     * @var /DateTime $dateOfCreation
      * @ORM\Column(type="date")
      */
     private $dateOfCreation;
 
     /**
+     * @var /DateTime $dateOfLastModification
      * @ORM\Column(type="date")
      */
     private $dateOfLastModification;
 
     /**
+     * @var ArrayCollection $products
      * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="category")
      */
     private $products;
 
     /**
+     * @var File $mainImage
      * @ORM\Column(type="string")
      * @Assert\File(
      *      maxSize = "250000",
@@ -62,6 +70,7 @@ class ProductCategory
     private $mainImage;
 
     /**
+     * @var ArrayCollection $images
      * @ORM\ManyToMany(targetEntity="App\Entity\Image")
      * @ORM\JoinTable(name="category_images",
      *                  joinColumns={@ORM\JoinColumn(name="product_category_id", referencedColumnName="id")},
@@ -70,6 +79,9 @@ class ProductCategory
      */
     private $images;
 
+    /**
+     * ProductCategory constructor.
+     */
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -78,6 +90,7 @@ class ProductCategory
 
     /**
      * @Groups({"ProductCategoryShowAPI", "ProductCategoryIndexAPI", "ProductCategoryExport"})
+     * @return integer
      */
     public function getId()
     {
@@ -85,7 +98,7 @@ class ProductCategory
     }
 
     /**
-     * @return                            mixed
+     * @return string
      * @Groups({"ProductCategoryShowAPI", "ProductCategoryIndexAPI", "ProductCategoryExport"})
      */
     public function getName()
@@ -94,7 +107,7 @@ class ProductCategory
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
     public function setName($name): void
     {
@@ -102,7 +115,7 @@ class ProductCategory
     }
 
     /**
-     * @return                            mixed
+     * @return string
      * @Groups({"ProductCategoryShowAPI", "ProductCategoryExport"})
      */
     public function getDescription()
@@ -111,7 +124,7 @@ class ProductCategory
     }
 
     /**
-     * @param mixed $description
+     * @param string $description
      */
     public function setDescription($description): void
     {
@@ -119,8 +132,8 @@ class ProductCategory
     }
 
     /**
-     * @return                            mixed
      * @Groups({"ProductCategoryShowAPI", "ProductCategoryExport"})
+     * @return \DateTime
      */
     public function getDateOfCreation()
     {
@@ -128,7 +141,7 @@ class ProductCategory
     }
 
     /**
-     * @param mixed $dateOfCreation
+     * @param \DateTime $dateOfCreation
      */
     public function setDateOfCreation($dateOfCreation): void
     {
@@ -136,7 +149,7 @@ class ProductCategory
     }
 
     /**
-     * @return                            mixed
+     * @return \DateTime
      * @Groups({"ProductCategoryShowAPI", "ProductCategoryExport"})
      */
     public function getDateOfLastModification()
@@ -145,7 +158,7 @@ class ProductCategory
     }
 
     /**
-     * @param mixed $dateOfLastModification
+     * @param \DateTime $dateOfLastModification
      */
     public function setDateOfLastModification($dateOfLastModification): void
     {
@@ -153,7 +166,7 @@ class ProductCategory
     }
 
     /**
-     * @return                            Collection|Product[]
+     * @return  ArrayCollection|Product[]
      * @Groups({"ProductCategoryShowAPI", "ProductCategoryExport"})
      */
     public function getProducts(): Collection
@@ -162,17 +175,25 @@ class ProductCategory
     }
 
     /**
-     * @param mixed $products
+     * @param ArrayCollection|[] $products
      */
     public function setProducts($products): void
     {
         $this->products = $products;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->name;
     }
+
+    /**
+     * @param Product $product
+     * @return ProductCategory
+     */
     public function addProduct(Product $product): self
     {
         if (!$this->products->contains($product)) {
@@ -183,6 +204,10 @@ class ProductCategory
         return $this;
     }
 
+    /**
+     * @param Product $product
+     * @return ProductCategory
+     */
     public function removeProduct(Product $product): self
     {
         if ($this->products->contains($product)) {
@@ -197,7 +222,7 @@ class ProductCategory
     }
 
     /**
-     * @return                            mixed
+     * @return  string|File
      * @Groups({"ProductCategoryShowAPI", "ProductCategoryExport"})
      */
     public function getMainImage()
@@ -206,7 +231,7 @@ class ProductCategory
     }
 
     /**
-     * @param mixed $mainImage
+     * @param string|File $mainImage
      */
     public function setMainImage($mainImage): void
     {
@@ -214,7 +239,7 @@ class ProductCategory
     }
 
     /**
-     * @return                             ArrayCollection
+     * @return  ArrayCollection
      * @Groups({"ProductCategoryShowAPI"})
      */
     public function getImages()
@@ -230,6 +255,10 @@ class ProductCategory
         $this->images = $images;
     }
 
+    /**
+     * @param string $key
+     * @param mixed $value
+     */
     public function setData($key, $value)
     {
         $this->{$key} = $value;
