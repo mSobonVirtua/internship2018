@@ -12,6 +12,7 @@ namespace App\Controller;
 use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -20,8 +21,11 @@ class WishListController extends Controller
 {
     /**
      * @Route("/wish/list", name="wish_list")
+     * @param SessionInterface $session
+     * @param ProductRepository $productRepository
+     * @return Response
      */
-    public function index(SessionInterface $session, ProductRepository $productRepository)
+    public function indexAction(SessionInterface $session, ProductRepository $productRepository)
     {
         $this->checkIfWishListIsInSession($session);
         /***
@@ -44,8 +48,11 @@ class WishListController extends Controller
 
     /**
      * @Route("/new/{productId}", name="WishListNew", methods="GET|POST")
+     * @param Request $request
+     * @param SessionInterface $session
+     * @return RedirectResponse
      */
-    public function addToWishList(Request $request, SessionInterface $session)
+    public function addToWishListAction(Request $request, SessionInterface $session)
     {
         $this->checkIfWishListIsInSession($session);
         /***
@@ -71,8 +78,11 @@ class WishListController extends Controller
 
     /**
      * @Route("/delete", name="WishListDeleteAll", methods="GET|POST")
+     * @param Request $request
+     * @param SessionInterface $session
+     * @return RedirectResponse
      */
-    public function removeAllWishes(Request $request, SessionInterface $session)
+    public function removeAllWishesAction(Request $request, SessionInterface $session)
     {
         $this->checkIfWishListIsInSession($session);
         $session->set("wishList", []);
@@ -81,8 +91,11 @@ class WishListController extends Controller
 
     /**
      * @Route("/delete/{id}", name="WishListDelete", methods="GET|POST")
+     * @param Request $request
+     * @param SessionInterface $session
+     * @return RedirectResponse
      */
-    public function removeWish(Request $request, SessionInterface $session)
+    public function removeWishAction(Request $request, SessionInterface $session)
     {
         $this->checkIfWishListIsInSession($session);
         /***
@@ -100,6 +113,10 @@ class WishListController extends Controller
         return new RedirectResponse($request->headers->get('referer'));
     }
 
+    /**
+     * @param SessionInterface $session
+     * @return void
+    */
     private function checkIfWishListIsInSession(SessionInterface $session)
     {
         if (!$session->isStarted()) {

@@ -17,21 +17,40 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+/**
+ * Class ProductCategoryExportCommand
+ */
 class ProductCategoryExportCommand extends Command
 {
-
+    /**
+     * @var SerializerService
+     */
     private $serializer;
+
+    /**
+     * @var ProductCategoryRepository
+     */
     private $productCategoryRepository;
+
+    /**
+     * ProductCategoryExportCommand constructor.
+     * @param string $name
+     * @param SerializerService $serializer
+     * @param ProductCategoryRepository $productCategoryRepository
+     */
     public function __construct(
-        $name = null,
         SerializerService $serializer,
-        ProductCategoryRepository $productCategoryRepository
+        ProductCategoryRepository $productCategoryRepository,
+        string $name = null
     ) {
         $this->serializer = $serializer;
         $this->productCategoryRepository = $productCategoryRepository;
         parent::__construct($name);
     }
 
+    /**
+     * @return void
+     */
     protected function configure()
     {
         $this
@@ -41,6 +60,11 @@ class ProductCategoryExportCommand extends Command
             ->addArgument("categoryID", InputArgument::OPTIONAL, "If is not given, all categories are exported");
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int|null|void
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);

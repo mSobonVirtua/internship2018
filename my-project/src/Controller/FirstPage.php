@@ -12,11 +12,18 @@
 namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class FirstPage
+ */
 class FirstPage
 {
-
-    public function date()
+    /**
+     * @Route("/welcome/page-a", name="firstPage")
+     * @return Response
+     */
+    public function dateAction()
     {
         $today = date('d-m-Y');
 

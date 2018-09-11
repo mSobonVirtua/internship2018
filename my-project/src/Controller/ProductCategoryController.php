@@ -40,8 +40,10 @@ class ProductCategoryController extends Controller
 {
     /**
      * @Route("/", name="product_category_index", methods="GET")
+     * @param ProductCategoryRepository $productCategoryRepository
+     * @return Response
      */
-    public function index(ProductCategoryRepository $productCategoryRepository): Response
+    public function indexAction(ProductCategoryRepository $productCategoryRepository): Response
     {
         $AllCategories = $productCategoryRepository->findAll();
         $filesystem = new Filesystem();
@@ -69,8 +71,11 @@ class ProductCategoryController extends Controller
 
     /**
      * @Route("/new", name="product_category_new", methods="GET|POST")
+     * @param Request $request
+     * @param FileUploaderService $fileUploader
+     * @return Response
      */
-    public function new(Request $request, FileUploaderService $fileUploader): Response
+    public function newAction(Request $request, FileUploaderService $fileUploader): Response
     {
         $productCategory = new ProductCategory();
         $this->denyAccessUnlessGranted(ProductCategoryVoter::ADD, $productCategory);
@@ -117,8 +122,13 @@ class ProductCategoryController extends Controller
 
     /**
      * @Route("/{id}", name="product_category_show", methods="GET")
+     * @param Request $request,
+     * @param ProductCategory $productCategory,
+     * @param EntityManagerInterface $em,
+     * @param SessionInterface $session
+     * @return Response
      */
-    public function show(
+    public function showAction(
         Request $request,
         ProductCategory $productCategory,
         EntityManagerInterface $em,
@@ -155,8 +165,12 @@ class ProductCategoryController extends Controller
 
     /**
      * @Route("/{id}/edit", name="product_category_edit", methods="GET|POST")
+     * @param Request $request
+     * @param ProductCategory $productCategory
+     * @param FileUploaderService $fileUploader
+     * @return Response
      */
-    public function edit(
+    public function editAction(
         Request $request,
         ProductCategory $productCategory,
         FileUploaderService $fileUploader
@@ -213,8 +227,11 @@ class ProductCategoryController extends Controller
 
     /**
      * @Route("/{id}", name="product_category_delete", methods="DELETE")
+     * @param Request $request
+     * @param ProductCategory $productCategory
+     * @return Response
      */
-    public function delete(Request $request, ProductCategory $productCategory): Response
+    public function deleteAction(Request $request, ProductCategory $productCategory): Response
     {
         $this->denyAccessUnlessGranted(ProductCategoryVoter::DELETE, $productCategory);
         if ($this->isCsrfTokenValid('delete'.$productCategory->getId(), $request->request->get('_token'))) {
@@ -242,8 +259,12 @@ class ProductCategoryController extends Controller
 
     /**
      * @Route("/{id}/edit/AddImage", name="UploadAndAddImageToCategory", methods="POST")
+     * @param Request $request
+     * @param ProductCategory $productCategory
+     * @param FileUploaderService $fileUploader
+     * @return JsonResponse
      */
-    public function uploadAndAddImageToCategory(
+    public function uploadAndAddImageToCategoryAction(
         Request $request,
         ProductCategory $productCategory,
         FileUploaderService $fileUploader
@@ -285,8 +306,12 @@ class ProductCategoryController extends Controller
 
     /**
      * @Route("/{image}/{category}", name="remove_image_from_category", methods="DELETE")
+     * @param Request $request
+     * @param Image $image
+     * @param ProductCategory $category
+     * @return JsonResponse
      */
-    public function removeImageFromCategory(Request $request, Image $image, ProductCategory $category): Response
+    public function removeImageFromCategoryAction(Request $request, Image $image, ProductCategory $category): Response
     {
             $this->denyAccessUnlessGranted(ProductCategoryVoter::EDIT, $category);
         try {
@@ -311,7 +336,9 @@ class ProductCategoryController extends Controller
     }
 
 
-
+    /**
+     * @return void
+     */
     private function addDatabaseErrorFlash()
     {
         $this->addFlash(
@@ -320,11 +347,21 @@ class ProductCategoryController extends Controller
         );
     }
 
+    /**
+     * @return string
+     */
     private function generateUniqueFileName()
     {
         return md5(uniqid());
     }
 
+    /**
+     * @param string $varName
+     * @param mixed $defaultValue
+     * @param Request $request
+     * @param SessionInterface $session
+     * @return mixed
+     */
     private function getValue(string $varName, $defaultValue, Request $request, SessionInterface $session)
     {
         $value = $request->query->get($varName);

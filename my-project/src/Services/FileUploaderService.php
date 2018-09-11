@@ -16,12 +16,25 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+/**
+ * Class FileUploaderService
+ */
 class FileUploaderService
 {
+    /**
+     * @var string $targetDirectory
+     */
     private $targetDirectory;
+    /**
+     * @var int $imageMaxSize
+     */
     private $imageMaxSize;
 
-    public function __construct($targetDirectory)
+    /**
+     * FileUploaderService constructor.
+     * @param $targetDirectory
+     */
+    public function __construct(string $targetDirectory)
     {
         $this->targetDirectory = $targetDirectory;
         $this->imageMaxSize = 250000;
@@ -40,6 +53,10 @@ class FileUploaderService
         return $fileName;
     }
 
+    /**
+     * @param File $file
+     * @return string
+     */
     public function uploadFile(File $file)
     {
         $fileName = md5(uniqid()).'.'.$file->guessExtension();
@@ -48,6 +65,9 @@ class FileUploaderService
         return $fileName;
     }
 
+    /**
+     * @return string
+     */
     public function getTargetDirectory()
     {
         return $this->targetDirectory;

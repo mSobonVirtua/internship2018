@@ -15,6 +15,7 @@ use App\Form\UserType;
 use App\Repository\RoleRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -23,8 +24,12 @@ class RegisterController extends Controller
 {
     /**
      * @Route("/register", name="userRegister")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param RoleRepository $roleRepository
+     * @return Response
      */
-    public function index(
+    public function indexAction(
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder,
         RoleRepository $roleRepository

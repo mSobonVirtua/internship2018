@@ -22,10 +22,20 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * Class ProductCategoryApiController
+ */
 class ProductCategoryApiController extends Controller
 {
+    /**
+     * @var string $targetDir
+     */
     private $targetDir;
 
+    /**
+     * ProductCategoryApiController constructor.
+     * @param string $targetDirectory
+     */
     public function __construct($targetDirectory)
     {
         $this->targetDir = $targetDirectory;
@@ -33,8 +43,11 @@ class ProductCategoryApiController extends Controller
 
     /**
      * @Route("/api/product/category/", name="product_category_api", methods="GET")
+     * @param ProductCategoryRepository $productCategoryRepository
+     * @param SerializerService $serializer
+     * @return JsonResponse
      */
-    public function index(ProductCategoryRepository $productCategoryRepository, SerializerService $serializer)
+    public function indexAction(ProductCategoryRepository $productCategoryRepository, SerializerService $serializer)
     {
         /**
          * @var ProductCategory[] $allCategories
@@ -55,8 +68,11 @@ class ProductCategoryApiController extends Controller
 
     /**
      * @Route("/api/product/category/{id}", name="product_category_show_api", methods="GET")
+     * @param ProductCategory $productCategory
+     * @param SerializerService $serializer
+     * @return Response
      */
-    public function show(ProductCategory $productCategory, SerializerService $serializer)
+    public function showAction(ProductCategory $productCategory, SerializerService $serializer)
     {
         $data = $serializer->normalize(
             $productCategory,
@@ -79,8 +95,13 @@ class ProductCategoryApiController extends Controller
 
     /**
      * @Route("/api/product/category/", name="product_category_new_api", methods="POST")
+     * @param Request $request
+     * @param FileUploaderService $fileUploader
+     * @param ValidatorInterface $validator
+     * @param ProductCategoryService $productCategoryService
+     * @return JsonResponse
      */
-    public function new(
+    public function newAction(
         Request $request,
         FileUploaderService $fileUploader,
         ValidatorInterface $validator,
@@ -131,8 +152,10 @@ class ProductCategoryApiController extends Controller
 
     /**
      * @Route("/api/product/category/{id}", name="product_category_delete_api", methods="DELETE")
+     * @param ProductCategory $productCategory
+     * @return JsonResponse
      */
-    public function delete(ProductCategory $productCategory)
+    public function deleteAction(ProductCategory $productCategory)
     {
         try {
             $em = $this->getDoctrine()->getManager();
@@ -157,8 +180,14 @@ class ProductCategoryApiController extends Controller
 
     /**
      * @Route("/api/product/category/{id}/edit", name="product_category_edit_api", methods="PUT")
+     * @param Request $request
+     * @param ProductCategory $productCategory
+     * @param ValidatorInterface $validator,
+     * @param FileUploaderService $fileUploader,
+     * @param ProductCategoryService $productCategoryService
+     * @return JsonResponse
      */
-    public function edit(
+    public function editAction(
         Request $request,
         ProductCategory $productCategory,
         FileUploaderService $fileUploader,

@@ -12,8 +12,17 @@ namespace App\Services;
 
 use Symfony\Component\Filesystem\Filesystem;
 
+/**
+ * Class FileLoggerService
+ */
 class FileLoggerService
 {
+    /**
+     * @param string $path
+     * @param array $logs
+     * @param string $name
+     * @return void
+     */
     public function logIntoFile(string $path, array $logs, string $name) : void
     {
         $fileSystem = new Filesystem();

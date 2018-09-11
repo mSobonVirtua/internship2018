@@ -30,8 +30,12 @@ class ProductCategoryCSVController extends Controller
 {
     /**
      * @Route("/", name="product_category_export_all_csv_api", methods="GET")
+     * @param ProductCategoryRepository $productCategories
+     * @param SerializerService $serializer
+     * @param ProductCategoryService $productCategoryService
+     * @return Response
      */
-    public function exportAllCSV(
+    public function exportAllCSVAction(
         ProductCategoryRepository $productCategories,
         SerializerService $serializer,
         ProductCategoryService $productCategoryService
@@ -62,8 +66,11 @@ class ProductCategoryCSVController extends Controller
 
     /**
      * @Route("/{id}", name="product_category_export_csv_api", methods="GET")
+     * @param ProductCategory $productCategory
+     * @param SerializerService $serializer
+     * @return Response
      */
-    public function exportCSV(ProductCategory $productCategory, SerializerService $serializer)
+    public function exportCSVAction(ProductCategory $productCategory, SerializerService $serializer)
     {
         $data = $serializer->normalize(
             $productCategory,
@@ -91,8 +98,13 @@ class ProductCategoryCSVController extends Controller
 
     /**
      * @Route("/", name="product_category_import_csv_api", methods="POST")
+     * @param Request $request
+     * @param SerializerInterface $serializer
+     * @param ValidatorInterface $validator
+     * @param ProductCategoryService $productCategoryService
+     * @return JsonResponse
      */
-    public function importFromCSV(
+    public function importFromCSVAction(
         Request $request,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
@@ -188,6 +200,10 @@ class ProductCategoryCSVController extends Controller
         }
     }
 
+    /**
+     * @param array $productCategoriesArray
+     * @return bool
+    */
     private function isOnlyOneRowOfData(array $productCategoriesArray) : bool
     {
         try {
@@ -197,6 +213,10 @@ class ProductCategoryCSVController extends Controller
         }
     }
 
+    /**
+     * @param array $logs
+     * @return void
+    */
     private function logIntoFile(array $logs) : void
     {
         $fileSystem = new Filesystem();

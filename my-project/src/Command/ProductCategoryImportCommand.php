@@ -21,21 +21,52 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * Class ProductCategoryImportCommand
+ */
 class ProductCategoryImportCommand extends Command
 {
+    /**
+     * @var SerializerService
+     */
     private $serializer;
+
+    /**
+     * @var ValidatorInterface
+     */
     private $validator;
+
+    /**
+     * @var ProductCategoryService
+     */
     private $productCategoryService;
+
+    /**
+     * @var EntityManagerInterface
+     */
     private $em;
+
+    /**
+     * @var FileLoggerService
+     */
     private $fileLogger;
 
+    /**
+     * ProductCategoryImportCommand constructor.
+     * @param string $name
+     * @param SerializerService $serializer
+     * @param ValidatorInterface $validator
+     * @param ProductCategoryService $productCategoryService
+     * @param EntityManagerInterface $entityManager
+     * @param FileLoggerService $fileLogger
+     */
     public function __construct(
-        $name = null,
         SerializerService $serializer,
         ValidatorInterface $validator,
         ProductCategoryService $productCategoryService,
         EntityManagerInterface $entityManager,
-        FileLoggerService $fileLogger
+        FileLoggerService $fileLogger,
+        string $name = null
     ) {
         $this->serializer = $serializer;
         $this->validator = $validator;
@@ -45,6 +76,9 @@ class ProductCategoryImportCommand extends Command
         parent::__construct($name);
     }
 
+    /**
+     * @return void
+     */
     protected function configure()
     {
         $this
@@ -53,6 +87,11 @@ class ProductCategoryImportCommand extends Command
             ->addArgument('fileName', InputArgument::REQUIRED, 'path to the file');
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int|null|void
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
@@ -123,6 +162,10 @@ class ProductCategoryImportCommand extends Command
         }
     }
 
+    /**
+     * @param array $productCategoriesArray
+     * @return bool
+     */
     private function isOnlyOneRowOfData(array $productCategoriesArray) : bool
     {
         try {

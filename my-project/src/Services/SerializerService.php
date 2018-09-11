@@ -20,12 +20,30 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
+/**
+ * Class SerializerService
+ */
 class SerializerService
 {
+    /**
+     * @var ClassMetadataFactory
+     */
     private $classMetaDataFactory;
+
+    /**
+     * @var PropertyNormalizer
+     */
     private $normalizer;
+
+    /**
+     * @var Serializer
+     */
     private $serializer;
 
+    /**
+     * SerializerService constructor.
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     */
     public function __construct()
     {
         $this->classMetaDataFactory = new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader()));
@@ -33,8 +51,8 @@ class SerializerService
         $normalizer->setCircularReferenceHandler(
             function ($product) {
                 /**
-            * @var Product $product
-            */
+                * @var Product $product
+                */
                 return $product->getName();
             }
         );
@@ -44,22 +62,43 @@ class SerializerService
         );
     }
 
-    public function normalize($object, $format, $options)
+    /**
+     * @param mixed $object
+     * @param string $format
+     * @param array $options
+     * @return array
+     */
+    public function normalize($object, string $format, array $options)
     {
         return $this->serializer->normalize($object, $format, $options);
     }
 
-    public function serialize($data, $format)
+    /**
+     * @param array $data
+     * @param string $format
+     * @return string
+     */
+    public function serialize(array $data, string $format)
     {
         return $this->serializer->serialize($data, $format);
     }
 
-    public function encode($data, $format)
+    /**
+     * @param array $data
+     * @param string $format
+     * @return string
+     */
+    public function encode(array $data, string $format)
     {
         return $this->serializer->encode($data, $format);
     }
 
-    public function decode($data, $format)
+    /**
+     * @param string $data
+     * @param string $format
+     * @return array
+     */
+    public function decode(string $data, string $format)
     {
         return $this->serializer->decode($data, $format);
     }

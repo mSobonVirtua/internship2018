@@ -19,10 +19,21 @@ namespace App\Services;
 use App\Entity\ProductCategory;
 use Symfony\Component\HttpFoundation\File\File;
 
+/**
+ * Class ProductCategoryService
+ */
 class ProductCategoryService
 {
+    /**
+     * @var string $targetDirectory
+     */
     private $targetDirectory;
-    public function __construct($targetDirectory)
+
+    /**
+     * ProductCategoryService constructor.
+     * @param $targetDirectory
+     */
+    public function __construct(string $targetDirectory)
     {
         $this->targetDirectory = $targetDirectory;
     }
@@ -31,7 +42,7 @@ class ProductCategoryService
      * @param  string $json
      * @return ProductCategory
      */
-    public function convertJsonToProductCategory($json)
+    public function convertJsonToProductCategory(string $json)
     {
         /**
          * @var array $productCategoryParameters
@@ -52,6 +63,10 @@ class ProductCategoryService
         return $productCategory;
     }
 
+    /**
+     * @param array $productCategory
+     * @return ProductCategory
+     */
     public function createProductCategoryFromArray(array $productCategory) : ProductCategory
     {
         $tmpProductCategory = new ProductCategory();
@@ -64,6 +79,10 @@ class ProductCategoryService
         return $tmpProductCategory;
     }
 
+    /**
+     * @param array $productCategory
+     * @return ProductCategory
+     */
     public function createProductCategoryFromArrayByKeyValue(array $productCategory)
     {
         $newProductCategory = new ProductCategory();
