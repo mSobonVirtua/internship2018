@@ -103,11 +103,11 @@ class User implements UserInterface, \Serializable
      * and populated in any number of different ways when the user object
      * is created.
      *
-     * @return ArrayCollection The user roles
+     * @return array The user roles
      */
     public function getRoles()
     {
-        $roles = new ArrayCollection();
+        $roles = [];
         for ($i = 0; $i< count($this->roles); $i++) {
             $roles[] = $this->roles[$i]->getName();
         }
