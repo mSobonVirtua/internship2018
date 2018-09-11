@@ -2,18 +2,16 @@
 /**
  * VI-40 WishListController
  *
- * @category   WishList
- * @package    Virtua_WishList
- * @copyright  Copyright (c) Virtua
- * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
+ * @category  WishList
+ * @package   Virtua_WishList
+ * @copyright Copyright (c) Virtua
+ * @author    Mateusz Soboń <m.sobon@wearevirtua.com>
  */
 namespace App\Controller;
 
 use App\Repository\ProductRepository;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -25,19 +23,23 @@ class WishListController extends Controller
      */
     public function index(SessionInterface $session, ProductRepository $productRepository)
     {
-        $this->_checkIfWishListIsInSession($session);
-        /*** @var array $wishList */
+        $this->checkIfWishListIsInSession($session);
+        /***
+         * @var array $wishList
+        */
         $wishList = $session->get('wishList');
         $productsFromWishList = [];
-        foreach($wishList as $wish)
-        {
+        foreach ($wishList as $wish) {
             $product = $productRepository->find($wish);
-            array_push($productsFromWishList , $product);
+            array_push($productsFromWishList, $product);
         }
 
-        return $this->render('wish_list/index.html.twig', [
+        return $this->render(
+            'wish_list/index.html.twig',
+            [
             'wish_list' => $productsFromWishList
-        ]);
+            ]
+        );
     }
 
     /**
@@ -45,12 +47,13 @@ class WishListController extends Controller
      */
     public function addToWishList(Request $request, SessionInterface $session)
     {
-        $this->_checkIfWishListIsInSession($session);
-        /*** @var array $wishList */
+        $this->checkIfWishListIsInSession($session);
+        /***
+         * @var array $wishList
+        */
         $wishList = $session->get("wishList");
         $productId = $request->get("productId");
-        if(count($wishList) == 5)
-        {
+        if (count($wishList) == 5) {
             $this->addFlash(
                 'error',
                 'You cannot have more than 5 wishes.'
@@ -71,7 +74,7 @@ class WishListController extends Controller
      */
     public function removeAllWishes(Request $request, SessionInterface $session)
     {
-        $this->_checkIfWishListIsInSession($session);
+        $this->checkIfWishListIsInSession($session);
         $session->set("wishList", []);
         return new RedirectResponse($request->headers->get('referer'));
     }
@@ -81,14 +84,14 @@ class WishListController extends Controller
      */
     public function removeWish(Request $request, SessionInterface $session)
     {
-        $this->_checkIfWishListIsInSession($session);
-        /*** @var array $wishList */
+        $this->checkIfWishListIsInSession($session);
+        /***
+         * @var array $wishList
+        */
         $wishList = $session->get("wishList");
         $id = $request->get("id");
-        for($i = 0; count($wishList); $i++)
-        {
-            if($wishList[$i] == $id)
-            {
+        for ($i = 0; count($wishList); $i++) {
+            if ($wishList[$i] == $id) {
                 array_splice($wishList, $i, 1);
                 break;
             }
@@ -97,11 +100,12 @@ class WishListController extends Controller
         return new RedirectResponse($request->headers->get('referer'));
     }
 
-    private function _checkIfWishListIsInSession($session)
+    private function checkIfWishListIsInSession(SessionInterface $session)
     {
-        if(!$session->isStarted()) $session->start();
-        if(!$session->has("wishList"))
-        {
+        if (!$session->isStarted()) {
+            $session->start();
+        }
+        if (!$session->has("wishList")) {
             $session->set("wishList", []);
         }
     }

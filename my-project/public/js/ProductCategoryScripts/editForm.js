@@ -21,9 +21,9 @@ function onSubmitEditForm()
     });
     response
         .then(response=>{
-            if(!response.ok){
+            if (!response.ok) {
                 return Promise.reject(response.json());
-            }else{
+            } else {
                 return response.json();
             }
         })

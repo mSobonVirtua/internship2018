@@ -16,15 +16,17 @@
 function RemoveImageFromCategory(path, img)
 {
 
-    if(!confirm("Do you really want delete this?")) return;
+    if (!confirm("Do you really want delete this?")) {
+        return;
+    }
     const response = fetch(path ,{
         method: "DELETE"
     });
     response
         .then(response=>{
-            if(!response.ok){
+            if (!response.ok) {
                 return Promise.reject(response.json());
-            }else{
+            } else {
                 return response.json();
             }
         })
@@ -44,7 +46,8 @@ function RemoveImageFromCategory(path, img)
  * @param {string} typeOfMessage
  * @returns void
  * */
-function BootstrapAlert(message, typeOfMessage = 'warning'){
+function BootstrapAlert(message, typeOfMessage = 'warning')
+{
     const flashMessageContainer = document.querySelector('#flashMessage-container');
     const flashMessageContent = document.createElement('div');
     flashMessageContent.innerHTML = `

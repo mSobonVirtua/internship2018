@@ -2,10 +2,10 @@
 /**
  * VI-56 Login
  *
- * @category   SecurityController
- * @package    Virtua_Login
- * @copyright  Copyright (c) Virtua
- * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
+ * @category  SecurityController
+ * @package   Virtua_Login
+ * @copyright Copyright (c) Virtua
+ * @author    Mateusz Soboń <m.sobon@wearevirtua.com>
  */
 namespace App\Controller;
 
@@ -20,14 +20,19 @@ class SecurityController extends Controller
      */
     public function login(AuthenticationUtils $authenticationUtils)
     {
-        return $this->render('security/index.html.twig', [
+        return $this->render(
+            'security/index.html.twig',
+            [
             'last_username' => $authenticationUtils->getLastUsername(),
             'error' => $authenticationUtils->getLastAuthenticationError()
-        ]);
+            ]
+        );
     }
 
     /**
      * @Route("/logout", name="logout")
      */
-    public function logout(){}
+    public function logout()
+    {
+    }
 }

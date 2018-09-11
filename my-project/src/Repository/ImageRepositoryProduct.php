@@ -2,10 +2,10 @@
 /**
  * VI-44 - Add and Edit gallery
  *
- * @category   Repository
- * @package    Gallery
- * @copyright  Copyright (c) Virtua
- * @author     Dawid Kruczek
+ * @category  Repository
+ * @package   Gallery
+ * @copyright Copyright (c) Virtua
+ * @author    Dawid Kruczek
  */
 namespace App\Repository;
 

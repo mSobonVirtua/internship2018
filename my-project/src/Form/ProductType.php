@@ -18,27 +18,37 @@ class ProductType extends AbstractType
         $builder
             ->add('name')
             ->add('info')
-            ->add('category',EntityType::class, array(
+            ->add(
+                'category',
+                EntityType::class,
+                array(
                 'class'=>ProductCategory::class,
-                'choice_label'=>function($category)
-                {
+                'choice_label'=>function ($category) {
+                    /** @var ProductCategory $category */
                     return $category->getName();
-                }))
-            ->add('picture',FileType::class, array('label'=>'Add Main Image','data_class'=>null))
-            ->add('images',CollectionType::class, array(
+                })
+            )
+            ->add('picture', FileType::class, array('label'=>'Add Main Image','data_class'=>null))
+            ->add(
+                'images',
+                CollectionType::class,
+                array(
                 'entry_type'        =>ImageTypeProduct::class,
-                'prototype'			=> true,
-                'allow_add'			=> true,
-                'allow_delete'		=> true,
-                'by_reference' 		=> false,
-                'required'			=> false,
-            ));
+                'prototype'            => true,
+                'allow_add'            => true,
+                'allow_delete'        => true,
+                'by_reference'         => false,
+                'required'            => false,
+                )
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'data_class' => Product::class,
-        ]);
+            ]
+        );
     }
 }

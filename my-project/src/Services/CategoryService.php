@@ -2,14 +2,13 @@
 /**
  * VI-31
  *
- * @category   Virtua
- * @package    Virtua_Module
- * @copyright  Copyright (c) Virtua
- * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
+ * @category  Virtua
+ * @package   Virtua_Module
+ * @copyright Copyright (c) Virtua
+ * @author    Mateusz Soboń <m.sobon@wearevirtua.com>
  */
 
 namespace App\Services;
-
 
 use App\Repository\ProductCategoryRepository;
 use Doctrine\ORM\EntityManager;

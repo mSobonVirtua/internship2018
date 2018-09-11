@@ -2,10 +2,10 @@
 /**
  * VI-55 RoleEntity
  *
- * @category   Entity
- * @package    Virtua_Registration
- * @copyright  Copyright (c) Virtua
- * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
+ * @category  Entity
+ * @package   Virtua_Registration
+ * @copyright Copyright (c) Virtua
+ * @author    Mateusz Soboń <m.sobon@wearevirtua.com>
  */
 namespace App\Entity;
 
@@ -50,6 +50,4 @@ class Role
     {
         $this->name = $name;
     }
-
-
 }

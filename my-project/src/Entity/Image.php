@@ -2,10 +2,10 @@
 /**
  * VI-36 ImageEntity
  *
- * @category   Entity
- * @package    Virtua_EntityImage
- * @copyright  Copyright (c) Virtua
- * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
+ * @category  Entity
+ * @package   Virtua_EntityImage
+ * @copyright Copyright (c) Virtua
+ * @author    Mateusz Soboń <m.sobon@wearevirtua.com>
  */
 namespace App\Entity;
 
@@ -45,7 +45,7 @@ class Image
     }
 
     /**
-     * @return mixed
+     * @return                             mixed
      * @Groups({"ProductCategoryShowAPI"})
      */
     public function getPath()
@@ -60,5 +60,4 @@ class Image
     {
         $this->path = $path;
     }
-
 }

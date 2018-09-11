@@ -2,10 +2,10 @@
 /**
  * VI-44 - Add and Edit gallery
  *
- * @category   Entity
- * @package    Gallery
- * @copyright  Copyright (c) Virtua
- * @author     Dawid Kruczek
+ * @category  Entity
+ * @package   Gallery
+ * @copyright Copyright (c) Virtua
+ * @author    Dawid Kruczek
  */
 namespace App\Entity;
 
@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ImagesRepository")
@@ -78,8 +77,8 @@ class ImageProduct
 
     public function setImage(UploadedFile $image = null)
     {
-                $imagepath=$this->generateUniqueFileName().'.'.$image->guessExtension();
-                $this->setName($imagepath);
+        $imagepath=$this->generateUniqueFileName().'.'.$image->guessExtension();
+        $this->setName($imagepath);
     }
 
     private function generateUniqueFileName()
@@ -87,5 +86,3 @@ class ImageProduct
         return md5(uniqid());
     }
 }
-
-

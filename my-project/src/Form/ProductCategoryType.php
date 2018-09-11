@@ -2,10 +2,10 @@
 /**
  * VI-31 VI-36 ProductCategoryType
  *
- * @category   FormType
- * @package    Virtua_ProductCategoryType
- * @copyright  Copyright (c) Virtua
- * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
+ * @category  FormType
+ * @package   Virtua_ProductCategoryType
+ * @copyright Copyright (c) Virtua
+ * @author    Mateusz Soboń <m.sobon@wearevirtua.com>
  */
 namespace App\Form;
 
@@ -24,18 +24,23 @@ class ProductCategoryType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
-            ->add('mainImage', FileType::class, [
+            ->add(
+                'mainImage',
+                FileType::class,
+                [
                 'label' => 'Main Image',
                 'data_class' => null,
                 'required' => $entity->getId() ? false : true,
-            ])
-        ;
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'data_class' => ProductCategory::class,
-        ]);
+            ]
+        );
     }
 }

@@ -2,10 +2,10 @@
 /**
  * VI-77 ProductCategoryVoter
  *
- * @category   Voter
- * @package    Virtua_ProductCategory
- * @copyright  Copyright (c) Virtua
- * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
+ * @category  Voter
+ * @package   Virtua_ProductCategory
+ * @copyright Copyright (c) Virtua
+ * @author    Mateusz Soboń <m.sobon@wearevirtua.com>
  */
 namespace App\Security\Voter;
 
@@ -23,11 +23,11 @@ class ProductCategoryVoter extends Voter
 
     protected function supports($attribute, $subject)
     {
-        if(!in_array($attribute, [self::ADD, self::EDIT, self::DELETE])){
+        if (!in_array($attribute, [self::ADD, self::EDIT, self::DELETE])) {
             return false;
         }
 
-        if(!$subject instanceof ProductCategory){
+        if (!$subject instanceof ProductCategory) {
             return false;
         }
 
@@ -75,9 +75,8 @@ class ProductCategoryVoter extends Voter
 
     private function haveRoleWithPermission(User $user) : bool
     {
-        foreach ($user->getRoles() as $role)
-        {
-            if($role === "ROLE_USER"){
+        foreach ($user->getRoles() as $role) {
+            if ($role === "ROLE_USER") {
                 return true;
             }
         }

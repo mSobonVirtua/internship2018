@@ -1,10 +1,10 @@
 <?php
 /**
  *
- * @category   Virtua
- * @package    Virtua_Module
- * @copyright  Copyright (c) Virtua
- * @author     Dawid Kruczek
+ * @category  Virtua
+ * @package   Virtua_Module
+ * @copyright Copyright (c) Virtua
+ * @author    Dawid Kruczek
  */
 namespace App\Form;
 
@@ -21,19 +21,25 @@ class ImageProductType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('image',FileType::class,array(
-                'label' 	=> 'Add Image',
-                'required' 	=> true,
+            ->add(
+                'image',
+                FileType::class,
+                array(
+                'label'     => 'Add Image',
+                'required'     => true,
                 'constraints' => array(
                     new File()
                 ),
-            ));
+                )
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults(
+            array(
             'data_class' => ImageProduct::class,
-        ));
+            )
+        );
     }
 }

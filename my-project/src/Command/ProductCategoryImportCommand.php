@@ -1,15 +1,14 @@
-<?
+<?php
 /**
  * VI-73 ProductCategoryImportCommand
  *
- * @category   Command
- * @package    Virtua_ProductCategoryImport
- * @copyright  Copyright (c) Virtua
- * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
+ * @category  Command
+ * @package   Virtua_ProductCategoryImport
+ * @copyright Copyright (c) Virtua
+ * @author    Mateusz Soboń <m.sobon@wearevirtua.com>
  */
 namespace App\Command;
 
-use App\Entity\ProductCategory;
 use App\Services\FileLoggerService;
 use App\Services\ProductCategoryService;
 use App\Services\SerializerService;
@@ -17,28 +16,27 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductCategoryImportCommand extends Command
 {
-
     private $serializer;
     private $validator;
     private $productCategoryService;
     private $em;
     private $fileLogger;
 
-    public function __construct($name = null, SerializerService $serializer,
-                                ValidatorInterface $validator,
-                                ProductCategoryService $productCategoryService,
-                                EntityManagerInterface $entityManager,
-                                FileLoggerService $fileLogger)
-    {
+    public function __construct(
+        $name = null,
+        SerializerService $serializer,
+        ValidatorInterface $validator,
+        ProductCategoryService $productCategoryService,
+        EntityManagerInterface $entityManager,
+        FileLoggerService $fileLogger
+    ) {
         $this->serializer = $serializer;
         $this->validator = $validator;
         $this->productCategoryService = $productCategoryService;
@@ -52,8 +50,7 @@ class ProductCategoryImportCommand extends Command
         $this
             ->setName('app:import-product-category')
             ->setDescription('Import product category from file to database')
-            ->addArgument('fileName', InputArgument::REQUIRED, 'path to the file')
-        ;
+            ->addArgument('fileName', InputArgument::REQUIRED, 'path to the file');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -65,24 +62,22 @@ class ProductCategoryImportCommand extends Command
         $path = $input->getArgument('fileName');
         $productCategoryArray = $this->serializer->decode(file_get_contents('exportedData/'.$path), 'csv');
 
-        if(count($productCategoryArray) === 0)
-        {
+        if (count($productCategoryArray) === 0) {
             $io->error('CSV file is empty');
         }
 
-        if($this->_isOnlyOneRowOfData($productCategoryArray))
-        {
+        if ($this->isOnlyOneRowOfData($productCategoryArray)) {
             $productCategoryArray = [$productCategoryArray];
         }
 
         $tmpProductCategories = [];
-        foreach ($productCategoryArray as $productCategoryArr)
-        {
-            $productCategory = $this->productCategoryService->createProductCategoryFromArrayByKeyValue($productCategoryArr);
+        foreach ($productCategoryArray as $productCategoryArr) {
+            $productCategory = $this->productCategoryService
+                ->createProductCategoryFromArrayByKeyValue($productCategoryArr);
             $imgPath = $productCategory->getMainImage();
-            try{
+            try {
                 $productCategory->setMainImage(new File("public/uploads/images/" . $imgPath));
-            }catch(\Exception $exception){
+            } catch (\Exception $exception) {
                 $productCategoryNotImportedLog[] = [
                     'name' => $productCategory->getName(),
                     'reason' => 'File not exist'
@@ -90,8 +85,7 @@ class ProductCategoryImportCommand extends Command
                 $numberOfErrors++;
                 continue;
             }
-            if(count($this->validator->validate($productCategory)) != 0)
-            {
+            if (count($this->validator->validate($productCategory)) != 0) {
                 $productCategoryNotImportedLog[] = [
                     'name' => $productCategory->getName(),
                     'reason' => 'Data not valid'
@@ -102,15 +96,12 @@ class ProductCategoryImportCommand extends Command
             $productCategory->setMainImage($imgPath);
             $tmpProductCategories[] = $productCategory;
         }
-        foreach ($tmpProductCategories as $productCategory)
-        {
-            try
-            {
+        foreach ($tmpProductCategories as $productCategory) {
+            try {
                 $this->em->persist($productCategory);
                 $this->em->flush();
                 $numberOfImportedCategories++;
-            }catch(\Exception $exception)
-            {
+            } catch (\Exception $exception) {
                 $numberOfErrors++;
                 $productCategoryNotImportedLog[] = [
                     'name' => $productCategory->getName(),
@@ -119,26 +110,24 @@ class ProductCategoryImportCommand extends Command
                 continue;
             }
         }
-        if($numberOfErrors === 0)
-        {
+        if ($numberOfErrors === 0) {
             $io->success('Categories successfully imported');
-        }
-        else
-        {
-            $this->fileLogger->logIntoFile('logs/commandImportErrors.txt', $productCategoryNotImportedLog, "NotImportedCategory");
+        } else {
+            $this->fileLogger
+                ->logIntoFile(
+                    'logs/commandImportErrors.txt',
+                    $productCategoryNotImportedLog,
+                    "NotImportedCategory"
+                );
             $io->error(json_encode($productCategoryNotImportedLog));
         }
-
     }
 
-    private function _isOnlyOneRowOfData(array $productCategoriesArray) : bool
+    private function isOnlyOneRowOfData(array $productCategoriesArray) : bool
     {
-        try
-        {
+        try {
             return $productCategoriesArray['name'] != null;
-        }
-        catch (\Exception $exception)
-        {
+        } catch (\Exception $exception) {
             return false;
         }
     }

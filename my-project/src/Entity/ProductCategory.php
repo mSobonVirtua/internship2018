@@ -2,10 +2,10 @@
 /**
  * VI-31 ProductCategoryEntity
  *
- * @category   Entity
- * @package    Virtua_ProductCategoryEntity
- * @copyright  Copyright (c) Virtua
- * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
+ * @category  Entity
+ * @package   Virtua_ProductCategoryEntity
+ * @copyright Copyright (c) Virtua
+ * @author    Mateusz Soboń <m.sobon@wearevirtua.com>
  */
 namespace App\Entity;
 
@@ -78,14 +78,14 @@ class ProductCategory
 
     /**
      * @Groups({"ProductCategoryShowAPI", "ProductCategoryIndexAPI", "ProductCategoryExport"})
-    */
+     */
     public function getId()
     {
         return $this->id;
     }
 
     /**
-     * @return mixed
+     * @return                            mixed
      * @Groups({"ProductCategoryShowAPI", "ProductCategoryIndexAPI", "ProductCategoryExport"})
      */
     public function getName()
@@ -102,7 +102,7 @@ class ProductCategory
     }
 
     /**
-     * @return mixed
+     * @return                            mixed
      * @Groups({"ProductCategoryShowAPI", "ProductCategoryExport"})
      */
     public function getDescription()
@@ -119,7 +119,7 @@ class ProductCategory
     }
 
     /**
-     * @return mixed
+     * @return                            mixed
      * @Groups({"ProductCategoryShowAPI", "ProductCategoryExport"})
      */
     public function getDateOfCreation()
@@ -136,7 +136,7 @@ class ProductCategory
     }
 
     /**
-     * @return mixed
+     * @return                            mixed
      * @Groups({"ProductCategoryShowAPI", "ProductCategoryExport"})
      */
     public function getDateOfLastModification()
@@ -153,7 +153,7 @@ class ProductCategory
     }
 
     /**
-     * @return Collection|Product[]
+     * @return                            Collection|Product[]
      * @Groups({"ProductCategoryShowAPI", "ProductCategoryExport"})
      */
     public function getProducts(): Collection
@@ -197,7 +197,7 @@ class ProductCategory
     }
 
     /**
-     * @return mixed
+     * @return                            mixed
      * @Groups({"ProductCategoryShowAPI", "ProductCategoryExport"})
      */
     public function getMainImage()
@@ -214,7 +214,7 @@ class ProductCategory
     }
 
     /**
-     * @return ArrayCollection
+     * @return                             ArrayCollection
      * @Groups({"ProductCategoryShowAPI"})
      */
     public function getImages()

@@ -2,10 +2,10 @@
 /**
  * VI-36 ImageType
  *
- * @category   FormType
- * @package    Virtua_ImageType
- * @copyright  Copyright (c) Virtua
- * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
+ * @category  FormType
+ * @package   Virtua_ImageType
+ * @copyright Copyright (c) Virtua
+ * @author    Mateusz Soboń <m.sobon@wearevirtua.com>
  */
 namespace App\Form;
 
@@ -20,16 +20,21 @@ class ImageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('path', FileType::class, [
+            ->add(
+                'path',
+                FileType::class,
+                [
                 'label' => 'Add Image',
-            ])
-        ;
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'data_class' => Image::class,
-        ]);
+            ]
+        );
     }
 }

@@ -2,10 +2,10 @@
 /**
  * VI-55 UserEntity
  *
- * @category   Entity
- * @package    Virtua_Registration
- * @copyright  Copyright (c) Virtua
- * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
+ * @category  Entity
+ * @package   Virtua_Registration
+ * @copyright Copyright (c) Virtua
+ * @author    Mateusz Soboń <m.sobon@wearevirtua.com>
  */
 namespace App\Entity;
 
@@ -18,8 +18,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="app_users")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @UniqueEntity(fields="email", message="This e-mail is already used")
- * @UniqueEntity(fields="username", message="This username is already used")
+ * @UniqueEntity(fields="email",                                message="This e-mail is already used")
+ * @UniqueEntity(fields="username",                             message="This username is already used")
  */
 class User implements UserInterface, \Serializable
 {
@@ -33,7 +33,7 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\Column(type="string", length=50, unique=true)
      * @Assert\NotBlank()
-     * @Assert\Length(min=3, max=50)
+     * @Assert\Length(min=3,      max=50)
      */
     private $username;
 
@@ -103,13 +103,12 @@ class User implements UserInterface, \Serializable
      * and populated in any number of different ways when the user object
      * is created.
      *
-     * @return (Role|string)[] The user roles
+     * @return ArrayCollection The user roles
      */
     public function getRoles()
     {
-        $roles = [];
-        for($i = 0; $i< count($this->roles); $i++)
-        {
+        $roles = new ArrayCollection();
+        for ($i = 0; $i< count($this->roles); $i++) {
             $roles[] = $this->roles[$i]->getName();
         }
         return $roles;
@@ -166,15 +165,17 @@ class User implements UserInterface, \Serializable
      * */
     public function serialize()
     {
-        return serialize([
+        return serialize(
+            [
             $this->id,
             $this->username,
             $this->password
-        ]);
+            ]
+        );
     }
 
     /**
-     * @param string $serialized
+     * @param  string $serialized
      * @return void
      */
     public function unserialize($serialized)
@@ -263,6 +264,4 @@ class User implements UserInterface, \Serializable
     {
         $this->plainPassword = $plainPassword;
     }
-
-
 }

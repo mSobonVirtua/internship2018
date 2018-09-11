@@ -2,10 +2,10 @@
 /**
  * VI-31 ProductCategoryController
  *
- * @category   ProductCategory
- * @package    Virtua_ProductCategoryController
- * @copyright  Copyright (c) Virtua
- * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
+ * @category  ProductCategory
+ * @package   Virtua_ProductCategoryController
+ * @copyright Copyright (c) Virtua
+ * @author    Mateusz Soboń <m.sobon@wearevirtua.com>
  */
 namespace App\Controller;
 
@@ -32,6 +32,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 /**
  * @Route("/product/category")
  */
@@ -45,21 +46,20 @@ class ProductCategoryController extends Controller
         $AllCategories = $productCategoryRepository->findAll();
         $filesystem = new Filesystem();
         $imagesFolderPath = "uploads/images/";
-        /** @var ProductCategory $category */
-        foreach ($AllCategories as $category)
-        {
-            /** @var string $mainImagePath */
+        /**
+         * @var ProductCategory $category
+        */
+        foreach ($AllCategories as $category) {
+            /**
+             * @var string $mainImagePath
+            */
             $mainImagePath = $imagesFolderPath.$category->getMainImage();
-            if(!$filesystem->exists($mainImagePath))
-            {
+            if (!$filesystem->exists($mainImagePath)) {
                 $imagesGallery = $category->getImages();
-                if($imagesGallery[0] != null && $filesystem->exists($imagesFolderPath.$imagesGallery[0]->getPath()))
-                {
+                if ($imagesGallery[0] != null && $filesystem->exists($imagesFolderPath.$imagesGallery[0]->getPath())) {
                     $category->setMainImage($imagesGallery[0]->getPath());
-
-                }else
-                {
-                   $category->setMainImage("categoryPlaceholder.jpg");
+                } else {
+                    $category->setMainImage("categoryPlaceholder.jpg");
                 }
                 $this->getDoctrine()->getManager()->flush();
             }
@@ -82,15 +82,15 @@ class ProductCategoryController extends Controller
         $form = $this->createForm(ProductCategoryType::class, $productCategory);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid())
-        {
-            /** @var UploadedFile $file */
+        if ($form->isSubmitted() && $form->isValid()) {
+            /**
+             * @var UploadedFile $file
+            */
             $file = $productCategory->getMainImage();
             $fileName = $fileUploader->upload($file);
             $productCategory->setMainImage($fileName);
             
-            try
-            {
+            try {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($productCategory);
                 $em->flush();
@@ -99,27 +99,31 @@ class ProductCategoryController extends Controller
                     'notice',
                     'Your category was added'
                 );
-            }
-            catch(\Exception $exception)
-            {
-                $this->_addDatabaseErrorFlash();
+            } catch (\Exception $exception) {
+                $this->addDatabaseErrorFlash();
             }
 
             return $this->redirectToRoute('product_category_index');
         }
 
-        return $this->render('product_category/new.html.twig', [
+        return $this->render(
+            'product_category/new.html.twig',
+            [
             'product_category' => $productCategory,
             'form' => $form->createView(),
-        ]);
+            ]
+        );
     }
 
     /**
      * @Route("/{id}", name="product_category_show", methods="GET")
      */
-    public function show(Request $request, ProductCategory $productCategory,
-                         EntityManagerInterface $em, SessionInterface $session): Response
-    {
+    public function show(
+        Request $request,
+        ProductCategory $productCategory,
+        EntityManagerInterface $em,
+        SessionInterface $session
+    ): Response {
         $viewType = $this->getValue('viewType', 'list', $request, $session);
         $limitProductsOnOnePage = $this->getValue('limit', 6, $request, $session);
         $currentPage = $this->getValue('currentPage', 0, $request, $session);
@@ -137,52 +141,58 @@ class ProductCategoryController extends Controller
         $productCategory->setProducts(new ArrayCollection($products));
         $numberOfPages = ceil(($paginator->count() / $limitProductsOnOnePage));
 
-        return $this->render('product_category/show.html.twig', [
+        return $this->render(
+            'product_category/show.html.twig',
+            [
             'current_page' => $currentPage,
             'limit' => $limitProductsOnOnePage,
             'number_of_pages' => $numberOfPages,
             'product_category' => $productCategory,
             'viewType' => $viewType
-        ]);
+            ]
+        );
     }
 
     /**
      * @Route("/{id}/edit", name="product_category_edit", methods="GET|POST")
      */
-    public function edit(Request $request, ProductCategory $productCategory, FileUploaderService $fileUploader): Response
-    {
+    public function edit(
+        Request $request,
+        ProductCategory $productCategory,
+        FileUploaderService $fileUploader
+    ): Response {
         $this->denyAccessUnlessGranted(ProductCategoryVoter::EDIT, $productCategory);
         $prevMainImage = $productCategory->getMainImage();
         $form = $this->createForm(ProductCategoryType::class, $productCategory);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $date = new \DateTime();
             $date->format("Y:M:D");
             $productCategory->setDateOfLastModification($date);
 
-            if($form->get('mainImage')->getData() != null){
-                /** @var UploadedFile $file */
+            if ($form->get('mainImage')->getData() != null) {
+                /**
+                 * @var UploadedFile $file
+                */
                 $file = $productCategory->getMainImage();
                 $fileName = $fileUploader->upload($file);
                 $productCategory->setMainImage($fileName);
-            }else{
-                /** @var ProductCategory $tmpProdCategory */
+            } else {
+                /**
+                 * @var ProductCategory $tmpProdCategory
+                */
                 $productCategory->setMainImage($prevMainImage);
             }
 
-            try
-            {
+            try {
                 $this->getDoctrine()->getManager()->flush();
                 $this->addFlash(
                     'notice',
                     'Your category was updated'
                 );
-            }
-            catch(\Exception $exception)
-            {
-               $this->_addDatabaseErrorFlash();
+            } catch (\Exception $exception) {
+                $this->addDatabaseErrorFlash();
             }
 
             return $this->redirectToRoute('product_category_edit', ['id' => $productCategory->getId()]);
@@ -191,11 +201,14 @@ class ProductCategoryController extends Controller
         $image = new Image();
         $imageForm = $this->createForm(ImageType::class, $image);
 
-        return $this->render('product_category/edit.html.twig', [
+        return $this->render(
+            'product_category/edit.html.twig',
+            [
             'product_category' => $productCategory,
             'form' => $form->createView(),
             'imageForm' => $imageForm->createView()
-        ]);
+            ]
+        );
     }
 
     /**
@@ -205,8 +218,7 @@ class ProductCategoryController extends Controller
     {
         $this->denyAccessUnlessGranted(ProductCategoryVoter::DELETE, $productCategory);
         if ($this->isCsrfTokenValid('delete'.$productCategory->getId(), $request->request->get('_token'))) {
-            try
-            {
+            try {
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($productCategory);
                 $em->flush();
@@ -214,13 +226,10 @@ class ProductCategoryController extends Controller
                     'notice',
                     'Your category was deleted'
                 );
+            } catch (\Exception $exception) {
+                $this->addDatabaseErrorFlash();
             }
-            catch(\Exception $exception)
-            {
-                $this->_addDatabaseErrorFlash();
-            }
-        }
-        else{
+        } else {
             $this->addFlash(
                 'error',
                 'Operation failed'
@@ -234,37 +243,44 @@ class ProductCategoryController extends Controller
     /**
      * @Route("/{id}/edit/AddImage", name="UploadAndAddImageToCategory", methods="POST")
      */
-    public function UploadAndAddImageToCategory(Request $request, ProductCategory $productCategory, FileUploaderService $fileUploader)
-    {
+    public function uploadAndAddImageToCategory(
+        Request $request,
+        ProductCategory $productCategory,
+        FileUploaderService $fileUploader
+    ) {
         $this->denyAccessUnlessGranted(ProductCategoryVoter::EDIT, $productCategory);
         $image = new Image();
         $form = $this->createForm(ImageType::class, $image);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->get('path')->isValid())
-        {
-            /** @var UploadedFile $file */
+        if ($form->isSubmitted() && $form->get('path')->isValid()) {
+            /**
+             * @var UploadedFile $file
+            */
             $file = $form->get('path')->getData();
             $fileName = $fileUploader->upload($file);
             $image->setPath($fileName);
             $productCategory->getImages()->add($image);
-            try
-            {
+            try {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($image);
                 $em->flush();
-            }
-            catch(\Exception $exception)
-            {
-                return new JsonResponse([
+            } catch (\Exception $exception) {
+                return new JsonResponse(
+                    [
                     'error' => 'Couldn`t add image, please try later'
-                ], 500);
+                    ],
+                    500
+                );
             }
         }
 
-        return new JsonResponse([
+        return new JsonResponse(
+            [
             'message' => 'Image uploaded'
-        ], 200);
+            ],
+            200
+        );
     }
 
     /**
@@ -272,28 +288,31 @@ class ProductCategoryController extends Controller
      */
     public function removeImageFromCategory(Request $request, Image $image, ProductCategory $category): Response
     {
-            $this->denyAccessUnlessGranted(ProductCategoryVoter::EDIT, $productCategory);
-            try
-            {
-                $em = $this->getDoctrine()->getManager();
-                $category->getImages()->removeElement($image);
-                $em->flush();
-            }
-            catch(\Exception $exception)
-            {
-                return new JsonResponse([
-                    'error' => 'Couldn`t remove image, please try later'
-                ], 500);
-            }
+            $this->denyAccessUnlessGranted(ProductCategoryVoter::EDIT, $category);
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $category->getImages()->removeElement($image);
+            $em->flush();
+        } catch (\Exception $exception) {
+            return new JsonResponse(
+                [
+                'error' => 'Couldn`t remove image, please try later'
+                    ],
+                500
+            );
+        }
 
-        return new JsonResponse([
+        return new JsonResponse(
+            [
             'message' => 'Image removed'
-        ], 200);
+            ],
+            200
+        );
     }
 
 
 
-    private function _addDatabaseErrorFlash()
+    private function addDatabaseErrorFlash()
     {
         $this->addFlash(
             'error',
@@ -309,20 +328,15 @@ class ProductCategoryController extends Controller
     private function getValue(string $varName, $defaultValue, Request $request, SessionInterface $session)
     {
         $value = $request->query->get($varName);
-        if(is_null($value))
-        {
+        if (is_null($value)) {
             $value = $session->get($varName);
-            if(is_null($value))
-            {
+            if (is_null($value)) {
                 $value = $defaultValue;
                 $session->set($varName, $value);
             }
-        }
-        else
-        {
+        } else {
             $session->set($varName, $value);
         }
         return $value;
     }
-
 }

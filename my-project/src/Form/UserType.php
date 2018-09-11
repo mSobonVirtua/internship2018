@@ -2,14 +2,13 @@
 /**
  * VI-55 UserType
  *
- * @category   Registration
- * @package    Virtua_Registration
- * @copyright  Copyright (c) Virtua
- * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
+ * @category  Registration
+ * @package   Virtua_Registration
+ * @copyright Copyright (c) Virtua
+ * @author    Mateusz Soboń <m.sobon@wearevirtua.com>
  */
 
 namespace App\Form;
-
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
@@ -25,29 +24,39 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 
 class UserType extends AbstractType
 {
-    public function  buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('username', TextType::class)
             ->add('email', EmailType::class)
-            ->add('plainPassword', RepeatedType::class, [
+            ->add(
+                'plainPassword',
+                RepeatedType::class,
+                [
                 'type' => PasswordType::class,
                 'first_options' => ['label' => 'Password'],
                 'second_options' => ['label' => 'Repeated password']
-            ])
+                ]
+            )
             ->add('name', TextType::class)
             ->add('lastName', TextType::class)
-            ->add('termsAgreed', CheckboxType::class, [
+            ->add(
+                'termsAgreed',
+                CheckboxType::class,
+                [
                 'mapped' => false,
                 'constraints' => new IsTrue(),
                 'label' => 'I agree to the terms of service'
-            ])
+                ]
+            )
             ->add('Register', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'data_class' => User::class
-        ]);
+            ]
+        );
     }
 }

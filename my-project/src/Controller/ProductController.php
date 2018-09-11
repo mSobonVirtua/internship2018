@@ -2,24 +2,20 @@
 /**
  * VI-44 - Add and Edit gallery
  *
- * @category   Controller
- * @package    Gallery
- * @copyright  Copyright (c) Virtua
- * @author     Dawid Kruczek
+ * @category  Controller
+ * @package   Gallery
+ * @copyright Copyright (c) Virtua
+ * @author    Dawid Kruczek
  */
 namespace App\Controller;
 
-use App\Entity\ImageProduct;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
-use function PHPSTORM_META\type;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * @Route("/product")
@@ -61,19 +57,20 @@ class ProductController extends Controller
                 'Dodano nowy element'
             );
             return $this->redirectToRoute('product_index');
-        }
-        else if($form->isSubmitted() && !$form->isValid())
-        {
+        } elseif ($form->isSubmitted() && !$form->isValid()) {
             $this->addFlash(
                 'error',
                 'Blad dodania'
             );
         }
 
-        return $this->render('product/new.html.twig', [
+        return $this->render(
+            'product/new.html.twig',
+            [
             'product' => $product,
             'form' => $form->createView()
-        ]);
+            ]
+        );
     }
 
     private function generateUniqueFileName()
@@ -102,8 +99,6 @@ class ProductController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-
             $file=$form->get('picture')->getData();
             $fileName=$this->generateUniqueFileName().'.'.$file->guessExtension();
             $file->move($this->getParameter('picture_directory'), $fileName);
@@ -115,18 +110,19 @@ class ProductController extends Controller
             );
 
             return $this->redirectToRoute('product_show', ['id' => $product->getId()]);
-        }
-        else if($form->isSubmitted() && !$form->isValid())
-        {
+        } elseif ($form->isSubmitted() && !$form->isValid()) {
             $this->addFlash(
                 'error',
                 'Blad dodania'
             );
         }
-        return $this->render('product/edit.html.twig', [
+        return $this->render(
+            'product/edit.html.twig',
+            [
             'product' => $product,
             'form' => $form->createView(),
-        ]);
+            ]
+        );
     }
 
     /**
@@ -142,9 +138,7 @@ class ProductController extends Controller
                 'notice',
                 'Usunieto poprawnie!'
             );
-        }
-        else
-        {
+        } else {
             $this->addFlash(
                 'error',
                 'Blad dodania'

@@ -2,10 +2,10 @@
 /**
  * VI-55 Registration
  *
- * @category   RegistrationController
- * @package    Virtua_Registration
- * @copyright  Copyright (c) Virtua
- * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
+ * @category  RegistrationController
+ * @package   Virtua_Registration
+ * @copyright Copyright (c) Virtua
+ * @author    Mateusz Soboń <m.sobon@wearevirtua.com>
  */
 
 namespace App\Controller;
@@ -24,19 +24,23 @@ class RegisterController extends Controller
     /**
      * @Route("/register", name="userRegister")
      */
-    public function index(Request $request, UserPasswordEncoderInterface $passwordEncoder, RoleRepository $roleRepository)
-    {
+    public function index(
+        Request $request,
+        UserPasswordEncoderInterface $passwordEncoder,
+        RoleRepository $roleRepository
+    ) {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
             $user->setPassword($password);
-            $USER_ROLE = $roleRepository->findOneBy([
+            $USER_ROLE = $roleRepository->findOneBy(
+                [
                 'name' => 'ROLE_USER'
-            ]);
+                ]
+            );
             $user->getRoles()->add($USER_ROLE);
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -46,8 +50,11 @@ class RegisterController extends Controller
             return new RedirectResponse($this->generateUrl('product_category_index'));
         }
 
-        return $this->render('register/index.html.twig', [
+        return $this->render(
+            'register/index.html.twig',
+            [
             'form' => $form->createView(),
-        ]);
+            ]
+        );
     }
 }

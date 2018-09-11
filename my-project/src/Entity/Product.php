@@ -2,10 +2,10 @@
 /**
  * VI-44 - Add and Edit gallery
  *
- * @category   Entity
- * @package    Gallery
- * @copyright  Copyright (c) Virtua
- * @author     Dawid Kruczek
+ * @category  Entity
+ * @package   Gallery
+ * @copyright Copyright (c) Virtua
+ * @author    Dawid Kruczek
  */
 namespace App\Entity;
 
@@ -49,7 +49,7 @@ class Product
     private $modifiedDate;
 
     /**
-    * @ORM\ManyToOne(targetEntity="App\Entity\ProductCategory", inversedBy="products")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ProductCategory", inversedBy="products")
      * @ORM\JoinColumn()
      */
 
@@ -68,7 +68,12 @@ class Product
     private $picture;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ImageProduct", mappedBy="product", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\ImageProduct",
+     *     mappedBy="product",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
+     * )
      */
     private $images;
 
