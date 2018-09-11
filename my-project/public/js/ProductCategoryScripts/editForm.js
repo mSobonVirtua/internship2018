@@ -7,7 +7,6 @@
  * @author     Mateusz Soboń <m.sobon@wearevirtua.com>
  */
 /**
- * @param {string} path
  * @returns boolean
  * */
 function onSubmitEditForm()

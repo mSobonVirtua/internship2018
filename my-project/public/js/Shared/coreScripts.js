@@ -3,6 +3,10 @@ function deleteConfirm()
     return confirm("Are you sure?");
 }
 
+/**
+ * @param {number} numberOfColumns
+ * @return boolean - Always return false, to prevent onClick
+ * */
 function changeNumberOfColumns(numberOfColumns)
 {
     const productTemplates = document.querySelectorAll(".product-template");
